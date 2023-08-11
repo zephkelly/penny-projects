@@ -1,8 +1,8 @@
 <template>
-  <header>
+  <header ref="header">
     <div class="container">
       <nuxt-link>
-        <img class="logo" ref="logoHeader" src="~/assets/svg/icons/penny-projects-logo.svg" alt="Penny Project Logo" title="The Penny Project" style="top: 6rem; width:30rem; height:6rem;" />
+        <img class="logo" ref="logoHeader" src="~/assets/svg/icons/penny-projects-logo.svg" alt="Penny Project Logo" title="The Penny Project" style="top:100px; width:30rem; height:6rem;" />
       </nuxt-link>
       <section class="navigation">
         <img class="menu" src="~/assets/svg/icons/menu-burger.svg" />
@@ -21,16 +21,34 @@ const signedIn = computed(() => {
   return false;
 })
 
+const header: Ref = ref(null);
 const logoHeader: Ref = ref(null);
 let scrollTop = 0;
-let newTopPosition = 0;
-const scrollSpeedFactor = 1;
+let logoStartTop = 0;
+let logoStartHeight = 0;
 
 onMounted(() => {
+  logoStartTop = parseInt(logoHeader.value.style.top);
+  logoStartHeight = parseInt(logoHeader.value.style.height);
+
   window.addEventListener('scroll', () => {
     scrollTop = window.scrollY;
-    newTopPosition = scrollTop * scrollSpeedFactor;
-    logoHeader.value.style.top = `-${newTopPosition}px`;
+    logoHeader.value.style.top = `${logoStartTop - scrollTop}px`;
+
+    if (scrollTop > logoStartTop + 10) {
+      logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
+      logoHeader.value.style.height = `3.4rem`;
+      logoHeader.value.style.top = `0px`;
+      logoHeader.value.style.left = `-127px`;
+
+      header.value.style.boxShadow = `0px 0px 30px rgba(0,0,0,0.3)`;
+    } else {
+      logoHeader.value.style.transition = ``;
+      logoHeader.value.style.height = `${logoStartHeight}rem`;
+      logoHeader.value.style.left = ``;
+
+      header.value.style.boxShadow = ``;
+    }
   });
 })
 </script>
@@ -43,6 +61,7 @@ onMounted(() => {
     justify-content: center;
     max-height: 3.2rem;
     background-color: #fdeec8;
+    transition: box-shadow ease-out 0.2s;
   }
 
   .container {
@@ -54,6 +73,8 @@ onMounted(() => {
     height: 3.5rem;
     position: relative;
     left: -3.5rem;
+    top: 100px;
+    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   .navigation {
