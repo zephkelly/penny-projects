@@ -2,15 +2,10 @@
   <header ref="header">
     <div class="container">
       <nuxt-link>
-        <img class="logo" ref="logoHeader" src="~/assets/svg/icons/penny-projects-logo.svg" alt="Penny Project Logo" title="The Penny Project" style="top:100px; width:30rem; height:6rem;" />
+        <img class="logo" ref="logoHeader" src="~/assets/svg/icons/penny-projects-logo.svg" alt="Penny Project Logo" title="The Penny Project" style="top:70px; width:30rem; height:6rem;" />
       </nuxt-link>
-      <section class="navigation">
+      <section class="navigation" ref="navHeader" style="top:90px;">
         <img class="menu" src="~/assets/svg/icons/menu-burger.svg" />
-        <div v-if="signedIn" class="signedIn">
-        </div>
-        <div v-else class="signedOut">
-          <img class="profile" src="~/assets/svg/icons/profile.svg" />
-        </div>
       </section>
     </div>
   </header>
@@ -23,33 +18,53 @@ const signedIn = computed(() => {
 
 const header: Ref = ref(null);
 const logoHeader: Ref = ref(null);
+const navHeader: Ref = ref(null);
+
 let scrollTop = 0;
 let logoStartTop = 0;
 let logoStartHeight = 0;
+let navStartTop = 0;
+let navStartHeight = 0;
 
 onMounted(() => {
   logoStartTop = parseInt(logoHeader.value.style.top);
   logoStartHeight = parseInt(logoHeader.value.style.height);
+  navStartTop = parseInt(navHeader.value.style.top);
+  navStartHeight = parseInt(navHeader.value.style.height);
+
+  window.addEventListener('onload', () => {
+    adjustNavbar();
+  });
 
   window.addEventListener('scroll', () => {
+    adjustNavbar();
+  });
+
+  function adjustNavbar () {
     scrollTop = window.scrollY;
     logoHeader.value.style.top = `${logoStartTop - scrollTop}px`;
+    navHeader.value.style.top = `${navStartTop - scrollTop}px`;
 
-    if (scrollTop > logoStartTop + 10) {
+    if (scrollTop > logoStartTop - 10) {
       logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
       logoHeader.value.style.height = `3.4rem`;
-      logoHeader.value.style.top = `0px`;
+      logoHeader.value.style.top = `-2px`;
       logoHeader.value.style.left = `-127px`;
 
-      header.value.style.boxShadow = `0px 0px 30px rgba(0,0,0,0.3)`;
+      navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
+      navHeader.value.style.top = `0px`;
+
+      header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.3)`;
     } else {
       logoHeader.value.style.transition = ``;
       logoHeader.value.style.height = `${logoStartHeight}rem`;
       logoHeader.value.style.left = ``;
 
+      navHeader.value.style.transition = ``;
+
       header.value.style.boxShadow = ``;
     }
-  });
+  }
 })
 </script>
 
@@ -60,8 +75,9 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     max-height: 3.2rem;
-    background-color: #fdeec8;
+    background-color: #eae6d7;
     transition: box-shadow ease-out 0.2s;
+    z-index: 100;
   }
 
   .container {
@@ -73,21 +89,21 @@ onMounted(() => {
     height: 3.5rem;
     position: relative;
     left: -3.5rem;
-    top: 100px;
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   .navigation {
     display: flex;
+    position: relative;
     padding: 0.6rem;
     padding-right: 0.8rem;
     align-items: center;
-    justify-content: space-between;
-    width: 4.6rem;
+    justify-content: flex-end;
+    width: 4rem;
 
     div {
       height: 100%;
-      width: 1.8rem;
+      width: 1.2rem;
     }
 
     img {
@@ -95,7 +111,7 @@ onMounted(() => {
     }
 
     img.menu {
-      height: 100%;
+      height: 90%;
     }
   }
 </style>
