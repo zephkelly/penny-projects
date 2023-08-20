@@ -49,7 +49,7 @@ onMounted(() => {
       logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
       logoHeader.value.style.height = `3.4rem`;
       logoHeader.value.style.top = `-2px`;
-      logoHeader.value.style.left = `-127px`;
+      logoHeader.value.style.left = `-145px`;
 
       navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
       navHeader.value.style.top = `0px`;
@@ -88,7 +88,7 @@ onMounted(() => {
   .logo {
     height: 3.5rem;
     position: relative;
-    left: -3.5rem;
+    left: -4.2rem;
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
