@@ -54,7 +54,7 @@ onMounted(() => {
       navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
       navHeader.value.style.top = `0px`;
 
-      header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.3)`;
+      header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
     } else {
       logoHeader.value.style.transition = ``;
       logoHeader.value.style.height = `${logoStartHeight}rem`;

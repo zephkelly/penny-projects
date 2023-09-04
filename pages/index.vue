@@ -5,9 +5,10 @@
       <div class="group">
         <h1 class="header">Little Gifts, Big Impact</h1>
         <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
+        <p class="subheader2">Our misson is both simple yet profound: we aim to nuture and inspire high school students from Riverside Secondary Highschool to become the driving</p>
         <div class="buttons">
           <button id="donate-button">Donate Now</button>
-          <button>Join Us!</button>
+          <button>Our Newsletter</button>
         </div>
       </div>
       <img src="/assets/images/hero-graphic-desktop.PNG" />
@@ -41,7 +42,7 @@
     <div class="container">
       <div class="group">
         <h2>Our Approach</h2>
-        <p class="descriptor">Through the help and support of the Riverside Secondary School <em>we aim to provide a hands-on learning and experiential education.</em> Our team of high school students are empowered to take the lead in every aspect of project development.</p>
+        <p class="descriptor">Through the help and support of the Riverside Secondary School we aim to provide a hands-on learning and experiential education. Our team of high school students are empowered to take the lead in every aspect of project development.</p>
         <div class="approaches">
           <p>Identifying the needs of the community.</p>
           <p>Devising effective solutions.</p>
@@ -60,8 +61,9 @@
       <div class="group">
       </div>
       <div class="group">
-        <h2>Together We Can</h2>
-
+        <h3>Together We Can</h3>
+        <p>To realise these transformative projects, we depend on generous donors who share our commitment. <em>Your contributions provide necessary resources for sucessful project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
+        <DonationPicker/>
       </div>
     </div>
   </section>
@@ -107,7 +109,7 @@ definePageMeta({ layout: 'default' });
             text-transform: uppercase;
           }
   
-          .subheader {
+          .subheader, .subheader2 {
             font-family: 'Nunito', sans-serif;
             font-style: oblique 8deg;
             text-align: normal;
@@ -122,28 +124,36 @@ definePageMeta({ layout: 'default' });
             }
           }
 
+          .subheader2 {
+            font-style: oblique 3deg;
+          }
+
           .buttons {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            width: 24rem;
+            width: 30rem;
             margin-top: 3.2rem;
 
             button {
               background-color: var(--text-color-main);
               border: none;
               border-radius: 2rem;
-              width: 11rem;
               height: 4rem;
-              color: #eae6d7;
-              font-family: 'Poppins', sans-serif;
+              color: var(--background-color-secondary);
+              font-family: 'Nunito', sans-serif;
               font-size: 1.2rem;
               font-weight: 600;
               letter-spacing: 0.06rem;
+              text-transform: uppercase;
 
-              // &:last-child {
-              //   margin-left: 11rem;
-              // }
+              &:first-child {
+                width: 13rem;
+              }
+
+              &:last-child {
+                width: 15rem;
+              }
             }
 
             #donate-button {
@@ -228,7 +238,7 @@ definePageMeta({ layout: 'default' });
 
           p {
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: 1.2rem;
             line-height: 1.5rem;
             text-align: center;
             color: #7a2614;
@@ -256,15 +266,16 @@ definePageMeta({ layout: 'default' });
   }
 
   .approach {
-    height: clamp(540px, 50vw, 660px);
+    // height: clamp(540px, 50vw, 660px);
+    height: auto;
     overflow: hidden;
     position: relative;
-
+    
     .container {
-      width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
       padding-right: 0rem;
+      padding-bottom: 4rem;
 
       .group {
         padding: 1rem;
@@ -277,11 +288,14 @@ definePageMeta({ layout: 'default' });
           display: flex;
           flex-direction: column;
           font-family: 'Poppins', sans-serif;
+          font-size: 1.2rem;
           text-align: left;
           color: #7a2614;
 
           .descriptor {
-            margin-bottom: 2rem;
+            font-weight: 500;
+            line-height: 1.7rem;
+            margin-bottom: 3rem;
 
             em {
               font-weight: 600;
@@ -290,8 +304,10 @@ definePageMeta({ layout: 'default' });
           }
 
           .descriptor-2 {
-            margin-top: 1rem;
+            margin-top: 2rem;
             font-weight: 600;
+            word-spacing: 0.3rem;
+            line-height: 1.5rem;
           }
 
           .approaches {
@@ -334,31 +350,49 @@ definePageMeta({ layout: 'default' });
   }
 
   .donation {
-    height: clamp(540px, 50vw, 660px);
-    background-color: #ffffff;
+    height: auto;
+    background-color: var(--background-color-main);
     position: relative;
 
     .container {
       padding-left: 0rem;
+      padding-right: 0rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
 
       .group {
+        display: flex;
+        flex-direction: column;
+
         &:last-child {
           padding: 3rem;
+          padding-right: 0rem;
           padding-top: 5rem;
         }
 
-        h2 {
+        h3 {
           font-family: 'Nunito', sans-serif;
           font-size: 2.8rem;
-          letter-spacing: 0.2rem;
+          letter-spacing: 0.15rem;
           font-weight: 700;
           width: auto;
           color: #7a2614;
           text-transform: uppercase;
           margin-bottom: 1rem;
           text-align: left;
+        }
+
+        p {
+          font-family: 'Poppins', sans-serif;
+          font-size: 1.2rem;
+          line-height: 1.7rem;
+          text-align: left;
+          color: #7a2614;
+
+          em {
+            font-weight: 600;
+            font-style: oblique 2deg;
+          }
         }
       }
     }
