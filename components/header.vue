@@ -2,10 +2,10 @@
   <header ref="header">
     <div class="container">
       <nuxt-link>
-        <img class="logo" ref="logoHeader" src="~/assets/svg/icons/penny-projects-logo.svg" alt="Penny Project Logo" title="The Penny Project" style="top:70px; width:30rem; height:6rem;" />
+        <img class="logo" ref="logoHeader" src="/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
       </nuxt-link>
-      <section class="navigation" ref="navHeader" style="top:90px;">
-        <img class="menu" src="~/assets/svg/icons/menu-burger.svg" />
+      <section class="navigation" ref="navHeader" style="top:70px;">
+        <img class="menu" src="/svg/icons/menu-burger.svg" />
       </section>
     </div>
   </header>
@@ -48,8 +48,8 @@ onMounted(() => {
     if (scrollTop > logoStartTop - 10) {
       logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
       logoHeader.value.style.height = `3.4rem`;
-      logoHeader.value.style.top = `-2px`;
-      logoHeader.value.style.left = `-145px`;
+      logoHeader.value.style.top = `-0px`;
+      logoHeader.value.style.left = `-30px`;
 
       navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
       navHeader.value.style.top = `0px`;
@@ -78,17 +78,23 @@ onMounted(() => {
     background-color: #eae6d7;
     transition: box-shadow ease-out 0.2s;
     z-index: 100;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .container {
     height: 3.2rem;
     justify-content: space-between;
+    padding: 0rem 1.8rem 0rem 1.8rem;
   }
 
   .logo {
     height: 3.5rem;
+    width: auto;
     position: relative;
-    left: -4.2rem;
+    left: -3.6rem;
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
@@ -96,7 +102,7 @@ onMounted(() => {
     display: flex;
     position: relative;
     padding: 0.6rem;
-    padding-right: 0.8rem;
+    padding-right: 0rem;
     align-items: center;
     justify-content: flex-end;
     width: 4rem;

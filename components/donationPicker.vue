@@ -114,6 +114,10 @@ function setDonationAmount(amount: number) {
     margin-top: 4rem;
     margin-bottom: 2rem;
     width: 460px;
+
+    @media (max-width: 768px) {
+      align-items: center;
+    }
     
     .main {
       height: 22rem;
@@ -227,11 +231,84 @@ function setDonationAmount(amount: number) {
       color: var(--text-color-main);
       margin-left: 3rem;
       user-select: none;
+
+      @media (max-width: 1000px) {
+        margin-left: 2rem;
+      }
     }
   }
 
   section .container, header .container {
     height: 5rem;
     width: auto;
+  }
+
+  @media (max-width: 1000px) {
+    .donation-picker {
+      width: 100%;
+      margin-top: 2rem;
+      margin-bottom: 4rem;
+
+
+      .main {
+        width: clamp(260px, 80%, 500px);
+        height: auto;
+
+        h4 {
+          font-size: 1.2rem;
+        }
+      }
+
+      .secondary {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr;
+        margin-top: 2rem;
+
+        .container {
+          margin-bottom: 1rem;
+          width: 70%;
+
+          &:first-child {
+            margin-right: 0rem;
+          }
+
+          &:last-child {
+            margin-left: 0rem;
+          }
+        }
+
+        .dot {
+          margin-left: 1rem;
+          width: 1.8rem;
+          height: 1.8rem;
+        }
+
+        h4 {
+          margin-left: 2rem;
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 800px) {
+    .donation-picker {
+      .secondary {
+        h4 {
+          font-size: 1.2rem;
+          margin-left: 0.6rem;
+        } 
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .donation-picker {
+      .secondary {
+        .container {
+          width: 15rem;
+        }
+      }
+    }
   }
 </style>
