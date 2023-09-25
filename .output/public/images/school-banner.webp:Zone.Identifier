@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://cloudconvert.com/
+HostUrl=https://eu-central.storage.cloudconvert.com/tasks/835e973d-735b-424f-ab07-e153a1e7ea6e/school-banner.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cloudconvert-production%2F20230925%2Ffra%2Fs3%2Faws4_request&X-Amz-Date=20230925T042147Z&X-Amz-Expires=86400&X-Amz-Signature=ae51c8f01569d1136b8f3a273a04f2fe2cb9c1980144bd355c31d3a23bed7978&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22school-banner.webp%22&response-content-type=image%2Fwebp&x-id=GetObject

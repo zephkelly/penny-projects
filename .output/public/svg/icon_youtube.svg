@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 411.76 283.62">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #8e361f;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 5.4px;
+      }
+    </style>
+  </defs>
+  <circle id="Ellipse_18" data-name="Ellipse 18" class="cls-1" cx="205.88" cy="141.81" r="61"/>
+  <path id="Path_290" data-name="Path 290" class="cls-2" d="m224.55,165.34c7.77.29,14.3-5.77,14.6-13.53v-20.1c-.3-7.77-6.83-13.82-14.6-13.53h-38.19c-7.77-.29-14.3,5.77-14.6,13.53v20.1c.3,7.77,6.83,13.82,14.6,13.53h38.19Z"/>
+  <path id="Path_291" data-name="Path 291" class="cls-2" d="m203.8,132.24l10.65,7.24c1.07.63,1.43,2,.81,3.07-.2.33-.47.61-.81.81l-10.65,7.92c-2.02,1.37-5.08.2-5.08-1.94v-15.16c0-2.13,3.06-3.31,5.08-1.93Z"/>
+</svg>
