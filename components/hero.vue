@@ -10,7 +10,7 @@
           <button>Our Newsletter</button>
         </div>
       </div>
-      <img src="/images/hero-graphic-desktop.PNG" />
+      <img src="/images/hero-graphic-desktop.webp" />
       <!-- <div class="group">
       </div> -->
     </div>
@@ -20,7 +20,7 @@
       <img src="/images/hero-logo-mobile.png" />
     </div>
     <h1 class="header">Little Gifts, Big Impact</h1>
-    <img class="image" src="/images/hero-graphic-desktop.PNG">
+    <img class="image" src="/images/hero-graphic-desktop.webp">
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
     <p class="subheader2">Our misson simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">

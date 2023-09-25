@@ -6,18 +6,18 @@
       <h2>Our Mission</h2>
       <div class="group">
         <div class="descriptor">
-          <img src="/images/mission-graphic-1.JPG" alt="">
+          <img src="/images/mission-graphic-1.webp" alt="">
           <h3>Mentorship & Guidance</h3>
           <p>Our misson is to <em>nurture and inspire highschool students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the drivinf force behind positive change in their community.</p>
         </div>
         <div class="descriptor">
-          <img src="/images/mission-graphic-2.JPG" alt="">
+          <img src="/images/mission-graphic-2.webp" alt="">
           <h3>Equpping 
             with the Right Tools & Skills</h3>
           <p>To foster personal growth and societal impact, we actively cultivate a spirit of compassion and innovation within each young change-maker by thoughtfully and strategically <em>equipping our students with the right skills, knowledge, and resources.</em></p>
         </div>
         <div class="descriptor">
-          <img src="/images/mission-graphic-3.JPG" alt="">
+          <img src="/images/mission-graphic-3.webp" alt="">
           <h3>Community Empowerment</h3>
           <p>We firmly believe in the transormative power of each individual to make a lasting difference, and our heartfelt goal is to see <em>these students flourish and add value to their community, creating a brighter tomorrow for all.</em></p>
         </div>
@@ -39,10 +39,10 @@
       <div class="group">
       </div>
     </div>
-    <img src="/images/approach-1.JPG" alt="">
+    <img src="/images/approach-1.webp" alt="">
   </section>
   <section class="donation">
-    <img src="/images/donations-1.JPG" alt="">
+    <img src="/images/donations-1.webp" alt="">
     <div class="container">
       <div class="group">
       </div>
@@ -75,30 +75,30 @@
   <section class="join">
     <div class="container">
       <div class="header">
-        <img src="/svg/icons/hearts.svg" alt="">
+        <img src="~/public/svg/icons/hearts.svg" alt="">
         <h3>How you can join our family</h3>
       </div>
       <div class="content">
         <div class="item">
-          <img src="/svg/icon/heart.png" alt="">
+          <!-- <img src="~/public/svg/icon/heart.png" alt=""> -->
           <h4>Volunteer</h4>
           <p>Join us in the mission field and be part of our inspiring Penny Projects family. Together, let's create a brighter future for those we serve.</p>
           <button>Volunteer</button>
         </div>
         <div class="item">
-          <img src="/svg/icon/hand-heart.png" alt="">
+          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
           <h4>Donate</h4>
           <p>Contribute a dollar or volunteer with us to build a compassionate community and achieve progress, one penny at a time.</p>
           <button>Donate</button>
         </div>
         <div class="item">
-          <img src="/svg/icon/hand-heart.png" alt="">
+          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
           <h4>Collaborate</h4>
           <p>We want to work with you on Penny Projects in your own community. Partner with us to empower others and create lasting impact together.</p>
           <button>Collaborate</button>
         </div>
         <div class="item">
-          <img src="/svg/icon/hand-heart.png" alt="">
+          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
           <h4>Online Community</h4>
           <p>Connect with like-minded individuals, follow us, and be a part of the Penny Projects family. Embrace optimisim and take action for positive change.</p>
           <button>Join Us!</button>
@@ -107,7 +107,7 @@
     </div>
   </section>
   <section class="banner">
-    <img src="/images/school-banner.JPG" alt="">
+    <img src="/images/school-banner.webp" alt="">
   </section>
   <EmailSection/>
   <section class="banner2">
@@ -121,7 +121,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ layout: 'default' });
 </script>
 
 <style lang="scss" scoped>
