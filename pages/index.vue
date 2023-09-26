@@ -8,7 +8,7 @@
         <div class="descriptor">
           <img src="/svg/mission-graphic-1.svg" alt="">
           <h3>Mentorship & Guidance</h3>
-          <p>Our misson is to <em>nurture and inspire highschool students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the drivinf force behind positive change in their community.</p>
+          <p>Our misson is to <em>nurture and inspire highschool students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the driving force behind positive change in their community.</p>
         </div>
         <div class="descriptor">
           <img src="/svg/mission-graphic-2.svg" alt="">

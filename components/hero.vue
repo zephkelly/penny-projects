@@ -24,7 +24,7 @@
       <img src="/images/hero-graphic-desktop.webp" />
     </div>
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
-    <p class="subheader2">Our misson simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
+    <p class="subheader2">Our misson is simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">
       <NuxtLink :to="{ path: '/', hash: '#donation'} " id="donate-button2"><button class="donation-button">Donate Now</button></NuxtLink>
       <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button2"><button class="newsletter-button">Our Newsletter</button></NuxtLink>
@@ -209,6 +209,14 @@
     .img-container {
       height: 400px;
 
+      @media (max-width: 430px) {
+        height: 350px;
+
+        img {
+          height: 100%;
+        }
+      }
+
       img {
         height: 120%;
         width: auto;
@@ -256,9 +264,13 @@
   .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
     width: 100%;
+
+    @media (max-width: 768px) {
+      gap: 0;
+    }
 
     button {
       color: var(--background-color-main);
@@ -275,12 +287,12 @@
     }
 
     #donate-button2 {
-      width: 10rem;
+      width: 11rem;
       .donation-button {
         cursor: pointer;
 
         @media (max-width: 1000px) {
-          width: 100%;
+          width: 8.5rem;
         }
       }
     }
@@ -288,6 +300,10 @@
     .newsletter-button {
       cursor: pointer;
       width: 11rem;
+
+      @media (max-width: 768px) {
+        width: 10rem;
+      }
     }
   }
 }

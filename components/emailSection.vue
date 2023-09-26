@@ -30,7 +30,7 @@
     </form>
     </div>
     <div class="socials">
-      <a href="https://www.instagram.com/pennyprojects/" target="_blank"><img src="/svg/icon_instagram.svg"></a>
+      <a href="https://www.instagram.com/pennyprojectsrs/" target="_blank"><img src="/svg/icon_instagram.svg"></a>
       <a href="https://www.facebook.com/pennyprojects" target="_blank"><img src="/svg/icon_facebook.svg"></a>
       <a href="https://www.youtube.com/pennyprojects/" target="_blank"><img src="/svg/icon_youtube.svg"></a>
     </div>
