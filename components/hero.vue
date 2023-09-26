@@ -207,7 +207,7 @@
     }
 
     .img-container {
-      height: 500px;
+      height: 400px;
 
       img {
         height: 120%;
