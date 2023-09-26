@@ -113,7 +113,7 @@ function setDonationAmount(amount: number) {
     flex-direction: column;
     margin-top: 4rem;
     margin-bottom: 2rem;
-    width: 460px;
+    width: 440px;
 
     @media (max-width: 768px) {
       align-items: center;
@@ -129,6 +129,7 @@ function setDonationAmount(amount: number) {
       z-index: 1;
 
       .container {
+        position: relative;
         display: flex;
         flex-direction: row;
         justify-content: left;
@@ -148,6 +149,15 @@ function setDonationAmount(amount: number) {
           border-bottom-left-radius: 2.7rem;
           border-bottom-right-radius: 2.7rem;
         }
+
+        @media (max-width: 768px) {
+          height: 5rem;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        width: 70%;
       }
     }
 
@@ -157,9 +167,10 @@ function setDonationAmount(amount: number) {
       margin-top: 4rem;
 
       .container {
+        position: relative;
         display: flex;
         align-items: center;
-        height: 4rem;
+        height: 3.8rem;
         padding: 0rem;
         border: 4px solid var(--text-color-main);
         border-radius: 3rem;
@@ -175,7 +186,6 @@ function setDonationAmount(amount: number) {
 
       h4 {
         margin-left: 1rem;
-        font-size: 1.5rem;
       }
     }
 
@@ -207,11 +217,11 @@ function setDonationAmount(amount: number) {
     }
 
     .dot {
-      height: 2rem;
-      width: 2rem;
+      height: 1.8rem;
+      width: 1.8rem;
       border-radius: 50%;
       background-color: var(--text-color-main);
-      margin-left: 1rem;
+      margin-left: 1.2rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -222,12 +232,17 @@ function setDonationAmount(amount: number) {
         border-radius: 50%;
         background-color: var(--text-color-main);
       }
+
+      @media (max-width: 768px) {
+        position: absolute;
+        left: 0rem;
+      }
     }
 
     h4 {
       font-family: 'Poppins', sans-serif;
       font-weight: 500;
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       color: var(--text-color-main);
       margin-left: 3rem;
       user-select: none;
@@ -247,11 +262,10 @@ function setDonationAmount(amount: number) {
     .donation-picker {
       width: 100%;
       margin-top: 2rem;
-      margin-bottom: 4rem;
-
+      margin-bottom: 0rem;
 
       .main {
-        width: clamp(260px, 80%, 500px);
+        width: clamp(260px, 70%, 500px);
         height: auto;
 
         h4 {
@@ -307,6 +321,7 @@ function setDonationAmount(amount: number) {
       .secondary {
         .container {
           width: 15rem;
+          justify-content: center;
         }
       }
     }

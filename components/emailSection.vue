@@ -1,5 +1,5 @@
 <template>
-  <section class="email">
+  <section class="email" id="newsletter">
     <h3 class="header">Join our online family!</h3>
     <div id="mc_embed_signup">
         <form action="https://pennyprojects.us9.list-manage.com/subscribe/post?u=d915e9e09cea505cc1a8b8d0e&amp;id=4c02ec613b&amp;f_id=00f814e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="">
@@ -32,7 +32,7 @@
     <div class="socials">
       <a href="https://www.instagram.com/pennyprojects/" target="_blank"><img src="/svg/icon_instagram.svg"></a>
       <a href="https://www.facebook.com/pennyprojects" target="_blank"><img src="/svg/icon_facebook.svg"></a>
-      <a href="https://www.instagram.com/pennyprojects/" target="_blank"><img src="/svg/icon_youtube.svg"></a>
+      <a href="https://www.youtube.com/pennyprojects/" target="_blank"><img src="/svg/icon_youtube.svg"></a>
     </div>
     <img class="background" src="/svg/penny-icons-bg.svg">
   </section>
@@ -84,7 +84,7 @@ onMounted(() => {
   }
 
   @media (max-width: 768px) {
-    height: 580px;
+    height: 500px;
   }
 
   .header {
@@ -92,7 +92,7 @@ onMounted(() => {
     z-index: 1;
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 2.4rem;
     padding-bottom: 2rem;
     color: var(--text-color-main);
   }
@@ -108,7 +108,7 @@ onMounted(() => {
     gap: 1.5rem;
 
     @media (max-width: 768px) {
-      padding-top: 12rem;
+      padding-top: 11.5rem;
     }
 
     a {
@@ -134,6 +134,9 @@ onMounted(() => {
     position: absolute;
     top: 0;
     z-index: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 
   #mc_embed_signup {
@@ -176,6 +179,7 @@ onMounted(() => {
 
         .optionalParent {
           height: 2.2rem;
+          cursor: pointer;
           
           div {
             height: 100%;
@@ -186,8 +190,9 @@ onMounted(() => {
             background-color: var(--background-color-secondary);
             border: none;
             border-radius: 5rem;
-            width: 6rem;
+            width: 6.5rem;
             font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-color-main);
@@ -209,17 +214,25 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
 
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+
         input {
           height: 100%;
         }
       }
 
       &.email {
+        width: 16rem;
+
         input {
           height: 100%;
         }
 
-        width: 16rem;
+        @media (max-width: 768px) {
+          width: 100%;
+        }
       }
       
       input {

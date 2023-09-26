@@ -6,8 +6,8 @@
         <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
         <p class="subheader2">Our misson is both simple yet profound: we aim to nuture and inspire high school students from Riverside Secondary Highschool to become the driving</p>
         <div class="buttons">
-          <button id="donate-button">Donate Now</button>
-          <button>Our Newsletter</button>
+          <NuxtLink :to="{ path: '/', hash: '#donation'} " id="donate-button"><button class="donation-button">Donate Now</button></NuxtLink>
+          <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button"><button class="newsletter-button">Our Newsletter</button></NuxtLink>
         </div>
       </div>
       <img src="/images/hero-graphic-desktop.webp" />
@@ -20,12 +20,14 @@
       <img src="/images/hero-logo-mobile.png" />
     </div>
     <h1 class="header">Little Gifts, Big Impact</h1>
-    <img class="image" src="/images/hero-graphic-desktop.webp">
+    <div class="img-container">
+      <img src="/images/hero-graphic-desktop.webp" />
+    </div>
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
     <p class="subheader2">Our misson simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">
-      <button id="donate-button">Donate Now</button>
-      <button>Our Newsletter</button>
+      <NuxtLink :to="{ path: '/', hash: '#donation'} " id="donate-button2"><button class="donation-button">Donate Now</button></NuxtLink>
+      <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button2"><button class="newsletter-button">Our Newsletter</button></NuxtLink>
     </div>
   </section>
 </template>
@@ -48,137 +50,145 @@
     display: none;
   }
 
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
-      .group {
+    .group {
+      display: flex;
+
+      &:first-child {
         display: flex;
-  
-        &:first-child {
-          display: flex;
-          flex-direction: column;
-          justify-content: left;
-          align-items: flex-start;
-          z-index: 1;
-  
-          .header {
-            font-family: 'Nunito', sans-serif;
-            font-size: 4rem;
-            letter-spacing: 0.3rem;
-            font-weight: 700;
-            width: 34rem;
-            color: var(--text-color-main);
-            text-transform: uppercase;
+        flex-direction: column;
+        justify-content: left;
+        align-items: flex-start;
+        z-index: 1;
 
-            @media (max-width: 1000px) {
-              font-size: 3.4rem;
-              width: 30rem;
-            }
-          }
+        .header {
+          font-family: 'Nunito', sans-serif;
+          font-size: 4rem;
+          letter-spacing: 0.3rem;
+          font-weight: 700;
+          width: 34rem;
+          color: var(--text-color-main);
+          text-transform: uppercase;
 
-          .subheader, .subheader2 {
-            font-family: 'Poppins', sans-serif;
-            // font-style: oblique 8deg;
-            text-align: normal;
-            font-size: 1.4rem;
-            font-weight: 400;
-            width: 31rem;
-            color: var(--text-color-main);
-            padding-top: 1.6rem;
-
-            @media (max-width: 1000px) {
-              font-size: 1.2rem;
-            }
-          }
-
-          .subheader {
-            font-weight: 600;
-
-            @media (max-width: 1000px) {
-              max-width: 26rem;
-            }
-          }
-          
-
-          .subheader2 {
-            font-style: oblique 8deg;
-            width: 28rem;
-
-            @media (max-width: 1000px) {
-              width: 24rem;
-            }
-          }
-
-          .buttons {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+          @media (max-width: 1000px) {
+            font-size: 3.4rem;
             width: 30rem;
-            margin-top: 5.2rem;
+          }
+        }
+
+        .subheader, .subheader2 {
+          font-family: 'Poppins', sans-serif;
+          // font-style: oblique 8deg;
+          text-align: normal;
+          font-size: 1.4rem;
+          font-weight: 400;
+          width: 31rem;
+          color: var(--text-color-main);
+          padding-top: 1.6rem;
+
+          @media (max-width: 1000px) {
+            font-size: 1.2rem;
+          }
+        }
+
+        .subheader {
+          font-weight: 600;
+
+          @media (max-width: 1000px) {
+            max-width: 26rem;
+          }
+        }
+        
+
+        .subheader2 {
+          font-style: oblique 8deg;
+          width: 28rem;
+
+          @media (max-width: 1000px) {
+            width: 24rem;
+          }
+        }
+
+        .buttons {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 30rem;
+          margin-top: 5.2rem;
+
+          button {
+            background-color: var(--text-color-main);
+            border: none;
+            border-radius: 2rem;
+            height: 4rem;
+            color: var(--background-color-secondary);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            text-transform: uppercase;
+          }
+
+          #donate-button {
+            .donation-button {
+              width: 13rem;
+              cursor: pointer;
+
+              @media (max-width: 1000px) {
+                width: 11rem;
+              }
+            }
+          }
+
+          .newsletter-button {
+            cursor: pointer;
+            width: 15rem;
+          }
+        }
+
+        @media (max-width: 1000px) {
+          .buttons {
+            width: 25rem;
 
             button {
-              background-color: var(--text-color-main);
-              border: none;
-              border-radius: 2rem;
-              height: 4rem;
-              color: var(--background-color-secondary);
-              font-family: 'Nunito', sans-serif;
-              font-size: 1.2rem;
-              font-weight: 600;
-              letter-spacing: 0.06rem;
-              text-transform: uppercase;
+              font-size: 1rem;
+              height: 3.5rem;
 
               &:first-child {
-                width: 13rem;
+                width: 10rem;
               }
 
               &:last-child {
-                width: 15rem;
-              }
-            }
-          }
-
-          @media (max-width: 1000px) {
-            .buttons {
-              width: 25rem;
-  
-              button {
-                font-size: 1rem;
-                height: 3.5rem;
-  
-                &:first-child {
-                  width: 10rem;
-                }
-  
-                &:last-child {
-                  width: 13rem;
-                }
+                width: 13rem;
               }
             }
           }
         }
       }
+    }
   
-      img {
-        position: relative;
-        top: -1rem;
-        width: clamp(26rem, 150%, 42rem);
-        height: auto;
-        right: 3rem;
-        z-index: 0;
-      }
+    img {
+      position: relative;
+      top: -5rem;
+      width: clamp(34rem, 150%, 44rem);
+      height: auto;
+      right: 3rem;
+      z-index: 0;
     }
   }
+}
 
-  .hero.mobile {
+.hero.mobile {
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     height: auto;
     padding-top: 2rem;
-    padding-bottom: 6rem;
+    padding-bottom: 5rem;
 
     @media (max-width: 768px) {
       display: flex;
@@ -186,12 +196,22 @@
 
     .icon {
       position: relative;
+      top: -3rem;
       width: clamp(15rem, 60vw, 25rem);
       height: clamp(10rem, 40vw, 16rem);
       overflow: hidden;
 
       img {
         width: 100%;
+      }
+    }
+
+    .img-container {
+      height: 500px;
+
+      img {
+        height: 120%;
+        width: auto;
       }
     }
 
@@ -203,9 +223,8 @@
       width: 90vw;
       align-items: center;
       text-align: center;
-      padding-top: 1rem;
       position: relative;
-      top: clamp(1rem, 5vw, 7rem);
+      top: clamp(-8rem, 2vw, 5rem);
       line-height: clamp(3.5rem, 12vw, 4rem);
       color: var(--text-color-main);
       background-color: var(--background-color-main);
@@ -242,26 +261,34 @@
     width: 100%;
 
     button {
-      &:first-child {
-        width: 12rem;
-      }
+      color: var(--background-color-main);
+      background-color: var(--text-color-main);
+      font-family: 'Nunito', sans-serif;
+      color: var(--background-color-secondary);
+      border: none;
+      height: auto;
+      margin-top: 2rem;
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 2rem;
+    }
 
-      &:last-child {
-        width: 14rem;
+    #donate-button2 {
+      width: 10rem;
+      .donation-button {
+        cursor: pointer;
+
+        @media (max-width: 1000px) {
+          width: 100%;
+        }
       }
     }
-  }
 
-  button {
-    color: var(--background-color-main);
-    background-color: var(--text-color-main);
-    border: none;
-    height: auto;
-    margin-top: 2rem;
-    padding: 0.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 2rem;
+    .newsletter-button {
+      cursor: pointer;
+      width: 11rem;
+    }
   }
 }
 </style>

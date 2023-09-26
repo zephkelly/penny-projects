@@ -6,18 +6,18 @@
       <h2>Our Mission</h2>
       <div class="group">
         <div class="descriptor">
-          <img src="/images/mission-graphic-1.webp" alt="">
+          <img src="/svg/mission-graphic-1.svg" alt="">
           <h3>Mentorship & Guidance</h3>
           <p>Our misson is to <em>nurture and inspire highschool students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the drivinf force behind positive change in their community.</p>
         </div>
         <div class="descriptor">
-          <img src="/images/mission-graphic-2.webp" alt="">
+          <img src="/svg/mission-graphic-2.svg" alt="">
           <h3>Equpping 
             with the Right Tools & Skills</h3>
           <p>To foster personal growth and societal impact, we actively cultivate a spirit of compassion and innovation within each young change-maker by thoughtfully and strategically <em>equipping our students with the right skills, knowledge, and resources.</em></p>
         </div>
         <div class="descriptor">
-          <img src="/images/mission-graphic-3.webp" alt="">
+          <img src="/svg/mission-graphic-3.svg" alt="">
           <h3>Community Empowerment</h3>
           <p>We firmly believe in the transormative power of each individual to make a lasting difference, and our heartfelt goal is to see <em>these students flourish and add value to their community, creating a brighter tomorrow for all.</em></p>
         </div>
@@ -41,7 +41,7 @@
     </div>
     <img src="/images/approach-1.webp" alt="">
   </section>
-  <section class="donation">
+  <section class="donation" id="donation">
     <img src="/images/donations-1.webp" alt="">
     <div class="container">
       <div class="group">
@@ -145,7 +145,8 @@
       align-items: center;
 
       @media (max-width: 768px) {
-        margin-bottom: 4rem;
+        margin-top: 5rem;
+        margin-bottom: 5rem;
       }
 
       .group {
@@ -201,12 +202,13 @@
             &:nth-child(3) {
               p {
                 padding-left: 1rem;
+                margin-bottom: 0rem;
               }
             }
           }
 
           img {
-            height: 8rem;
+            height: 12rem;
           }
 
           h3 {
@@ -277,12 +279,7 @@
     overflow: hidden;
     position: relative;
 
-    @media (max-width: 1000px) {
-      padding-bottom: 2rem;
-    }
-
     @media (max-width: 768px) {
-      padding-bottom: 4rem;
       height: clamp(50rem, 100%, 60rem);
     }
     
@@ -290,22 +287,23 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       padding-right: 0rem;
-      padding-bottom: 4rem;
 
       @media (max-width: 768px) {
         display: flex;
         justify-content: center;
         grid-template-columns: 1fr;
         padding-left: 0rem;
-        padding-bottom: 1rem;
       }
 
       .group {
         padding: 1rem;
         max-height: 100%;
+        padding-top: 6rem;
+        padding-bottom: 6rem;
 
         &:first-child {
           padding-top: 6rem;
+          padding-bottom: 6rem;
           padding-right: 4rem;
           padding-left: 0rem;
           display: flex;
@@ -320,9 +318,10 @@
           }
           
           @media (max-width: 768px) {
-            padding-top: 40rem;
+            padding-top: 30.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
+            padding-bottom: 5rem;
             width: 90vw;
 
             p {
@@ -403,7 +402,7 @@
         right: 0;
         top: 0;
         width: 100%;
-        height: clamp(25rem, 100%, 35rem);
+        height: clamp(12rem, 100%, 26rem);
       }
     }
   }
@@ -441,12 +440,14 @@
             padding-left: 3rem;
             padding-right: 2rem;
             padding-top: 6rem;
+            padding-bottom: 4rem;
           }
 
           @media (max-width: 768px) {
-            padding-top: 40rem;
+            padding-top: 30.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
+            padding-bottom: 4rem;
             width: 90vw;
           }
         }
@@ -507,14 +508,14 @@
         right: 0;
         top: 0;
         width: 100%;
-        height: clamp(25rem, 100%, 35rem);
+        height: clamp(12rem, 100%, 26rem);
       }
     }
   }
 
   .founder {
     position: relative;
-    height: 1250px;
+    height: 1100px;
     width: 100vw;
     background-color: var(--background-color-secondary);
     overflow: hidden;
@@ -524,7 +525,7 @@
     }
 
     @media (max-width: 768px) {
-      height: 1180px;
+      height: 1050px;
     }
     
     .round-container {
@@ -532,7 +533,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      top: 25rem;
+      top: 23rem;
       // left: -0.4rem;
       width: 100%;
       height: auto;
@@ -545,11 +546,15 @@
         top: 20rem;
       }
 
+      @media (max-width: 768px) {
+        top: 16rem;
+      }
+
       .profile {
         position: relative;
         top: -12rem;
-        height: 27rem;
-        width: 27rem;
+        height: 22rem;
+        width: 22rem;
         border-radius: 100rem;
         overflow: hidden;
         display: flex;
@@ -563,7 +568,7 @@
         }
 
         img {
-          height: 150%;
+          height: 120%;
           width: auto;
           object-fit: cover;
         }
@@ -571,14 +576,14 @@
 
       .hearts {
         position: absolute;
-        top: 5rem;
-        height: 30rem;
-        width: 40rem;
+        top: 0rem;
+        height: 28rem;
+        width: 38rem;
 
         @media (max-width: 768px) {
-          top: 3rem;
-          height: 80vw;
-          width: 90vw;
+          top: 7rem;
+          height: 60vw;
+          width: 70vw;
         }
 
         @media (max-width: 700px) {
@@ -665,11 +670,16 @@
     justify-content: center;
 
     .container {
-      margin-top: 12rem;
+      margin-top: 9rem;
       margin-bottom: 6rem;
       height: auto;
       flex-direction: column;
       align-items: center;
+
+      @media (max-width: 768px) {
+        margin-top: 8rem;
+        margin-bottom: 4rem;
+      }
 
       .header {
         display: flex;
@@ -728,6 +738,7 @@
           @media (max-width: 768px) {
             height: 2.5rem;
             font-size: 1rem;
+            margin-bottom: 0.5rem;
           }
         }
 
@@ -768,6 +779,7 @@
           border-radius: 1rem;
 
           @media (max-width: 768px) {
+            margin-top: 0rem;
             font-size: 1rem;
             padding: 0rem 1rem 0rem 1rem;
           }
@@ -792,6 +804,7 @@
       @media (max-width: 768px) {
         width: 90vw;
         text-align: center;
+        
       }
     }
   }
@@ -825,10 +838,10 @@
     }
 
     @media (max-width: 786px) {
-      height: 520px;
+      height: 400px;
 
       img {
-        height: 350px;
+        height: 340px;
       }
     }
   }
@@ -847,9 +860,9 @@
 
     @media (max-width: 768px) {
       flex-direction: column;
-      gap: 1rem;
+      gap: 2rem;
       font-size: 1.2rem;
-      height: 250px;
+      height: 220px;
     }
   }
 </style>

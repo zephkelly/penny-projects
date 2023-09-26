@@ -5,7 +5,7 @@
         <img class="logo" ref="logoHeader" src="/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
-        <img class="menu" src="/svg/icons/menu-burger.svg" />
+        <img class="menu" src="/svg/icons/menu-burger.svg" style="display: none;" />
       </section>
     </div>
   </header>
