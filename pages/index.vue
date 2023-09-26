@@ -634,19 +634,19 @@
         }
 
         @media (max-width: 700px) {
-          top: 2rem;
+          top: 6rem;
         }
 
         @media (max-width: 600px) {
-          top: 1rem;
+          top: 4rem;
         }
 
         @media (max-width: 500px) {
-          top: 0rem;
+          top: 3rem;
         }
 
         @media (max-width: 400px) {
-          top: -2rem;
+          top: 1rem;
         }
       }
 
