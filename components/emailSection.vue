@@ -31,7 +31,7 @@
     </div>
     <div class="socials">
       <a href="https://www.instagram.com/pennyprojectsrs/" target="_blank"><img src="/svg/icon_instagram.svg"></a>
-      <a href="https://www.facebook.com/pennyprojects" target="_blank"><img src="/svg/icon_facebook.svg"></a>
+      <a href="https://www.facebook.com/profile.php?id=100063661478968&mibextid=LQQJ4d" target="_blank"><img src="/svg/icon_facebook.svg"></a>
       <a href="https://www.youtube.com/pennyprojects/" target="_blank"><img src="/svg/icon_youtube.svg"></a>
     </div>
     <img class="background" src="/svg/penny-icons-bg.svg">

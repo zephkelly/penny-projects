@@ -1,7 +1,7 @@
 <template>
   <header ref="header">
     <div class="container">
-      <nuxt-link>
+      <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
         <img class="logo" ref="logoHeader" src="/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
@@ -90,11 +90,17 @@ onMounted(() => {
     padding: 0rem 1.8rem 0rem 1.8rem;
   }
 
+  .logo-link {
+    cursor: pointer;
+    position: relative;
+    width: 10rem;
+  }
+
   .logo {
     height: 3.5rem;
+    left: -3.6rem;
     width: auto;
     position: relative;
-    left: -3.6rem;
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 

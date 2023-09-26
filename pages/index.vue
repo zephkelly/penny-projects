@@ -48,8 +48,12 @@
       </div>
       <div class="group">
         <h3>Together We Can</h3>
-        <p>To realise these transformative projects, we depend on generous donors who share our commitment. <em>Your contributions provide necessary resources for sucessful project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
-        <DonationPicker/>
+        <p>To realise these transformative projects, we depend on generous donors who share our commitment. <em>Your contributions provide necessary resources for successful  project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
+        <!-- <DonationPicker/> -->
+        <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+Riverside+Secondary+School.+Providing+a+hands-on+learning+and+experiential+education&currency_code=AUD">
+          <h5>Donate with</h5>
+          <img class="paypal" src="/images/paypal.webp"/>
+        </a>
       </div>
     </div>
   </section>
@@ -114,7 +118,7 @@
     <img src="/images/logo-round.png" alt="">
   </section>
   <footer class="footer">
-    <p class="number">+1 828-808-4869</p>
+    <!-- <p class="number">+1 828-808-4869</p> -->
     <p class="email">thepennyprojects@gmail.com</p>
     <p class="address">Kafue, Zambia</p>
   </footer>
@@ -434,6 +438,7 @@
           padding-left: 4rem;
           padding-right: 2rem;
           padding-top: 6rem;
+          padding-bottom: 6rem;
 
           @media (max-width: 1000px) {
             padding: 1rem;
@@ -449,6 +454,7 @@
             padding-right: 0rem;
             padding-bottom: 4rem;
             width: 90vw;
+            align-items: center;
           }
         }
 
@@ -491,6 +497,47 @@
           @media (max-width: 768px) {
             text-align: center;
           }
+        }
+      }
+    }
+
+    .donation-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+      width: 16rem;
+      background-color: #ffc670;
+      padding: 0.5rem;
+      border-radius: 10rem;
+      margin-top: 2.5rem;
+
+      h5 {
+        position: relative;
+        font-family: "Nunito", sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #222b63;
+        margin-right: 0.7rem;
+      }
+
+      img {
+        position: relative;
+        top: -0.1rem;
+        height: 6rem;
+        width: auto;
+      }
+
+      &:hover {
+        background-color: #ffd08a;
+
+        h5 {
+          opacity: 0.7;
+        }
+
+        img {
+          opacity: 0.8;
         }
       }
     }

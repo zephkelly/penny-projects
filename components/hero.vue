@@ -1,13 +1,13 @@
 <template>
-  <section class="hero desktop">
+  <section class="hero desktop" id="hero-section">
     <div class="container">
       <div class="group">
         <h1 class="header">Little Gifts, Big Impact</h1>
         <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
         <p class="subheader2">Our misson is both simple yet profound: we aim to nuture and inspire high school students from Riverside Secondary Highschool to become the driving</p>
         <div class="buttons">
-          <NuxtLink :to="{ path: '/', hash: '#donation'} " id="donate-button"><button class="donation-button">Donate Now</button></NuxtLink>
-          <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button"><button class="newsletter-button">Our Newsletter</button></NuxtLink>
+          <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+Riverside+Secondary+School.+Providing+a+hands-on+learning+and+experiential+education&currency_code=AUD" id="donate-button" target="_blank">Donate Now</a>
+          <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button" class="newsletter-button">Our Newsletter</NuxtLink>
         </div>
       </div>
       <img src="/images/hero-graphic-desktop.webp" />
@@ -26,8 +26,8 @@
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
     <p class="subheader2">Our misson is simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">
-      <NuxtLink :to="{ path: '/', hash: '#donation'} " id="donate-button2"><button class="donation-button">Donate Now</button></NuxtLink>
-      <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button2"><button class="newsletter-button">Our Newsletter</button></NuxtLink>
+      <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+Riverside+Secondary+School.+Providing+a+hands-on+learning+and+experiential+education&currency_code=AUD" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
+      <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button2" class="newsletter-button">Our Newsletter</NuxtLink>
     </div>
   </section>
 </template>
@@ -119,9 +119,12 @@
           width: 30rem;
           margin-top: 5.2rem;
 
-          button {
+          button, a {
             background-color: var(--text-color-main);
             border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: 2rem;
             height: 4rem;
             color: var(--background-color-secondary);
@@ -130,22 +133,28 @@
             font-weight: 600;
             letter-spacing: 0.06rem;
             text-transform: uppercase;
+
+            &:hover {
+              opacity: 0.8;
+            }
           }
 
           #donate-button {
-            .donation-button {
-              width: 13rem;
-              cursor: pointer;
+            width: 13rem;
+            cursor: pointer;
 
-              @media (max-width: 1000px) {
-                width: 11rem;
-              }
+            @media (max-width: 1000px) {
+              width: 11rem;
             }
           }
 
           .newsletter-button {
             cursor: pointer;
             width: 15rem;
+
+            @media (max-width: 1000px) {
+              width: 13rem;
+            }
           }
         }
 
@@ -156,14 +165,13 @@
             button {
               font-size: 1rem;
               height: 3.5rem;
+              width: 16rem;
+            }
 
-              &:first-child {
-                width: 10rem;
-              }
-
-              &:last-child {
-                width: 13rem;
-              }
+            a {
+              font-size: 1rem;
+              height: 3.5rem;
+              width: 10rem;
             }
           }
         }
@@ -264,21 +272,25 @@
   .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: center;
+    gap: 2rem;
     width: 100%;
 
-    @media (max-width: 768px) {
-      gap: 0;
+    @media (max-width: 400px) {
+      gap: 1rem;
     }
 
-    button {
+    button, a {
       color: var(--background-color-main);
       background-color: var(--text-color-main);
       font-family: 'Nunito', sans-serif;
       color: var(--background-color-secondary);
       border: none;
-      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 2rem;
       margin-top: 2rem;
       padding: 0.8rem;
       font-size: 1.1rem;
@@ -287,22 +299,20 @@
     }
 
     #donate-button2 {
-      width: 11rem;
-      .donation-button {
         cursor: pointer;
+        width: 9rem;
 
-        @media (max-width: 1000px) {
+        @media (max-width: 400px) {
           width: 8.5rem;
         }
-      }
     }
 
     .newsletter-button {
       cursor: pointer;
-      width: 11rem;
+      width: 10rem;
 
-      @media (max-width: 768px) {
-        width: 10rem;
+      @media (max-width: 400px) {
+        width: 9rem;
       }
     }
   }
