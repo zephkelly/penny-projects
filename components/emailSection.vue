@@ -84,7 +84,7 @@ onMounted(() => {
   }
 
   @media (max-width: 768px) {
-    height: 500px;
+    height: 520px;
   }
 
   .header {
@@ -95,6 +95,11 @@ onMounted(() => {
     font-size: 2.4rem;
     padding-bottom: 2rem;
     color: var(--text-color-main);
+    text-align: center;
+
+    @media (max-width: 786px) {
+      width: 90vw;
+    }
   }
 
   .socials {

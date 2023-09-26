@@ -196,7 +196,7 @@
 
     .icon {
       position: relative;
-      top: -3rem;
+      top: -2rem;
       width: clamp(15rem, 60vw, 25rem);
       height: clamp(10rem, 40vw, 16rem);
       overflow: hidden;
