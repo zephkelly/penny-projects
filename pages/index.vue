@@ -1,6 +1,6 @@
 <template>
   <Head>
-    <meta property="og:image" content="images/og-image.webp" />
+    <meta property="og:image" content="https://pennyprojects.org/images/og-image.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
