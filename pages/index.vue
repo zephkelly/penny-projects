@@ -1,4 +1,15 @@
 <template>
+  <Head>
+    <meta property="og:image" content="images/og-image.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Penny Projects" />
+    <meta property="og:title" content="Penny Projects" />
+    <meta property="og:description" content="Welcome to Penny Projects, a community of people dedicated to seeing a little go a long way." />
+    <meta property="og:url" content="https://pennyprojects.org" />
+  </Head>
   <Header/>
   <Hero/>
   <section class="mission" style="">
