@@ -608,6 +608,12 @@
         top: 16rem;
       }
 
+      @media (max-width: 500px) {
+        border-top-right-radius: 8rem;
+        border-top-left-radius: 8rem;
+
+      }
+
       .profile {
         position: relative;
         top: -12rem;
@@ -623,6 +629,10 @@
           top: -10rem;
           height: 60vw;
           width: 60vw;
+        }
+
+        @media (max-width: 500px) {
+          top: -8rem;
         }
 
         img {
@@ -831,7 +841,7 @@
           }
 
           @media (max-width: 500px) {
-            height: 9.7rem;
+            height: 10rem;
           }
         }
 
