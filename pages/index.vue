@@ -90,33 +90,33 @@
   <section class="join">
     <div class="container">
       <div class="header">
-        <img src="~/public/svg/icons/hearts.svg" alt="">
+        <img src="/svg/icons/hearts.svg" alt="">
         <h3>How you can join our family</h3>
       </div>
       <div class="content">
         <div class="item">
-          <!-- <img src="~/public/svg/icon/heart.png" alt=""> -->
-          <h4>Volunteer</h4>
-          <p>Join us in the mission field and be part of our inspiring Penny Projects family. Together, let's create a brighter future for those we serve.</p>
-          <button>Volunteer</button>
-        </div>
-        <div class="item">
-          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
+          <img src="/svg/love-icon.svg" alt="">
           <h4>Donate</h4>
           <p>Contribute a dollar or volunteer with us to build a compassionate community and achieve progress, one penny at a time.</p>
           <button>Donate</button>
         </div>
         <div class="item">
-          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
-          <h4>Collaborate</h4>
-          <p>We want to work with you on Penny Projects in your own community. Partner with us to empower others and create lasting impact together.</p>
-          <button>Collaborate</button>
-        </div>
-        <div class="item">
-          <!-- <img src="~/public/svg/icon/hand-heart.png" alt=""> -->
+          <img src="/svg/phone-icon.svg" alt="">
           <h4>Online Community</h4>
           <p>Connect with like-minded individuals, follow us, and be a part of the Penny Projects family. Embrace optimisim and take action for positive change.</p>
           <button>Join Us!</button>
+        </div>
+        <div class="item">
+          <img src="/svg/heart-icon.svg" alt="">
+          <h4>Volunteer</h4>
+          <p>Join us in the mission field and be part of our inspiring Penny Projects family. Together, let's create a brighter future for those we serve.</p>
+          <button>Volunteer</button>
+        </div>
+        <div class="item">
+          <img src="/svg/shake-icon.svg" alt="">
+          <h4>Collaborate</h4>
+          <p>We want to work with you on Penny Projects in your own community. Partner with us to empower others and create lasting impact together.</p>
+          <button>Collaborate</button>
         </div>
       </div>
     </div>
@@ -519,7 +519,7 @@
       justify-content: center;
       height: 3rem;
       width: 16rem;
-      background-color: #ffc670;
+      background-color: #fec46d;
       padding: 0.5rem;
       border-radius: 10rem;
       margin-top: 2.5rem;
@@ -727,6 +727,10 @@
     display: flex;
     justify-content: center;
 
+    @media (max-width: 768px) {
+      padding-top: 3rem;
+    }
+
     .container {
       margin-top: 9rem;
       margin-bottom: 6rem;
@@ -775,6 +779,14 @@
         justify-content: flex-start;
         align-items: center;
 
+        img {
+          width: 10rem;
+
+          @media (max-width: 768px) {
+            width: 6rem;
+          }
+        }
+
         h4 {
           font-family: 'Nunito', sans-serif;
           font-style: oblique 8deg;
@@ -784,7 +796,6 @@
           font-size: 1.5rem;
           line-height: 1.5rem;
           text-align: center;
-          margin-top: 1rem;
           margin-bottom: 1rem;
           color: var(--text-color-main);
           padding: 0rem 1rem 0rem 1rem;
@@ -795,8 +806,8 @@
 
           @media (max-width: 768px) {
             height: 2.5rem;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
           }
         }
 
@@ -825,13 +836,14 @@
         }
 
         button {
-          font-family: 'Poppins', sans-serif;
+          font-family: "Nunito", sans-serif;
+          font-weight: 600;
           font-size: 1rem;
           color: var(--background-color-secondary);
           margin-top: 1rem;
           background-color: var(--text-color-main);
           border: none;
-          height: 2rem;
+          height: 2.2rem;
           width: auto;
           padding: 0rem 3rem 0rem 3rem;
           border-radius: 1rem;
