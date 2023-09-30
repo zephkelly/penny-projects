@@ -818,20 +818,20 @@
           text-align: center;
           line-height: 1.2rem;
           height: 3.5rem;
-          padding-bottom: 2rem;
+          padding-bottom: 1rem;
 
           @media (max-width: 768px) {
-            height: 4rem;
+            height: 5rem;
             font-size: clamp(0.8rem, 15vw, 1rem);
             margin-bottom: 0.2rem;
           }
 
           @media (max-width: 600px) {
-            height: 6rem;
+            height: 7rem;
           }
 
           @media (max-width: 500px) {
-            height: 8rem;
+            height: 9.7rem;
           }
         }
 
