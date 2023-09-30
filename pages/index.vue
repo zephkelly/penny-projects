@@ -609,8 +609,8 @@
       }
 
       @media (max-width: 500px) {
-        border-top-right-radius: 8rem;
-        border-top-left-radius: 8rem;
+        border-top-right-radius: 10rem;
+        border-top-left-radius: 10rem;
 
       }
 
