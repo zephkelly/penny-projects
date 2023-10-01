@@ -1,4 +1,7 @@
 <template>
+  <head>
+    <meta property="og:image" content="https://pennyprojects.org/images/og-image.png" />
+  </head>
   <header ref="header">
     <div class="container">
       <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
