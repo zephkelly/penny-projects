@@ -578,11 +578,23 @@
     background-color: var(--background-color-secondary);
     overflow: hidden;
 
+    @media (max-width: 1300px) {
+      height: 1040px;
+    }
+
     @media (max-width: 1000px) {
-      height: 1200px;
+      height: 1080px;
     }
 
     @media (max-width: 768px) {
+      height: 1060px;
+    }
+
+    @media (max-width: 600px) {
+      height: 1020px;
+    }
+
+    @media (max-width: 500px) {
       height: 1050px;
     }
     
