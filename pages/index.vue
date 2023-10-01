@@ -1,6 +1,6 @@
 <template>
   <Head>
-    <meta property="og:image" content="https://pennyprojects.org/images/og-image.webp" />
+    <meta property="og:image" content="https://pennyprojects.org/images/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
@@ -61,7 +61,7 @@
         <h3>Together We Can</h3>
         <p>To realise these transformative projects, we depend on generous donors who share our commitment. <em>Your contributions provide necessary resources for successful  project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
         <!-- <DonationPicker/> -->
-        <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+Riverside+Secondary+School.+Providing+a+hands-on+learning+and+experiential+education&currency_code=AUD">
+        <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD">
           <h5>Donate with</h5>
           <img class="paypal" src="/images/paypal.webp"/>
         </a>

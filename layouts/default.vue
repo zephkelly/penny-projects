@@ -20,7 +20,7 @@
     <meta name="googlebot" content="index, follow" />
     <meta name="google" content="notranslate" />
     <meta name="google-site-verification" content="google-site-verification" />
-    <meta property="og:image" content="https://pennyprojects.org/images/og-image.webp" />
+    <meta property="og:image" content="https://pennyprojects.org/images/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
