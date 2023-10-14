@@ -1,15 +1,4 @@
 <template>
-  <Head>
-    <meta property="og:image" content="https://pennyprojects.org/images/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:site_name" content="Penny Projects" />
-    <meta property="og:title" content="Penny Projects" />
-    <meta property="og:description" content="Welcome to Penny Projects, a community of people dedicated to seeing a little go a long way." />
-    <meta property="og:url" content="https://pennyprojects.org" />
-  </Head>
   <Header/>
   <Hero/>
   <section class="mission" style="">
@@ -65,6 +54,32 @@
           <h5>Donate with</h5>
           <img class="paypal" src="/images/paypal.webp"/>
         </a>
+        <div class="divider">
+          <div class="box">
+
+          </div>
+          <p class="or">or</p>
+          <div class="box">
+
+          </div>
+        </div>
+        <div class="bank-transfer">
+          <h4 class="header">Bank Transfer</h4>
+          <div class="background">
+            <div class="item">
+              <h5 class="name">Name:</h5>
+              <p class="name">Joel Slade</p>
+            </div>
+            <div class="item">
+              <h5 class="bsb">BSB:</h5>
+              <p class="bsb">062 643</p>
+            </div>
+            <div class="item">
+              <h5 class="account">Account:</h5>
+              <p class="account">1007 5875</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -160,8 +175,8 @@
       align-items: center;
 
       @media (max-width: 768px) {
-        margin-top: 5rem;
-        margin-bottom: 5rem;
+        margin-top: 6rem;
+        margin-bottom: 6rem;
       }
 
       .group {
@@ -178,7 +193,7 @@
 
         .descriptor {
           display: flex;
-          font-size: 1.2rem;
+          font-size: 1rem;
           flex-direction: column;
           align-items: center;
           justify-content: center;
@@ -240,12 +255,12 @@
             padding: 0rem 1rem 0rem 1rem;
 
             @media (max-width: 1000px) {
-              font-size: 1.2rem;
+              font-size: 1.3rem;
             }
 
             @media (max-width: 768px) {
               height: auto;
-              margin-top: 0.5rem;
+              margin-top: -1rem;
               margin-bottom: 0.5rem;
             }
           }
@@ -264,7 +279,7 @@
             }
 
             @media (max-width: 1000px) {
-              font-size: 1.1rem;
+              font-size: 1rem;
             }
 
             @media (max-width: 768px) {
@@ -333,7 +348,7 @@
           }
           
           @media (max-width: 768px) {
-            padding-top: 30.5rem;
+            padding-top: 31.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
             padding-bottom: 5rem;
@@ -443,6 +458,7 @@
       .group {
         display: flex;
         flex-direction: column;
+        align-items: center;
         
         &:last-child {
           padding: 3rem;
@@ -452,18 +468,14 @@
           padding-bottom: 6rem;
 
           @media (max-width: 1000px) {
-            padding: 1rem;
             padding-left: 3rem;
             padding-right: 2rem;
-            padding-top: 6rem;
-            padding-bottom: 4rem;
           }
 
           @media (max-width: 768px) {
             padding-top: 30.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
-            padding-bottom: 4rem;
             width: 90vw;
             align-items: center;
           }
@@ -509,6 +521,38 @@
             text-align: center;
           }
         }
+
+      }
+      
+      .divider {
+        margin-top: 4.5rem;
+        margin-bottom: 4.5rem;
+        margin-left: -2rem;
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        justify-content: center;
+        align-items: center;
+
+        @media (max-width: 768px) {
+          margin-left: 0rem;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+        }
+        
+        p.or {
+          font-size: 1.1rem;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600;
+          margin: 0rem 1.6rem 0rem 1.6rem;
+        }
+
+        .box {
+          width: 100%;
+          height: 0.1rem;
+          background-color: var(--text-color-main);
+          border-radius: 20rem;
+        }
       }
     }
 
@@ -519,10 +563,18 @@
       justify-content: center;
       height: 3rem;
       width: 16rem;
-      background-color: #fec46d;
+      background-color: #fdbb59;
       padding: 0.5rem;
       border-radius: 10rem;
-      margin-top: 2.5rem;
+      margin-top: 6rem;
+      margin-left: -2rem;
+      overflow: hidden;
+      transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+
+      @media (max-width: 768px) {
+        margin-left: 0rem;
+        margin-top: 5rem;
+      }
 
       h5 {
         position: relative;
@@ -531,6 +583,7 @@
         font-size: 1.1rem;
         color: #222b63;
         margin-right: 0.7rem;
+        transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
       }
 
       img {
@@ -538,17 +591,77 @@
         top: -0.1rem;
         height: 6rem;
         width: auto;
+        pointer-events: none;
+        transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
       }
 
       &:hover {
-        background-color: #ffd08a;
+        background-color: #eaab4c;
 
         h5 {
-          opacity: 0.7;
+          opacity: 0.8;
         }
 
         img {
-          opacity: 0.8;
+          opacity: 0.9;
+        }
+      }
+    }
+
+    .bank-transfer {
+      margin-left: -2rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        margin-left: 0rem;
+      }
+
+      .header {
+        font-family: "Nunito", sans-serif;
+        font-weight: 600;
+        font-size: 1.3rem;
+        color: var(--text-color-main);
+      }
+
+      .background {
+        border-radius: 1rem;
+        padding: 1rem;
+        background-color: var(--text-color-main);
+        margin-top: 1.4rem;
+        width: 250px;
+        box-shadow: 0rem 0rem 1.8rem 0.2rem rgba(0, 0, 0, 0.25);
+      }
+
+      .item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+
+        &:first-of-type {
+          margin-top: 0rem;
+        }
+
+        h5 {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600;
+          font-size: 1.1rem;
+          color: var(--background-color-main);
+          margin-right: 1rem;
+          width: 6.5rem;
+          text-align: right;
+        }
+
+        p {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+          font-size: 1.1rem;
+          width: 50%;
+          color: var(--background-color-secondary);
         }
       }
     }
@@ -577,6 +690,7 @@
     width: 100vw;
     background-color: var(--background-color-secondary);
     overflow: hidden;
+    margin-bottom: 2rem;
 
     @media (max-width: 1300px) {
       height: 1040px;
@@ -621,8 +735,8 @@
       }
 
       @media (max-width: 500px) {
-        border-top-right-radius: 10rem;
-        border-top-left-radius: 10rem;
+        border-top-right-radius: 15rem;
+        border-top-left-radius: 15rem;
 
       }
 
@@ -761,8 +875,8 @@
       align-items: center;
 
       @media (max-width: 768px) {
-        margin-top: 8rem;
-        margin-bottom: 4rem;
+        margin-top: 7.5rem;
+        margin-bottom: 6rem;
       }
 
       .header {
@@ -920,7 +1034,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 580px;
+    height: 620px;
     background-color: var(--background-color-secondary);
 
     img {
@@ -930,7 +1044,7 @@
     }
 
     @media (max-width: 786px) {
-      height: 400px;
+      height: 500px;
 
       img {
         height: 340px;

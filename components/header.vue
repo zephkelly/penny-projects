@@ -50,7 +50,7 @@ onMounted(() => {
 
     if (scrollTop > logoStartTop - 10) {
       logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
-      logoHeader.value.style.height = `3.4rem`;
+      logoHeader.value.style.height = `3.1rem`;
       logoHeader.value.style.top = `-0px`;
       logoHeader.value.style.left = `-30px`;
 
@@ -88,7 +88,7 @@ onMounted(() => {
   }
 
   .container {
-    height: 3.2rem;
+    height: 3rem;
     justify-content: space-between;
     padding: 0rem 1.8rem 0rem 1.8rem;
   }
@@ -100,7 +100,7 @@ onMounted(() => {
   }
 
   .logo {
-    height: 3.5rem;
+    height: 3.2rem;
     left: -3.6rem;
     width: auto;
     position: relative;

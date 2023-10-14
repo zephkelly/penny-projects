@@ -66,7 +66,7 @@
 
         .header {
           font-family: 'Nunito', sans-serif;
-          font-size: 4rem;
+          font-size: 3.8rem;
           letter-spacing: 0.3rem;
           font-weight: 700;
           width: 34rem;
@@ -87,7 +87,6 @@
           font-weight: 400;
           width: 31rem;
           color: var(--text-color-main);
-          padding-top: 1.6rem;
 
           @media (max-width: 1000px) {
             font-size: 1.2rem;
@@ -96,6 +95,7 @@
 
         .subheader {
           font-weight: 600;
+          padding-top: 2.2rem;
 
           @media (max-width: 1000px) {
             max-width: 26rem;
@@ -106,6 +106,8 @@
         .subheader2 {
           font-style: oblique 8deg;
           width: 28rem;
+          font-size: 1.2rem;
+          padding-top: 1.2rem;
 
           @media (max-width: 1000px) {
             width: 24rem;
@@ -117,7 +119,7 @@
           flex-direction: row;
           justify-content: space-between;
           width: 30rem;
-          margin-top: 5.2rem;
+          margin-top: 5rem;
 
           button, a {
             background-color: var(--text-color-main);
@@ -126,16 +128,17 @@
             justify-content: center;
             align-items: center;
             border-radius: 2rem;
-            height: 4rem;
+            height: 3.4rem;
             color: var(--background-color-secondary);
             font-family: 'Nunito', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             letter-spacing: 0.06rem;
             text-transform: uppercase;
+            transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
 
             &:hover {
-              opacity: 0.8;
+              background-color: var(--text-color-main-dark);
             }
           }
 
@@ -144,7 +147,7 @@
             cursor: pointer;
 
             @media (max-width: 1000px) {
-              width: 11rem;
+              width: 10.5rem;
             }
           }
 
@@ -153,7 +156,7 @@
             width: 15rem;
 
             @media (max-width: 1000px) {
-              width: 13rem;
+              width: 13.5rem;
             }
           }
         }
@@ -180,7 +183,7 @@
   
     img {
       position: relative;
-      top: -5rem;
+      top: -7rem;
       width: clamp(34rem, 150%, 44rem);
       height: auto;
       right: 3rem;
@@ -196,7 +199,7 @@
     justify-content: flex-start;
     height: auto;
     padding-top: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 6rem;
 
     @media (max-width: 768px) {
       display: flex;
@@ -204,13 +207,18 @@
 
     .icon {
       position: relative;
-      top: -2rem;
+      top: -3rem;
       width: clamp(15rem, 60vw, 25rem);
       height: clamp(10rem, 40vw, 16rem);
       overflow: hidden;
 
       img {
         width: 100%;
+      }
+
+      @media (max-width: 500px)
+      {
+        top: -2rem;
       }
     }
 
@@ -263,10 +271,13 @@
     }
 
   .subheader {
-    margin-top: 4.5rem;
-    margin-bottom: 0.4rem;
-    text-decoration: underline; 
+    margin-top: 4rem;
+    margin-bottom: 1rem;
     font-weight: 600;
+  }
+
+  .subheader2 {
+    font-style: oblique 8deg;
   }
 
   .buttons {
@@ -277,7 +288,7 @@
     width: 100%;
 
     @media (max-width: 400px) {
-      gap: 1rem;
+      gap: 0.5rem;
     }
 
     button, a {
@@ -303,16 +314,16 @@
         width: 9rem;
 
         @media (max-width: 400px) {
-          width: 8.5rem;
+          width: 11rem;
         }
     }
 
     .newsletter-button {
       cursor: pointer;
-      width: 10rem;
+      width: 12rem;
 
       @media (max-width: 400px) {
-        width: 9rem;
+        width: 13rem;
       }
     }
   }
