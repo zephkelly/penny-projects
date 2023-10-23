@@ -68,7 +68,7 @@
           <div class="background">
             <div class="item">
               <h5 class="name">Name:</h5>
-              <p class="name">Joel Slade</p>
+              <p class="name">Penny Projects</p>
             </div>
             <div class="item">
               <h5 class="bsb">BSB:</h5>
@@ -76,7 +76,7 @@
             </div>
             <div class="item">
               <h5 class="account">Account:</h5>
-              <p class="account">1007 5875</p>
+              <p class="account">1013 0969</p>
             </div>
           </div>
         </div>
