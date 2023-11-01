@@ -1,6 +1,7 @@
 <template>
   <Header/>
   <Hero/>
+  <DonationPopout/>
   <section class="mission" style="">
     <div class="container">
       <h2>Our Mission</h2>
@@ -50,36 +51,9 @@
         <h3>Together We Can</h3>
         <p>To realise these transformative projects, we depend on generous donors who share our commitment. <em>Your contributions provide necessary resources for successful  project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
         <!-- <DonationPicker/> -->
-        <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD">
-          <h5>Donate with</h5>
-          <img class="paypal" src="/images/paypal.webp"/>
-        </a>
-        <div class="divider">
-          <div class="box">
-
-          </div>
-          <p class="or">or</p>
-          <div class="box">
-
-          </div>
-        </div>
-        <div class="bank-transfer">
-          <h4 class="header">Bank Transfer</h4>
-          <div class="background">
-            <div class="item">
-              <h5 class="name">Name:</h5>
-              <p class="name">Penny Projects</p>
-            </div>
-            <div class="item">
-              <h5 class="bsb">BSB:</h5>
-              <p class="bsb">062 643</p>
-            </div>
-            <div class="item">
-              <h5 class="account">Account:</h5>
-              <p class="account">1013 0969</p>
-            </div>
-          </div>
-        </div>
+        <button class="donation-button" @click="openDonationWindow()">
+          <h5>Make a donation</h5>
+        </button>
       </div>
     </div>
   </section>
@@ -151,6 +125,11 @@
 </template>
 
 <script lang="ts" setup>
+import { donationPopupOpen } from '@/composables/donationWindowStates';
+
+function openDonationWindow() {
+  donationPopupOpen().value = true;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -167,8 +146,8 @@
     background-color: #ffffff;
 
     .container {
-      margin-top: 6rem;
-      margin-bottom: 6rem;
+      margin-top: 8rem;
+      margin-bottom: 8rem;
       height: auto;
       display: flex;
       flex-direction: column;
@@ -461,6 +440,7 @@
         align-items: center;
         
         &:last-child {
+          align-items: flex-start;
           padding: 3rem;
           padding-left: 4rem;
           padding-right: 2rem;
@@ -523,37 +503,6 @@
         }
 
       }
-      
-      .divider {
-        margin-top: 4.5rem;
-        margin-bottom: 4.5rem;
-        margin-left: -2rem;
-        display: flex;
-        flex-direction: row;
-        width: 90%;
-        justify-content: center;
-        align-items: center;
-
-        @media (max-width: 768px) {
-          margin-left: 0rem;
-          margin-top: 4rem;
-          margin-bottom: 4rem;
-        }
-        
-        p.or {
-          font-size: 1.1rem;
-          font-family: 'Poppins', sans-serif;
-          font-weight: 600;
-          margin: 0rem 1.6rem 0rem 1.6rem;
-        }
-
-        .box {
-          width: 100%;
-          height: 0.1rem;
-          background-color: var(--text-color-main);
-          border-radius: 20rem;
-        }
-      }
     }
 
     .donation-button {
@@ -561,15 +510,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 3rem;
-      width: 16rem;
-      background-color: #fdbb59;
+      height: 4rem;
+      width: 18rem;
+      background-color: var(--text-color-main);
       padding: 0.5rem;
+      border: none;
       border-radius: 10rem;
-      margin-top: 6rem;
-      margin-left: -2rem;
+      margin-top: 5rem;
       overflow: hidden;
       transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+      cursor: pointer;
 
       @media (max-width: 768px) {
         margin-left: 0rem;
@@ -580,8 +530,10 @@
         position: relative;
         font-family: "Nunito", sans-serif;
         font-weight: 600;
-        font-size: 1.1rem;
-        color: #222b63;
+        font-size: 1.15rem;
+        letter-spacing: 0.05rem;;
+        text-transform: uppercase;
+        color: ghostwhite;
         margin-right: 0.7rem;
         transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
       }
@@ -596,73 +548,7 @@
       }
 
       &:hover {
-        background-color: #eaab4c;
-
-        h5 {
-          opacity: 0.8;
-        }
-
-        img {
-          opacity: 0.9;
-        }
-      }
-    }
-
-    .bank-transfer {
-      margin-left: -2rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      @media (max-width: 768px) {
-        margin-left: 0rem;
-      }
-
-      .header {
-        font-family: "Nunito", sans-serif;
-        font-weight: 600;
-        font-size: 1.3rem;
-        color: var(--text-color-main);
-      }
-
-      .background {
-        border-radius: 1rem;
-        padding: 1rem;
-        background-color: var(--text-color-main);
-        margin-top: 1.4rem;
-        width: 250px;
-        box-shadow: 0rem 0rem 1.8rem 0.2rem rgba(0, 0, 0, 0.25);
-      }
-
-      .item {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 1.5rem;
-
-        &:first-of-type {
-          margin-top: 0rem;
-        }
-
-        h5 {
-          font-family: 'Poppins', sans-serif;
-          font-weight: 600;
-          font-size: 1.1rem;
-          color: var(--background-color-main);
-          margin-right: 1rem;
-          width: 6.5rem;
-          text-align: right;
-        }
-
-        p {
-          font-family: 'Poppins', sans-serif;
-          font-weight: 500;
-          font-size: 1.1rem;
-          width: 50%;
-          color: var(--background-color-secondary);
-        }
+        background-color: var(--text-color-main-dark);
       }
     }
 

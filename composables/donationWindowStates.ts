@@ -1,0 +1,1 @@
+export const donationPopupOpen = () => useState<boolean>('donationPopupOpen', () => false);

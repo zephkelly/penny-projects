@@ -4,9 +4,10 @@
       <div class="group">
         <h1 class="header">Little Gifts, Big Impact</h1>
         <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
-        <p class="subheader2">Our misson is both simple yet profound: we aim to nuture and inspire high school students from Riverside Secondary Highschool to become the driving</p>
+        <p class="subheader2">Our misson is both simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
         <div class="buttons">
-          <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD" id="donate-button" target="_blank">Donate Now</a>
+          <!-- <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD" id="donate-button" target="_blank">Donate Now</a> -->
+          <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
           <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button" class="newsletter-button">Our Newsletter</NuxtLink>
         </div>
       </div>
@@ -26,13 +27,17 @@
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
     <p class="subheader2">Our misson is simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">
-      <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
+      <!-- <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD" id="donate-button2" target="_blank" class="donation-button">Donate Now</a> -->
+      <a @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
       <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="newsletter-button2" class="newsletter-button">Our Newsletter</NuxtLink>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
+function openDonationModal() {
+  donationPopupOpen().value = true;
+}
 </script>
 
 <style scoped lang="scss">
@@ -286,6 +291,10 @@
     justify-content: center;
     gap: 2rem;
     width: 100%;
+
+    @media (max-width: 768px) {
+      width: 110%;
+    }
 
     @media (max-width: 400px) {
       gap: 0.5rem;
