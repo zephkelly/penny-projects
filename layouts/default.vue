@@ -29,6 +29,14 @@
     <meta property="og:title" content="Penny Projects" />
     <meta property="og:description" content="Welcome to Penny Projects, a community of people dedicated to seeing a little go a long way." />
     <meta property="og:url" content="https://pennyprojects.org" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9X0EKVWFPG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9X0EKVWFPG');
+    </script>
   </Head>
   <main>
     <slot />
