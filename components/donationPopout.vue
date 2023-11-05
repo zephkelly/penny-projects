@@ -111,7 +111,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
 
     @media (max-width: 768px)
     {
-      top: 40px;
+      top: 5vw;
       width: 80vw;
     }
 
