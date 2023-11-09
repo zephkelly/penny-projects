@@ -25,7 +25,7 @@
       <img src="/images/hero-graphic-desktop.webp" />
     </div>
     <p class="subheader">Welcome to <em>Penny Projects</em>, a community of people dedicated to seeing a little go a long way.</p>
-    <p class="subheader2">Our misson is simple yet profound: nuture and inspire high school students from Riverside Secondary Highschool</p>
+    <p class="subheader2">Our misson is simple yet profound: nurture and inspire high school students from Riverside Secondary Highschool</p>
     <div class="buttons">
       <!-- <a href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD" id="donate-button2" target="_blank" class="donation-button">Donate Now</a> -->
       <a @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
