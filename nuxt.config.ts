@@ -1,8 +1,8 @@
 export default defineNuxtConfig({
   scss: ['~/assets/global.scss'],
   buildModules: ['@nuxtjs/sass'],
-  runtimeConfig: {
-    public: {
-    gtagId: 'G-9X0EKVWFPG',
-  }},
+  modules: ['nuxt-gtag'],
+  gtag: {
+    id: 'G-9X0EKVWFPG',
+  },
 });
