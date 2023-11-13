@@ -21,12 +21,6 @@
     <meta name="googlebot" content="index, follow" />
     <meta name="google" content="notranslate" />
     <meta name="google-site-verification" content="google-site-verification" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:site_name" content="Penny Projects" />
-    <meta property="og:title" content="Penny Projects" />
-    <meta property="og:description" content="Welcome to Penny Projects, a community of people dedicated to seeing a little go a long way." />
-    <meta property="og:url" content="https://pennyprojects.org" />
   </Head>
   <main>
     <slot />
