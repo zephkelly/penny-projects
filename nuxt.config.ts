@@ -27,7 +27,7 @@ export default defineNuxtConfig({
         {
           hid: 'og:description',
           property: 'og:description',
-          content: 'Penny Projects is a community of people that helps fund projects in developing countries.',
+          content: 'Penny Projects - a community of people that help fund projects in developing countries.',
         },
         {
           hid: 'og:type',

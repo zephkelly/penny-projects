@@ -9,18 +9,18 @@
         <div class="descriptor">
           <img src="/svg/mission-graphic-1.svg" alt="">
           <h3>Mentorship & Guidance</h3>
-          <p>Our misson is to <em>nurture and inspire highschool students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the driving force behind positive change in their community.</p>
+          <p>Our mission is to <em>nurture and inspire students from Riverside Secondary School, empowering them through mentorship and guidance</em> to become proactive problem solvers and the driving force behind positive change in their community.</p>
         </div>
         <div class="descriptor">
           <img src="/svg/mission-graphic-2.svg" alt="">
-          <h3>Equpping 
+          <h3>Equipping 
             with the Right Tools & Skills</h3>
           <p>To foster personal growth and societal impact, we actively cultivate a spirit of compassion and innovation within each young change-maker by thoughtfully and strategically <em>equipping our students with the right skills, knowledge, and resources.</em></p>
         </div>
         <div class="descriptor">
           <img src="/svg/mission-graphic-3.svg" alt="">
           <h3>Community Empowerment</h3>
-          <p>We firmly believe in the transormative power of each individual to make a lasting difference, and our heartfelt goal is to see <em>these students flourish and add value to their community, creating a brighter tomorrow for all.</em></p>
+          <p>We firmly believe in the transformative power of each individual to make a lasting difference, and our heartfelt goal is to see <em>these students flourish and add value to their community, creating a brighter tomorrow for all.</em></p>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@
         <div class="item">
           <img src="/svg/phone-icon.svg" alt="">
           <h4>Online Community</h4>
-          <p>Connect with like-minded individuals, follow us, and be a part of the Penny Projects family. Embrace optimisim and take action for positive change.</p>
+          <p>Connect with like-minded individuals, follow us, and be a part of the Penny Projects family. Embrace optimism and take action for positive change.</p>
           <button>Join Us!</button>
         </div>
         <div class="item">
