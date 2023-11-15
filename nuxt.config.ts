@@ -1,5 +1,7 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  scss: ['~/assets/global.scss'],
+  //@ts-ignore
+  scss: ['~/assets/main.scss'],
   buildModules: ['@nuxtjs/sass'],
   modules: ['nuxt-gtag'],
   gtag: {
@@ -37,4 +39,4 @@ export default defineNuxtConfig({
       ],
     }
   }
-});
+})
