@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  //@ts-expect-error
   scss: ['~/assets/global.scss'],
   buildModules: ['@nuxtjs/sass'],
   modules: ['nuxt-gtag'],

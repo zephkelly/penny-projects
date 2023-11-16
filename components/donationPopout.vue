@@ -31,11 +31,11 @@
                   </div>
                   <div class="item">
                     <h5 class="bsb">BSB:</h5>
-                    <p class="bsb">062 643</p>
+                    <p class="bsb">062<span></span>643</p>
                   </div>
                   <div class="item">
                     <h5 class="account">Account:</h5>
-                    <p class="account">1013 0969</p>
+                    <p class="account">1013<span></span>0969</p>
                   </div>
                 </div>
               </div>
@@ -308,6 +308,10 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
               font-weight: 500;
               font-size: 1.1rem;
               color: rgb(53, 53, 53);
+
+              span {
+                margin-right: 5px;
+              }
             }
           }
         }

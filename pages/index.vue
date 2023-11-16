@@ -13,8 +13,7 @@
         </div>
         <div class="descriptor">
           <img src="/svg/mission-graphic-2.svg" alt="">
-          <h3>Equipping 
-            with the Right Tools & Skills</h3>
+          <h3>Equipping with the Right Tools & Skills</h3>
           <p>To foster personal growth and societal impact, we actively cultivate a spirit of compassion and innovation within each young change-maker by thoughtfully and strategically <em>equipping our students with the right skills, knowledge, and resources.</em></p>
         </div>
         <div class="descriptor">
