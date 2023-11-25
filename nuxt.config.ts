@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   //@ts-ignore
-  scss: ['~/assets/main.scss'],
+  scss: ['~/assets/global.scss'],
   buildModules: ['@nuxtjs/sass'],
   modules: ['nuxt-gtag'],
   gtag: {
@@ -38,5 +38,14 @@ export default defineNuxtConfig({
         },
       ],
     }
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/scss/mixins.scss" as *;',
+        },
+      },
+    },
   }
 })
