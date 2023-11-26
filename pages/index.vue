@@ -1,5 +1,6 @@
 <template>
   <Header/>
+  <Hero/>
   <div class="containerr">
   </div>
   <DonationPopout/>
