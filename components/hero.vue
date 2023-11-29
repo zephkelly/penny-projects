@@ -171,7 +171,7 @@ function openDonationModal() {
             transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
 
             &:hover {
-              color: var(--background-color-main);
+              color: var(--background-color-secondary);
               background-color: var(--text-color-main);
               border: 0px;
             }
