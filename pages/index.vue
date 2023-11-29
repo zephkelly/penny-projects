@@ -1,9 +1,10 @@
 <template>
   <Header/>
   <Hero/>
+  <DonationPopout/>
+  <Mission/>
   <div class="containerr">
   </div>
-  <DonationPopout/>
 </template>
 
 <script lang="ts" setup>
@@ -17,10 +18,11 @@
     background-color: #f5f5f5;
   }
 
-  // section {
-  //   display: flex;
-  //   justify-content: center;
-  // }
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   // .container {
   //   padding: 0rem 2rem 0rem 2rem;

@@ -74,6 +74,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
     height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     background-color: rgba(94, 94, 92, 0.6);
     backdrop-filter: blur(10px);
     transition: backdrop-filter 0.56s cubic-bezier(0.25, 0.1, 0.25, 1);
