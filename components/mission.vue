@@ -4,19 +4,28 @@
       <h2>Our Mission</h2>
       <div class="group">
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-1.svg" alt="">
+          <img src="~/assets/svg/mission-graphic-1.svg" alt="" loading="lazy">
           <h3>Mentorship & Guidance</h3>
-          <p>Our mission is to empower students from Riverside Secondary Highschool through mentorship, and guidance so they can become the driving force behind positive change in their community.</p>
+          <p>
+            Our mission is to empower Riverside Secondary High School students for community leadership through mentorship and guidance
+            <!-- Our mission is to empower students from Riverside Secondary Highschool through mentorship, and guidance so they can become the driving force behind positive change in their community. -->
+          </p>
         </div>
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-2.svg" alt="">
-          <h3>Equipping with the Right Tools & Skills</h3>
-          <p>We work hard to equip our students with the right skills, knowledge, and resources to foster personal and societal growth. We aim to cultivate a spirit of compassion within each young change-maker.</p>
+          <img src="~/assets/svg/mission-graphic-2.svg" alt="" loading="lazy">
+          <h3>Equipping Tools & Skills</h3>
+          <p>
+            Preparing students for personal and societal growth while nurturing compassion in future change-makers.
+            <!-- We work hard to equip our students with the right skills, knowledge, and resources to foster personal and societal growth. We aim to cultivate a spirit of compassion within each young change-maker. -->
+          </p>
         </div>
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-3.svg" alt="">
+          <img src="~/assets/svg/mission-graphic-3.svg" alt="" loading="lazy">
           <h3>Community Empowerment</h3>
-          <p>We firmly believe in the transformative power of each individual to make a lasting difference. Our goal is to see these students flourish, and to create a brighter tomorrow for all.</p>
+          <p>
+            We believe in the power of individuals to create lasting change. We aim to help students flourish for a brighter tomorrow.
+            <!-- We firmly believe in the transformative power of each individual to make a lasting difference. Our goal is to see these students flourish, and to create a brighter tomorrow for all. -->
+          </p>
         </div>
       </div>
     </div>
@@ -25,7 +34,7 @@
 
 <style lang="scss">
 .mission {
-  padding: 0rem 0.8rem 0rem 0.8rem;
+  padding: 0rem 1rem 0rem 1rem;
   background-color: #ffffff;
 
   .container {
@@ -108,10 +117,10 @@
           font-style: oblique 1deg;
           font-weight: 600;
           letter-spacing: 0.06rem;
-          font-size: 1.3rem;
+          font-size: 1.2rem;
           line-height: 1.5rem;
           text-align: center;
-          height: 3.8rem;
+          height: 3rem;
           margin-top: 1rem;
           color: var(--text-color-main);
           padding: 0rem 1rem 0rem 1rem;
@@ -129,7 +138,7 @@
 
         p {
           font-family: 'Poppins', sans-serif;
-          font-size: 1.1rem;
+          font-size: 1rem;
           line-height: 1.5rem;
           text-align: center;
           color: var(--text-color-main);

@@ -4,12 +4,12 @@
       <div class="clickoff-detector" @click="closePopout()">
       </div>
         <div class="modal" >
-          <button class="close" @click="closePopout()"><svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
+          <button class="close" @click="closePopout()"><svg height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
           <h4>Donation method:</h4>
           <div class="container">
             <p class="message">Your generous contributions will go towards supporting the local community in Zambia.</p>
             <div class="donation-methods">
-              <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD">
+              <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+the+needs+of+the+local+community+Zambia&currency_code=AUD">
                 <h5>Donate with</h5>
                 <img class="paypal" src="~/assets/images/paypal.webp"/>
               </a>

@@ -4,7 +4,7 @@
       <div class="group">
         <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
         <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
-        <p class="subheader2">Our misson is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
+        <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
         <div class="buttons">
           <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
           <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
@@ -15,14 +15,14 @@
   </section>
   <section class="hero mobile">
     <div class="icon">
-      <img src="~/assets/images/hero-logo-mobile.png" />
+      <img src="~/assets/images/hero-logo-mobile.png"/>
     </div>
     <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
     <div class="img-container">
-      <img class="image" src="~/assets/images/hero-graphic-desktop.webp" />
+      <img class="image" src="~/assets/images/hero-graphic-desktop.webp"/>
     </div>
     <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
-    <p class="subheader2">Our misson is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
+    <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
     <div class="buttons">
       <a @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
       <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
@@ -37,10 +37,10 @@ function openDonationModal() {
 </script>
 
 <style scoped lang="scss">
-.hero {
+section.hero {
   display: flex;
   justify-content: center;
-  padding: 0rem 2rem 0rem 2rem;
+  padding: 0rem 1rem 0rem 1rem;
   background-color: #eae6d7;
   overscroll-behavior: none;
 
@@ -57,7 +57,7 @@ function openDonationModal() {
 
     .group {
       display: flex;
-      height: fill;
+      height: stretch;
 
       &:first-child {
         display: flex;
@@ -68,7 +68,7 @@ function openDonationModal() {
 
         .header {
           font-family: 'Nunito', sans-serif;
-          font-size: 3.8rem;
+          font-size: 3.6rem;
           letter-spacing: 0.3rem;
           font-weight: 700;
           width: 34rem;
@@ -125,7 +125,7 @@ function openDonationModal() {
           flex-direction: row;
           justify-content: space-between;
           width: auto;
-          margin-top: 6rem;
+          margin-top: 5.5rem;
 
           button, a {
             background-color: var(--text-color-main);
@@ -168,7 +168,7 @@ function openDonationModal() {
             background-color: var(--background-color-main);
             cursor: pointer;
             box-sizing: border-box;
-            transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
+            transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
 
             &:hover {
               color: var(--background-color-secondary);

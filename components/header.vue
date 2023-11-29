@@ -101,7 +101,7 @@ onMounted(() => {
   .container {
     height: 3rem;
     justify-content: space-between;
-    padding: 0rem 1.8rem 0rem 1.8rem;
+    padding: 0rem 1rem 0rem 1rem;
     width: 100%;
   }
 
