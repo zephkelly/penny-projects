@@ -7,7 +7,7 @@
           <img src="~/assets/svg/mission-graphic-1.svg" alt="" loading="lazy">
           <h3>Mentorship & Guidance</h3>
           <p>
-            Our mission is to empower Riverside Secondary High School students for community leadership through mentorship and guidance
+            Our mission is to empower Riverside Secondary High School students with mentorship and guidance, preparing them for community leadership
             <!-- Our mission is to empower students from Riverside Secondary Highschool through mentorship, and guidance so they can become the driving force behind positive change in their community. -->
           </p>
         </div>
@@ -15,7 +15,7 @@
           <img src="~/assets/svg/mission-graphic-2.svg" alt="" loading="lazy">
           <h3>Equipping Tools & Skills</h3>
           <p>
-            Preparing students for personal and societal growth while nurturing compassion in future change-makers.
+            We encourage personal and societal growth for students while nurturing compassion in future change-makers
             <!-- We work hard to equip our students with the right skills, knowledge, and resources to foster personal and societal growth. We aim to cultivate a spirit of compassion within each young change-maker. -->
           </p>
         </div>
@@ -23,7 +23,7 @@
           <img src="~/assets/svg/mission-graphic-3.svg" alt="" loading="lazy">
           <h3>Community Empowerment</h3>
           <p>
-            We believe in the power of individuals to create lasting change. We aim to help students flourish for a brighter tomorrow.
+            Using the power of individuals, we can create lasting change. By helping students flourish, we can give them a brighter tomorrow
             <!-- We firmly believe in the transformative power of each individual to make a lasting difference. Our goal is to see these students flourish, and to create a brighter tomorrow for all. -->
           </p>
         </div>
@@ -121,9 +121,10 @@
           line-height: 1.5rem;
           text-align: center;
           height: 3rem;
-          margin-top: 1rem;
+          margin-bottom: 1rem;
           color: var(--text-color-main);
           padding: 0rem 1rem 0rem 1rem;
+          max-width: 10rem;
 
           @media (max-width: 1000px) {
             font-size: 1.3rem;

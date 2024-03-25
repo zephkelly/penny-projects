@@ -3,13 +3,13 @@
     <div class="container">
       <div class="group">
         <h2>Our Approach</h2>
-        <p class="descriptor">With Riverside Secondary School's support, we offer hands-on, student-led learning, focusing on:</p>
+        <p class="descriptor">With the support of Riverside Secondary School, we offer hands-on student-led experiential learning. This approach focuses on:</p>
         <div class="approaches">
-          <p>1. Identifying community needs.</p>
-          <p>2. Crafting effective solutions.</p>
-          <p>3. Implementing projects.</p>
+          <p>1. Identifying the community's needs</p>
+          <p>2. Crafting effective solutions</p>
+          <p>3. Implementing projects</p>
         </div>
-        <p class="descriptor-2">This approach fosters student ownership, pride, all while customizing projects to meet community needs.</p>
+        <p class="descriptor-2">This approach fosters student pride and ownership, all while ensuring the projects meet specifc community needs</p>
       </div>
       <div class="group">
       </div>
@@ -45,6 +45,9 @@
       }
 
       .group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: 1rem;
         max-height: 100%;
         // padding-top: 8rem;
@@ -70,7 +73,6 @@
             padding-top: 31.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
-            padding-bottom: 5rem;
             width: 90vw;
 
             p {
@@ -108,11 +110,10 @@
         &:last-child {
           padding: 0rem;
           padding-bottom: 1rem;
-          position: relative;
           right: 0;
 
           @media (max-width: 768px) {
-            display: none;
+            
           }
         }
 
