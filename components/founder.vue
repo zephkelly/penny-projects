@@ -2,7 +2,7 @@
     <section class="founder">
     <div class="round-container">
       <div class="profile">
-        <img src="~/assets/images/joel-headshot.jpg">
+        <img src="~/assets/images/joel-headshot.webp">
       </div>
       <img class="hearts" src="~/assets/svg/hearts.svg">
       <h3 class="header">Meet our Founder</h3>
