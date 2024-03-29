@@ -2,27 +2,27 @@
     <section class="join">
     <div class="container">
       <div class="header">
-        <img src="~/assets/svg/hearts.svg" alt="">
+        <img src="~/assets/svg/hearts.svg" alt="Hearts icon">
         <h3>How you can join our family</h3>
       </div>
       <div class="content">
         <div class="item">
-          <img src="~/assets/svg/love-icon.svg" alt="">
+          <img src="~/assets/svg/love-icon.svg" alt="Hands holding a heart icon">
           <h4>Donate</h4>
           <p>Contribute a dollar or volunteer with us to build a compassionate community and achieve progress, one penny at a time.</p>
         </div>
         <div class="item">
-          <img src="~/assets/svg/phone-icon.svg" alt="">
+          <img src="~/assets/svg/phone-icon.svg" alt="Communication icon">
           <h4>Community</h4>
           <p>Connect with like-minded individuals, follow us, and be a part of the Penny Projects family. Embrace optimism and take action for positive change.</p>
         </div>
         <div class="item">
-          <img src="~/assets/svg/heart-icon.svg" alt="">
+          <img src="~/assets/svg/heart-icon.svg" alt="Heart icon">
           <h4>Volunteer</h4>
           <p>Join us in the mission field and be part of our inspiring Penny Projects family. Together, let's create a brighter future for those we serve.</p>
         </div>
         <div class="item">
-          <img src="~/assets/svg/shake-icon.svg" alt="">
+          <img src="~/assets/svg/shake-icon.svg" alt="Handshake icon">
           <h4>Collaborate</h4>
           <p>We want to work with you on Penny Projects in your own community. Partner with us to empower others and create lasting impact together.</p>
         </div>

@@ -11,11 +11,11 @@
             <div class="donation-methods">
               <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+the+needs+of+the+local+community+Zambia&currency_code=AUD">
                 <h5>Donate with</h5>
-                <img class="paypal" src="~/assets/images/paypal.webp"/>
+                <img class="paypal" src="~/assets/images/paypal.webp" alt="PayPal logo"/>
               </a>
               <a class="donation-button wise" target="_blank" href="https://wise.com/pay/me/joelphillips">
                 <h5>Donate with</h5>
-                <img class="wise" src="~/assets/svg/icon_wise.svg"/>
+                <img class="wise" src="~/assets/svg/icon_wise.svg" alt="Wise logo"/>
               </a>
               <div class="divider">
                 <div class="box"></div>

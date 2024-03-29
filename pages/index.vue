@@ -9,11 +9,11 @@
   <Founder/>
   <Join/>
   <section class="banner">
-    <img src="~/assets/images/school-banner.webp" alt="">
+    <img src="~/assets/images/school-banner.webp" alt="Aerial image Riverside Secondary Highschool, Zambia">
   </section>
   <Email/>
   <section class="banner2">
-    <img src="~/assets/images/logo-round.png" alt="">
+    <img src="~/assets/images/logo-pennyprojects-round.webp" alt="Penny-Projects round logo banner">
   </section>
   <footer class="footer">
     <p class="email">thepennyprojects@gmail.com</p>

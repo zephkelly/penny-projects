@@ -10,16 +10,16 @@
           <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
         </div>
       </div>
-      <img src="~/assets/images/hero-graphic-desktop.webp" />
+      <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth" />
     </div>
   </section>
   <section class="hero mobile">
     <div class="icon">
-      <img src="~/assets/images/hero-logo-mobile.png"/>
+      <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
     </div>
     <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
-    <div class="img-container">
-      <img class="image" src="~/assets/images/hero-graphic-desktop.webp"/>
+    <div class="img-container"> 
+      <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
     </div>
     <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
     <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>

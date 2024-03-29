@@ -34,7 +34,7 @@
       <a href="https://www.facebook.com/profile.php?id=100063661478968&mibextid=LQQJ4d" target="_blank"><img src="~/assets/svg/icon_facebook.svg"></a>
       <a href="https://www.youtube.com/@PennyProjectsrs" target="_blank"><img src="~/assets/svg/icon_youtube.svg"></a>
     </div>
-    <img class="background" src="~/assets/svg/penny-icons-bg.svg">
+    <img class="background" src="~/assets/svg/penny-icons-bg.svg" alt="Icon background">
   </section>
 </template>
 

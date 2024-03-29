@@ -4,7 +4,7 @@
       <h2>Our Mission</h2>
       <div class="group">
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-1.svg" alt="" loading="lazy">
+          <img src="~/assets/svg/mission-graphic-1.svg" alt="Icon of people sitting down, engaged in a discussion" loading="lazy">
           <h3>Mentorship & Guidance</h3>
           <p>
             Our mission is to empower Riverside Secondary High School students with mentorship and guidance, preparing them for community leadership
@@ -12,7 +12,7 @@
           </p>
         </div>
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-2.svg" alt="" loading="lazy">
+          <img src="~/assets/svg/mission-graphic-2.svg" alt="Icon of hands being raised" loading="lazy">
           <h3>Equipping Tools & Skills</h3>
           <p>
             We encourage personal and societal growth for students while nurturing compassion in future change-makers
@@ -20,7 +20,7 @@
           </p>
         </div>
         <div class="descriptor">
-          <img src="~/assets/svg/mission-graphic-3.svg" alt="" loading="lazy">
+          <img src="~/assets/svg/mission-graphic-3.svg" alt="Icon of a bucket filled with tools" loading="lazy">
           <h3>Community Empowerment</h3>
           <p>
             Using the power of individuals, we can create lasting change. By helping students flourish, we can give them a brighter tomorrow
