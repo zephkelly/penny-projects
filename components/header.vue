@@ -1,11 +1,8 @@
 <template>
-  <head>
-    <meta property="og:image" content="https://pennyprojects.org/images/og-image.png" />
-  </head>
   <header ref="header">
     <div class="container">
       <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
-        <img class="logo" ref="logoHeader" src="/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
+        <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
         <Transition name="fade">
@@ -13,14 +10,14 @@
             <h5>Donate</h5>
           </button>
         </Transition>
-        <img class="menu" src="/svg/icons/menu-burger.svg" style="display: none;" />
+        <!-- <img class="menu" src="~/assets/svg/icons/menu-burger.svg" style="display: none;" /> -->
       </section>
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
-import { donationPopupOpen } from '@/composables/donationWindowStates';
+import { donationPopupOpen } from '@/composables/donationPopupStates';
 
 const signedIn = computed(() => {
   return false;
@@ -104,7 +101,8 @@ onMounted(() => {
   .container {
     height: 3rem;
     justify-content: space-between;
-    padding: 0rem 1.8rem 0rem 1.8rem;
+    padding: 0rem 1rem 0rem 1rem;
+    width: 100%;
   }
 
   .logo-link {
@@ -177,4 +175,3 @@ onMounted(() => {
     opacity: 1;
   }
 </style>
-

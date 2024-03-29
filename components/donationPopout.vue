@@ -1,26 +1,22 @@
 <template>
   <Transition name="fade">
-    <section ref="section" v-if="modalEnabled" class="donation-popout">
-      <main @click="closePopout()">
-      </main>
+    <section ref="section" v-show="modalEnabled" class="donation-popout">
+      <div class="clickoff-detector" @click="closePopout()">
+      </div>
         <div class="modal" >
-          <button class="close" @click="closePopout()"><svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
+          <button class="close" @click="closePopout()"><svg height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
           <h4>Donation method:</h4>
           <div class="container">
             <p class="message">Your generous contributions will go towards supporting the local community in Zambia.</p>
             <div class="donation-methods">
-              <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+needs+in+the+local+community+in+Zambia&currency_code=AUD">
+              <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+the+needs+of+the+local+community+Zambia&currency_code=AUD">
                 <h5>Donate with</h5>
-                <img class="paypal" src="/images/paypal.webp"/>
+                <img class="paypal" src="~/assets/images/paypal.webp"/>
               </a>
               <div class="divider">
-                <div class="box">
-
-                </div>
+                <div class="box"></div>
                 <p class="or">or</p>
-                <div class="box">
-
-                </div>
+                <div class="box"></div>
               </div>
               <div class="bank-transfer">
                 <h4 class="header">Bank Transfer</h4>
@@ -48,12 +44,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { donationPopupOpen } from '@/composables/donationWindowStates';
-import { Console } from 'console';
+import { donationPopupOpen } from '@/composables/donationPopupStates';
 
 const section: Ref = ref(null);
 const modalEnabled: Ref = ref(false);
-const innerModalEnabled: Ref = ref(false);
 
 function closePopout() {
   donationPopupOpen().value = false;
@@ -74,50 +68,50 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
 
 <style lang="scss" scoped>
   section {
-    display: none;
     top: 0;
     position: fixed;
     width: 100%;
     height: 100vh;
-    // min-height: 700px;
-    z-index: 300;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     background-color: rgba(94, 94, 92, 0.6);
-    //add blur
     backdrop-filter: blur(10px);
     transition: backdrop-filter 0.56s cubic-bezier(0.25, 0.1, 0.25, 1);
     overflow-y: scroll;
+    z-index: 300;
+
+    .clickoff-detector {
+      top: 0;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      z-index: 9;
+    }
   }
 
-  main {
-    position: fixed;
-    top: 0;
-    z-index: 400;
-    width: 100%;
-    height: 100%;
-    min-height: 800px;
-    cursor: pointer;
-  }
 
   .modal {
-    position: relative;
     top: 12vh;
+    position: relative;
     width: 440px;
     height: 650px;
-    border-radius: 15px;
-    background-color: var(--background-color-main);
-    z-index: 500;
     padding: 1.5rem;
     padding-top: 2rem;
+    margin-bottom: 12vh;
+    border-radius: 15px;
+    background-color: var(--background-color-main);
+    z-index: 10;
 
-    @media (max-width: 768px)
-    {
+    @media (max-width: 768px) {
       top: 5vw;
       width: 80vw;
     }
 
     button.close {
-      position: absolute;
       top: 8px;
+      position: absolute;
       right: 0;
       margin: 1rem;
       border-radius: 5px;
@@ -192,8 +186,8 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
           }
   
           img {
-            position: relative;
             top: -0.1rem;
+            position: relative;
             height: 6rem;
             width: auto;
             pointer-events: none;
@@ -260,7 +254,6 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
             height: 200px;
             max-height: 200px;
             background-color: var(--background-color-main-dark);
-            // box-shadow: 0rem 0rem 1.8rem 0.2rem rgba(0, 0, 0, 0.25);
             display: flex;
             flex-direction: column;
             justify-content: space-around;
@@ -276,7 +269,6 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
             display: flex;
             flex-direction: row;
             align-items: center;
-            // justify-content: center;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
 
@@ -331,4 +323,3 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
     opacity: 1;
   }
 </style>
-
