@@ -34,7 +34,7 @@
     }
 
     @media (max-width: 600px) {
-      height: 900px;
+      height: 910px;
     }
     
     .round-container {

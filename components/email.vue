@@ -70,7 +70,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .email {
-  height: 600px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,12 +79,8 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
 
-  @media (max-width: 1000px) {
-    height: 500px;
-  }
-
   @media (max-width: 768px) {
-    height: 650px;
+    height: 680px;
   }
 
   .header {

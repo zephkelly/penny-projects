@@ -54,7 +54,7 @@ section.hero {
     display: grid;
     height: 420px;
     grid-template-columns: 1fr 1fr;
-
+ 
     .group {
       display: flex;
       height: stretch;
@@ -316,6 +316,7 @@ section.hero {
 
     @media (max-width: 400px) {
       gap: 1rem;
+      margin-bottom: 5rem;
     }
 
     button, a {

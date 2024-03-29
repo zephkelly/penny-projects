@@ -73,6 +73,7 @@
             padding-top: 31.5rem;
             padding-left: 0rem;
             padding-right: 0rem;
+            padding-bottom: 7rem;
             width: 90vw;
 
             p {
@@ -97,11 +98,11 @@
             font-weight: 600;
             word-spacing: 0.1rem;
             line-height: 1.5rem;
+            width: 97%;
           }
 
           .approaches {
             p {
-              padding-left: 1.2rem;
               margin-bottom: 1rem;
             }
           }

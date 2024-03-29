@@ -4,7 +4,7 @@
   </section>
   <section class="instagram-feed" v-else>
     <div class="container">
-      <h2 class="header">Follow our work on Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
+      <h2 class="header">Follow our <span class="hide">work on</span> Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
       <div class="feed-container">
         <a class="post-container" target="_blank" :href="post.permalink" :style="imageStyle" v-for="post in posts">
           <img class="post" :src="post.thumbnailUrl" v-if="post.thumbnailUrl != null" :style="imageStyle" loading="lazy"/>
@@ -44,9 +44,15 @@ console.log(posts.value);
 section.instagram-feed {
   height: 380px;
   margin-top: 2rem;
-  margin-bottom: 11rem;
+  margin-bottom: 7rem;
   padding: 0rem 1rem 0rem 1rem;
   background-color: var(--background-color-main);
+
+    @media (max-width: 768px) {
+        height: 480px;
+        padding: 0rem;
+        margin-bottom: 4rem;
+    }
 
   .container {
     max-width: 1000px;
@@ -57,6 +63,17 @@ section.instagram-feed {
     .feed-container {
       height: 100%;
       justify-content: space-between;
+
+      @media (max-width: 768px) {
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
+        overflow: hidden;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
+      }
     }
     
     .post-container {
@@ -67,8 +84,24 @@ section.instagram-feed {
       overflow: hidden;
       cursor: pointer;
 
+      @media (max-width: 768px) {
+        min-width: calc(100% - 8rem);
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+
       &:first-child {
         margin-left: 0;
+
+        @media (max-width: 768px) {
+            margin-left: 1.5rem;
+        }
+      }
+
+      &:nth-child(3) {
+        @media (max-width: 768px) {
+            margin-right: 1.5rem;
+        }
       }
     
       &:nth-child(n + 4) {
@@ -92,6 +125,10 @@ section.instagram-feed {
         position: relative;
         object-fit: cover;
         transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+        @media (max-width: 768px) {
+          width: 100%;
+        }
         
         &:hover {
           opacity: 0.95;
@@ -172,12 +209,37 @@ section.instagram-feed {
     font-weight: 500;
     color: var(--text-color-main);
     margin-bottom: 1rem;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+
+    .hide {
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+    }
+
+    @media (max-width: 768px) {
+        width: calc(100% - 1.55rem);
+        padding-left: 1.5rem;
+        margin-bottom: 2rem;
+
+        .hide {
+            display: none;
+        }
+    }
     
     a {
       margin-left: 0.5rem;
       color: var(--text-color-main);
       text-decoration: none;
       transition: color 0.2s ease-in-out;
+
+      @media (max-width: 768px) {
+        color: var(--text-color-tertiary);
+        height: 1.25rem;
+        padding-right: 1.5rem;
+        font-size: 1.3rem;
+      }
       
       &:hover {
         color: var(--text-color-secondary);

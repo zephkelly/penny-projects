@@ -39,18 +39,19 @@
     justify-content: center;
 
     @media (max-width: 768px) {
-      padding-top: 3rem;
+      padding-top: 4rem;
     }
 
     .container {
-      margin-top: 9rem;
+      margin-top: 10rem;
       margin-bottom: 8rem;
       height: auto;
       flex-direction: column;
       align-items: center;
 
       @media (max-width: 768px) {
-        margin-top: 7.5rem;
+        margin-top: 7rem;
+        margin-bottom: 6rem;
       }
 
       .header {
@@ -66,6 +67,11 @@
           top: 10rem;
           height: 26rem;
           width: auto;
+
+          @media (max-width: 768px) {
+            top: 8rem;
+            height: 20rem;
+          }
         }
       }
       .content {
