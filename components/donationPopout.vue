@@ -13,6 +13,10 @@
                 <h5>Donate with</h5>
                 <img class="paypal" src="~/assets/images/paypal.webp"/>
               </a>
+              <a class="donation-button wise" target="_blank" href="https://wise.com/pay/me/joelphillips">
+                <h5>Donate with</h5>
+                <img class="wise" src="~/assets/svg/icon_wise.svg"/>
+              </a>
               <div class="divider">
                 <div class="box"></div>
                 <p class="or">or</p>
@@ -168,12 +172,33 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
           align-items: center;
           justify-content: center;
           height: 3rem;
-          width: 16rem;
+          width: 17rem;
           background-color: #fdbb59;
           padding: 0.5rem;
           border-radius: 10rem;
           overflow: hidden;
           transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            
+          &.wise {
+            background-color: #8ee456;
+            margin-bottom: 1rem;
+
+            &:hover {
+                background-color: #72bd41;
+
+                h5 {
+                    opacity: 0.8;
+                }
+
+                img {
+                    opacity: 0.8;
+                }
+            }
+
+            h5 {
+                color: black;
+            }
+          }
   
           h5 {
             position: relative;
@@ -181,7 +206,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
             font-weight: 600;
             font-size: 1.1rem;
             color: #222b63;
-            margin-right: 0.7rem;
+            margin-right: 1rem;
             transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
           }
   
