@@ -7,7 +7,7 @@
         <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
         <div class="buttons">
           <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
-          <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
+          <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
         </div>
       </div>
       <img src="~/assets/images/hero-graphic-desktop.webp" />
@@ -25,7 +25,7 @@
     <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
     <div class="buttons">
       <a @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
-      <NuxtLink :to="{ path: '/', hash: '#newsletter'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
+      <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
     </div>
   </section>
 </template>
