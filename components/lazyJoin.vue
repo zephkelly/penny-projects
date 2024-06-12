@@ -39,7 +39,7 @@
     justify-content: center;
 
     @media (max-width: 768px) {
-      padding-top: 4rem;
+      padding-top: 2.2rem;
     }
 
     .container {
@@ -50,8 +50,8 @@
       align-items: center;
 
       @media (max-width: 768px) {
-        margin-top: 7rem;
-        margin-bottom: 6rem;
+        margin-top: 6rem;
+        margin-bottom: 5.8rem;
       }
 
       .header {

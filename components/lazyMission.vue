@@ -173,6 +173,11 @@
     color: var(--text-color-main);
     text-transform: uppercase;
     margin-bottom: 3rem;
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
   }
 }
 </style>

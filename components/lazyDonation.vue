@@ -2,8 +2,7 @@
     <section class="donation" id="donation">
         <img src="~/assets/images/donations-1.webp" alt="A group of student gathered in a circle celebrating, lifting their arms to the sky." loading="lazy">
         <div class="container">
-            <div class="group">
-            </div>
+            <div class="group empty-group"></div>
             <div class="group">
             <h3>Together We Can</h3>
             <p>To realise these transformative projects, we depend on generous donors who share our commitment.</p>
@@ -61,7 +60,7 @@ function openDonationWindow() {
           }
 
           @media (max-width: 768px) {
-            padding-top: 31.5rem;
+            padding-top: 31rem;
             padding-left: 0rem;
             padding-right: 0rem;
             padding-bottom: 7rem;

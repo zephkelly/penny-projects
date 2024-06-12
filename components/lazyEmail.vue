@@ -80,7 +80,7 @@ onMounted(() => {
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: 680px;
+    height: 640px;
   }
 
   .header {

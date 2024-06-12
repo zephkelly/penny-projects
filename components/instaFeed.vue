@@ -26,7 +26,7 @@
                 <h2 class="header">Follow our <span class="hide">work on</span> Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
                 <div class="feed-container">
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C5UXQcBhdOR/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed1.webp"  loading="lazy"/>
+                        <img class="post" src="~/assets/images/instaFeed1.webp"/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Meet Austry, his ability to remain positive in the midst of hardship is inspiring.</p>
                         </div>
@@ -35,7 +35,7 @@
                         <div class="black-background"></div>
                     </a>
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C4UjO32Lzce/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed2.webp"  loading="lazy"/>
+                        <img class="post" src="~/assets/images/instaFeed2.webp"/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Meet Peggy, as a mother of 6, she works hard to provide for her family. This means spending countless hours selling charcoal by the road side.</p>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="black-background"></div>
                     </a>
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C4KJ7MPLG3W/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed3.webp"  loading="lazy"/>
+                        <img class="post" src="~/assets/images/instaFeed3.webp"/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Daniel is relying on this bike to make the 3km journey to school. Without it, his disability will see him unable to access education. For people like Daniel little gifts are having a big impact.</p>
                         </div>
@@ -103,6 +103,11 @@ section.instagram-feed {
     justify-content: center;
     background-color: var(--background-color-main);
     overscroll-behavior: none;
+    padding: 0rem 1rem 0rem 1rem;
+
+    @media (max-width: 768px) {
+            padding: 0rem;
+        }
 
     .api-active {
         width: 100%;
@@ -125,7 +130,6 @@ section.instagram-feed {
         height: 380px;
         margin-top: 2rem;
         margin-bottom: 7rem;
-        padding: 0rem 1rem 0rem 1rem;
         display: flex;
         justify-content: center;
 
@@ -176,14 +180,14 @@ section.instagram-feed {
       }
 
       @media (max-width: 560px) {
-        min-width: calc(100% - 4rem);
+        min-width: calc(100% - 6rem);
       }
 
       &:first-child {
         margin-left: 0;
 
         @media (max-width: 768px) {
-            margin-left: 1rem;
+            margin-left: 1.5rem;
         }
       }
 
@@ -310,8 +314,9 @@ section.instagram-feed {
 
     @media (max-width: 768px) {
         // width: calc(100% - 1.55rem);
-        padding-left: 1rem;
-        margin-bottom: 2rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        margin-bottom: 1.5rem;
         justify-content: flex-start;
 
         .hide {
@@ -328,7 +333,7 @@ section.instagram-feed {
       @media (max-width: 768px) {
         color: var(--text-color-tertiary);
         height: 1.25rem;
-        padding-right: 1.5rem;
+        padding-right: 2.8rem;
         font-size: 1.3rem;
       }
       

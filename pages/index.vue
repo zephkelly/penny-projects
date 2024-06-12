@@ -50,7 +50,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 620px;
+    height: 540px;
     background-color: var(--background-color-secondary);
 
     img {

@@ -298,7 +298,7 @@ section.hero {
     font-size: 1.3rem;
     font-weight: 600;
 
-    max-width: 26rem;
+    // max-width: rem;
   }
 
   .subheader2 {
