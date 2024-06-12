@@ -32,5 +32,5 @@
 </style>
 
 <script>
-import '~/assets/scss/global.scss';
+// import '~/assets/scss/global.scss';
 </script>

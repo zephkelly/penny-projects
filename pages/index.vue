@@ -2,18 +2,18 @@
   <Header/>
   <Hero/>
   <InstaFeed/>
-  <Mission/>
-  <Approach/>
-  <DonationPopout/>
-  <Donation/>
-  <Founder/>
-  <Join/>
+  <lazyMission/>
+  <lazyApproach/>
+  <lazyDonationPopout/>
+  <lazyDonation/>
+  <lazyFounder/>
+  <lazyJoin/>
   <section class="banner">
-    <img src="~/assets/images/school-banner.webp" alt="Aerial image Riverside Secondary Highschool, Zambia">
+    <img src="~/assets/images/school-banner.webp" alt="Aerial image Riverside Secondary Highschool, Zambia" loading="lazy">
   </section>
-  <Email/>
+  <lazyEmail/>
   <section class="banner2">
-    <img src="~/assets/images/logo-pennyprojects-round.webp" alt="Penny-Projects round logo banner">
+    <img src="~/assets/images/logo-pennyprojects-round.webp" alt="Penny-Projects round logo banner" loading="lazy">
   </section>
   <footer class="footer">
     <p class="email">thepennyprojects@gmail.com</p>
