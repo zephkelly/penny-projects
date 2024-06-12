@@ -26,7 +26,7 @@
                 <h2 class="header">Follow our <span class="hide">work on</span> Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
                 <div class="feed-container">
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C5UXQcBhdOR/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed1.webp"/>
+                        <img class="post" src="~/assets/images/instaFeed1.webp" loading="lazy" alt="Image of Austry, a disabled man from Zambia, as he poses for the camera amongst his home."/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Meet Austry, his ability to remain positive in the midst of hardship is inspiring.</p>
                         </div>
@@ -35,7 +35,7 @@
                         <div class="black-background"></div>
                     </a>
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C4UjO32Lzce/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed2.webp"/>
+                        <img class="post" src="~/assets/images/instaFeed2.webp" loading="lazy" alt="Image of Peggy and her two children, as they pose for the camera in front of their home."/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Meet Peggy, as a mother of 6, she works hard to provide for her family. This means spending countless hours selling charcoal by the road side.</p>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="black-background"></div>
                     </a>
                     <a class="post-container" target="_blank" href="https://www.instagram.com/reel/C4KJ7MPLG3W/" :style="imageStyle">
-                        <img class="post" src="~/assets/images/instaFeed3.webp"/>
+                        <img class="post" src="~/assets/images/instaFeed3.webp" loading="lazy" alt="Daniel is pictured riding his bike down a small dirt path snaking between thick green grass."/>
                         <div class="caption-background">
                             <p class="caption text-ellipsis"><span class="account">pennyprojectsrs</span>Daniel is relying on this bike to make the 3km journey to school. Without it, his disability will see him unable to access education. For people like Daniel little gifts are having a big impact.</p>
                         </div>

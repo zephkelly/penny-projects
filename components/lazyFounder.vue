@@ -4,7 +4,7 @@
       <div class="profile">
         <img src="~/assets/images/joel-headshot.webp" alt="Headshot of penny-projects founder, Joel Slade." loading="lazy">
       </div>
-      <img class="hearts" src="~/assets/svg/hearts.svg">
+      <img class="hearts" src="~/assets/svg/hearts.svg" alt="A collection of three small heart icons">
       <h3 class="header">Meet our Founder</h3>
       <h4 class="subheader">Joel Slade</h4>
       <p class="text">
@@ -16,7 +16,7 @@
         catalysts for positive change.</em>
       </p>
     </div>
-    <img class="background" src="~/assets/svg/penny-icons-bg.svg" alt="Heart icons" loading="lazy">
+    <img class="background" src="~/assets/svg/penny-icons-bg.svg" alt="Heart icons." loading="lazy">
   </section>
 </template>
 

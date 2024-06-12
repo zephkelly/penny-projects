@@ -10,7 +10,7 @@
           <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
         </div>
       </div>
-      <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth" />
+      <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
     </div>
   </section>
   <section class="hero mobile">
@@ -231,8 +231,8 @@ section.hero {
 
     .icon {
       position: relative;
-      top: -1.6rem;
-      width: clamp(16rem, 60vw, 25rem);
+      top: -1.4rem;
+      width: clamp(13.5rem, 48vw, 19rem);
       height: clamp(10.2rem, 40vw, 16rem);
       overflow: hidden;
 

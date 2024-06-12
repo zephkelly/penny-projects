@@ -3,14 +3,18 @@ export default defineNuxtConfig({
   //@ts-ignore
   css: ['~/assets/scss/global.scss'],
   buildModules: ['@nuxtjs/sass'],
-  modules: ['nuxt-gtag'],
+  modules: ['nuxt-gtag', "@nuxt/image"],
   gtag: {
     id: 'G-9X0EKVWFPG',
+  },
+  nitro: {
+    compressPublicAssets: true,
   },
   app: {
     head: {
         meta: [
         { charset: 'utf-8' },
+        { description: 'Penny Projects - a community of people that help fund projects in developing countries.' },
         {
           hid: 'og:image',
           property: 'og:image',
@@ -37,6 +41,7 @@ export default defineNuxtConfig({
           content: 'website',
         },
       ],
+      htmlAttrs: { lang: 'en', },
     }
   },
   vite: {

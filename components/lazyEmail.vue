@@ -23,16 +23,16 @@
             <div class="optionalParent">
                 <div class="clear foot">
                     <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
-                    <p style="margin: 0px auto;"><a href="http://eepurl.com/iAeBfo" title="Mailchimp - email marketing made easy and fun"><span style="display: inline-block; background-color: transparent; border-radius: 4px;"><img class="refferal_badge" src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg" alt="Intuit Mailchimp" style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a></p>
+                    <p style="margin: 0px auto;"><a href="http://eepurl.com/iAeBfo" title="Mailchimp - email marketing made easy and fun"><span style="display: inline-block; background-color: transparent; border-radius: 4px;"><img class="refferal_badge" src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg" alt="Intuit Mailchimp" loading="lazy" style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a></p>
                 </div>
             </div>
         </div>
     </form>
     </div>
     <div class="socials">
-      <a href="https://www.instagram.com/pennyprojectsrs/" target="_blank"><img src="~/assets/svg/icon_instagram.svg" loading="lazy"></a>
-      <a href="https://www.facebook.com/profile.php?id=100063661478968&mibextid=LQQJ4d" target="_blank"><img src="~/assets/svg/icon_facebook.svg" loading="lazy"></a>
-      <a href="https://www.youtube.com/@PennyProjectsrs" target="_blank"><img src="~/assets/svg/icon_youtube.svg" loading="lazy"></a>
+      <a href="https://www.instagram.com/pennyprojectsrs/" target="_blank" aria-label="See more penny projects content on Instagram."><img src="~/assets/svg/icon_instagram.svg" loading="lazy" alt="A vector logo of Instagram."></a>
+      <a href="https://www.facebook.com/profile.php?id=100063661478968&mibextid=LQQJ4d" target="_blank" aria-label="See more penny projects content on Facebook."><img src="~/assets/svg/icon_facebook.svg" loading="lazy" alt="A vector logo of Facebook."></a>
+      <a href="https://www.youtube.com/@PennyProjectsrs" target="_blank" aria-label="See more penny projects content on Facebook."><img src="~/assets/svg/icon_youtube.svg" loading="lazy" alt="A vector logo of YouTube."></a>
     </div>
     <img class="background" src="~/assets/svg/penny-icons-bg.svg" alt="Icon background" loading="lazy">
   </section>
@@ -251,7 +251,7 @@ onMounted(() => {
         position: absolute;
         left: 1rem;
         z-index: 2;
-        opacity: 0.6;
+        opacity: 0.9;
         font-family: 'Poppins', sans-serif;
         font-size: 0.8rem;
         font-weight: 600;

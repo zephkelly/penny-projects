@@ -2,7 +2,7 @@
   <header ref="header">
     <div class="container">
       <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
-        <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" />
+        <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
         <Transition name="fade">

@@ -9,7 +9,7 @@
             <p><em>Your contributions provide necessary resources for successful project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
             <!-- <DonationPicker/> -->
             <button class="donation-button" @click="openDonationWindow()">
-                <h5>Make a donation</h5>
+                <h4>Make a donation</h4>
             </button>
             </div>
         </div>
