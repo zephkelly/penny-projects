@@ -139,7 +139,7 @@ function openDonationWindow() {
         margin-top: 5rem;
       }
 
-      h5 {
+      h4 {
         position: relative;
         font-family: "Nunito", sans-serif;
         font-weight: 600;

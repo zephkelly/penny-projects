@@ -15,6 +15,7 @@ export default defineNuxtConfig({
         meta: [
         { charset: 'utf-8' },
         { description: 'Penny Projects - a community of people that help fund projects in developing countries.' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           hid: 'og:image',
           property: 'og:image',
