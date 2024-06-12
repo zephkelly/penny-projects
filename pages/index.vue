@@ -9,11 +9,11 @@
   <Founder/>
   <Join/>
   <section class="banner">
-    <img src="~/assets/images/school-banner.webp" alt="">
+    <img src="~/assets/images/school-banner1.webp" loading="lazy" alt="">
   </section>
   <Email/>
   <section class="banner2">
-    <img src="~/assets/images/logo-round.png" alt="">
+    <img src="~/assets/images/logo-round.png" loading="lazy" alt="">
   </section>
   <footer class="footer">
     <p class="email">thepennyprojects@gmail.com</p>
@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-
 </script>
 
 <style lang="scss" scoped>
@@ -40,9 +39,10 @@
     }
 
     img {
+        height: 100%;
+        width: 100%;
+        
       object-fit: cover;
-      height: 100%;
-      width: 100%;
     }
   }
 

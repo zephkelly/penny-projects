@@ -11,7 +11,7 @@
             <div class="donation-methods">
               <a class="donation-button" target="_blank" href="https://www.paypal.com/donate/?business=68BXW94GZSSJJ&no_recurring=0&item_name=All+donations+go+towards+supporting+the+needs+of+the+local+community+Zambia&currency_code=AUD">
                 <h5>Donate with</h5>
-                <img class="paypal" src="~/assets/images/paypal.webp"/>
+                <img class="paypal" src="~/assets/images/paypal.webp" loading="lazy"/>
               </a>
               <div class="divider">
                 <div class="box"></div>
@@ -115,10 +115,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
       right: 0;
       margin: 1rem;
       border-radius: 5px;
-      font-family: 'Nunito', sans-serif;
       background-color: var(--background-color-main);
-      font-weight: 700;
-      font-size: 1rem;
       border: none;
       cursor: pointer;
 

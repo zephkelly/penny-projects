@@ -2,9 +2,9 @@
     <section class="founder">
     <div class="round-container">
       <div class="profile">
-        <img src="~/assets/images/joel-headshot.jpg">
+        <img src="~/assets/images/joel-headshot.jpg" loading="lazy">
       </div>
-      <img class="hearts" src="~/assets/svg/hearts.svg">
+      <img class="hearts" src="~/assets/svg/hearts.svg" loading="lazy">
       <h3 class="header">Meet our Founder</h3>
       <h4 class="subheader">Joel Slade</h4>
       <p class="text">
@@ -16,7 +16,7 @@
         catalysts for positive change.</em>
       </p>
     </div>
-    <img class="background" src="~/assets/svg/penny-icons-bg.svg">
+    <img class="background" src="~/assets/svg/penny-icons-bg.svg" loading="lazy">
   </section>
 </template>
 
