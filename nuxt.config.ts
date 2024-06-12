@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   //@ts-ignore
   css: ['~/assets/scss/global.scss'],
   buildModules: ['@nuxtjs/sass'],
-  modules: ['nuxt-gtag', "@nuxt/image"],
+  modules: ['nuxt-gtag'],
   gtag: {
     id: 'G-9X0EKVWFPG',
   },
