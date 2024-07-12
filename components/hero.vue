@@ -353,6 +353,7 @@ section.hero {
         border-radius: 2rem;
         padding-left: 1.6rem;
         padding-right: 1.6rem;
+        border: none;
     }
 
     .view-projects-anchor {

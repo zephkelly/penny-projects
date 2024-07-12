@@ -2,14 +2,18 @@
 export default defineNuxtConfig({
   //@ts-ignore
   css: ['~/assets/scss/global.scss'],
+
   buildModules: ['@nuxtjs/sass'],
   modules: ['nuxt-gtag'],
+
   gtag: {
     id: 'G-9X0EKVWFPG',
   },
+
   nitro: {
     compressPublicAssets: true,
   },
+
   app: {
     head: {
         meta: [
@@ -34,7 +38,7 @@ export default defineNuxtConfig({
         {
           hid: 'og:description',
           property: 'og:description',
-          content: 'Penny Projects - a community of people that help fund projects in developing countries.',
+          content: 'A community of people that help fund projects in developing countries.',
         },
         {
           hid: 'og:type',
@@ -45,6 +49,7 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'en', },
     }
   },
+
   vite: {
     css: {
       preprocessorOptions: {
@@ -53,5 +58,7 @@ export default defineNuxtConfig({
         },
       },
     },
-  }
+  },
+
+  compatibilityDate: '2024-07-12',
 })
