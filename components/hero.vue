@@ -1,33 +1,34 @@
 <template>
-  <section class="hero desktop" id="hero-section">
-    <div class="container">
-      <div class="group">
-        <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
-        <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
-        <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
-        <div class="buttons">
-          <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
-          <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
+    <section class="hero desktop" id="hero-section">
+        <div class="container">
+        <div class="group">
+            <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
+            <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
+            <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
+            <ul class="buttons">
+            <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
+            <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
+            </ul>
         </div>
-      </div>
-      <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
-    </div>
-  </section>
-  <section class="hero mobile">
-    <div class="icon">
-      <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
-    </div>
-    <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
-    <div class="img-container"> 
-      <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
-    </div>
-    <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
-    <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
-    <div class="buttons">
-      <a @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</a>
-      <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
-    </div>
-  </section>
+        <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
+        </div>
+    </section>
+    <section class="hero mobile">
+        <div class="icon">
+        <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
+        </div>
+        <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
+        <div class="img-container"> 
+        <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
+        </div>
+        <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
+        <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
+        <ul class="buttons">
+            <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">View Projects</NuxtLink>
+            <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</button>
+            <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
+        </ul>
+    </section>
 </template>
 
 <script lang="ts" setup>
@@ -291,63 +292,81 @@ section.hero {
       line-height: 1.8rem;
     }
 
-  .subheader {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-    font-weight: 600;
+    .subheader {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
 
-    // max-width: rem;
-  }
-
-  .subheader2 {
-    font-style: oblique 4deg;
-  }
+    .subheader2 {
+        font-style: oblique 4deg;
+        padding-bottom: 2rem;
+    }
 
   .buttons {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    gap: 2rem;
+    gap: 1rem;
     margin-bottom: 6rem;
-    margin-top: 0.2rem;
 
+    > * {
+        padding-left: 1.6rem;
+        padding-right: 1.6rem;
+    }
+
+    @media (max-width: 560px) {
+        > :nth-child(1) {
+            order: 2;
+        }
+    
+        > :nth-child(2) {
+            order: 1;
+            flex-basis: auto;
+        }
+        
+        > :nth-child(3) {
+            order: 3;
+        }
+    }
+    
     @media (max-width: 400px) {
-      gap: 1rem;
-      margin-bottom: 5rem;
+        margin-bottom: 5rem;
     }
-
+    
     button, a {
-      color: var(--background-color-main);
-      background-color: var(--text-color-main);
-      font-family: 'Nunito', sans-serif;
-      color: var(--background-color-secondary);
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 2rem;
-      margin-top: 2rem;
-      padding: 0.8rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 2rem;
+        height: 4rem;
+        cursor: pointer;
+        color: var(--background-color-main);
+        background-color: var(--text-color-main);
+        font-family: 'Nunito', sans-serif;
+        color: var(--background-color-secondary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 2rem;
+        padding-left: 1.6rem;
+        padding-right: 1.6rem;
     }
 
-    #donate-button2 {
-      cursor: pointer;
-      width: auto;
-      padding-left: 2rem;
-      padding-right: 2rem;
+    .view-projects-anchor {
+        color: var(--text-color-main);
+        border: 0.2rem solid var(--text-color-main);
+        background-color: var(--background-color-main);
+        height: calc(4rem - (0.2rem * 2));
     }
 
     .about-us-button {
-      cursor: pointer;
-      width: auto;
-      padding-left: 2rem;
-      padding-right: 2rem;
+        color: var(--text-color-main);
+        border: 0.2rem solid var(--text-color-main);
+        background-color: var(--background-color-main);
+        height: calc(4rem - (0.2rem * 2));
     }
   }
 }

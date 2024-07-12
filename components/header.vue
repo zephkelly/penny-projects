@@ -7,9 +7,9 @@
       <section class="navigation" ref="navHeader" style="top:70px;">
         <ul class="nav-list">
             <Transition name="fade">
-                <a ref="viewProjectsButton" class="view-projects-anchor" v-if="enableDonationButton">
+                <NuxtLink ref="viewProjectsButton" class="view-projects-anchor" v-if="enableDonationButton">
                     <h5>View Projects</h5>
-                </a>
+                </NuxtLink>
             </Transition>
             <Transition name="fade">
                 <button ref="donationButton" class="donation-button" v-if="enableDonationButton" @click="donationPopupOpen().value = true;">
