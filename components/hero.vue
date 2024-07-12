@@ -87,7 +87,7 @@ section.hero {
 
         .subheader, .subheader2 {
           font-family: 'Poppins', sans-serif;
-          text-align: normal;
+        //   text-align: normal;
           font-size: 1.4rem;
           font-weight: 400;
           width: 30rem;
@@ -204,12 +204,11 @@ section.hero {
 
       @media (max-width: 1000px) {
         width: clamp(28rem, 150%, 38rem);
-        right: 2;
       }
 
       @media (max-width: 875px) {
-        right: 4.2;
-        top: -3.2;
+        right: 4.2rem;
+        top: -3.2rem;
       }
     }
   }

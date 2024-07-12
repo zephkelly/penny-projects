@@ -5,11 +5,18 @@
         <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
-        <Transition name="fade">
-          <button ref="donationButton" class="donation-button" v-if="enableDonationButton" @click="donationPopupOpen().value = true;">
-            <h5>Donate</h5>
-          </button>
-        </Transition>
+        <ul class="nav-list">
+            <Transition name="fade">
+                <a ref="viewProjectsButton" class="view-projects-anchor" v-if="enableDonationButton">
+                    <h5>View Projects</h5>
+                </a>
+            </Transition>
+            <Transition name="fade">
+                <button ref="donationButton" class="donation-button" v-if="enableDonationButton" @click="donationPopupOpen().value = true;">
+                    <h5>Donate</h5>
+                </button>
+            </Transition>
+        </ul>
         <!-- <img class="menu" src="~/assets/svg/icons/menu-burger.svg" style="display: none;" /> -->
       </section>
     </div>
@@ -122,19 +129,27 @@ onMounted(() => {
   .navigation {
     display: flex;
     position: relative;
-    padding: 0.6rem;
-    padding-right: 0rem;
     align-items: center;
-    justify-content: flex-end;
-    width: 6rem;
+    width: auto;
+    padding: 0.4rem;
+    padding-right: 0rem;
+    
+    .nav-list {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-direction: row;
+        height: 100%;
+    }
 
     .donation-button {
       padding-top: 0.1rem;
+      padding-left: 1.4rem;
+      padding-right: 1.4rem;
       background-color: var(--text-color-main);
       border: none;
       border-radius: 1rem;
-      height: 112%;
-      width: 100%;
+    //   width: 7rem;
       font-family: 'Nunito', sans-serif;
       font-weight: 600;
       letter-spacing: 0.05rem;
@@ -147,6 +162,31 @@ onMounted(() => {
       &:hover {
         background-color: var(--text-color-main-dark);
       }
+    }
+
+    .view-projects-anchor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 0.1rem;
+        padding-left: 1.4rem;
+        padding-right: 1.4rem;
+        background-color: var(--background-color-main);
+        border: none;
+        border-radius: 1rem;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.05rem;
+        font-size: 0.9rem;
+        color: var(--text-color-main);
+        text-transform: uppercase;
+        transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+        cursor: pointer;
+    
+        &:hover {
+            color: var(--background-color-main);
+            background-color: var(--text-color-main-dark);
+        }
     }
 
     div {
