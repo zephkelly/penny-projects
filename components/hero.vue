@@ -6,8 +6,8 @@
             <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
             <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
             <ul class="buttons">
-            <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
-            <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
+                <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
+                <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
             </ul>
         </div>
         <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
@@ -15,7 +15,7 @@
     </section>
     <section class="hero mobile">
         <div class="icon">
-        <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
+            <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
         </div>
         <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
         <div class="img-container"> 
@@ -173,7 +173,7 @@ section.hero {
 
             &:hover {
               color: var(--background-color-secondary);
-              background-color: var(--text-color-main);
+              background-color: var(--text-color-main-dark);
               border: 0px;
             }
           }

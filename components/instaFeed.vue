@@ -66,35 +66,37 @@ const { pending, data: posts, error } = useFetch<Array<any>>('https://feeds.beho
 const isApiActive: Ref<boolean> = ref(false);
 
 if (error.value) {
-    isApiActive.value = false;
     console.log(error.value);
 }
 
 const imageStyle = computed(() => {  
-    try {
-        if (posts.value == null) return;
-        const post = posts.value[0];
-
-        fetch(post.mediaUrl)
-            .then(response => {
-                if (response.status === 403) {
-                    isApiActive.value = false;
-                }
-                else {
-                    isApiActive.value = true;
-                }
-            });
-    }
-    catch (error) {
-        console.log(error);
-    }
-
   const numberOfPosts = 3;
   const width = `calc(1000px / ${numberOfPosts})`;
 
   return { width };
 });
 
+watchEffect(() => {
+    if (posts.value == null) return;
+    checkApiStatus();
+})
+
+async function checkApiStatus() {
+    try {
+        const post = posts.value[0];
+
+        const isMediaUrlActive = await fetch(post.mediaUrl)
+
+        if (isMediaUrlActive.status === 403) {
+            isApiActive.value = true;
+        } else {
+            isApiActive.value = false;
+        }
+    }
+    catch (error) {
+        isApiActive.value = false;
+    }
+}
 </script>
 
 <style lang="scss">
@@ -151,10 +153,6 @@ section.instagram-feed {
       justify-content: space-between;
 
       @media (max-width: 768px) {
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: center;
-        // align-items: center;
         overflow: hidden;
         overflow-x: scroll;
         -ms-overflow-style: none;
@@ -260,11 +258,11 @@ section.instagram-feed {
 
         .text-ellipsis {
           display: -webkit-box;
-          -webkit-line-clamp: 3; /* Number of lines to display */
+          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
-          line-height: 1.5; /* Adjust line height for better readability */
-          max-height: 2.8rem; /* Adjust max height as needed */
+          line-height: 1.5;
+          max-height: 2.8rem;
           text-overflow: ellipsis;
         }
       }

@@ -184,7 +184,7 @@ onMounted(() => {
         cursor: pointer;
     
         &:hover {
-            color: var(--background-color-main);
+            color: var(--background-color-secondary);
             background-color: var(--text-color-main-dark);
         }
     }
