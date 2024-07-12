@@ -233,7 +233,7 @@ section.hero {
       position: relative;
       top: -1.4rem;
       width: clamp(13.5rem, 48vw, 19rem);
-      height: clamp(10.2rem, 40vw, 16rem);
+      height: clamp(11rem, 40vw, 16rem);
       overflow: hidden;
 
       img {
