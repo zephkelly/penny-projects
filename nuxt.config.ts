@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     head: {
         meta: [
         { charset: 'utf-8' },
+        //@ts-ignore
         { description: 'Penny Projects - a community of people that help fund projects in developing countries.' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {

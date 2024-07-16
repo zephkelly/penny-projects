@@ -1,7 +1,7 @@
 <template>
-  <Header/>
-  <Hero/>
-  <InstaFeed/>
+  <!-- <Header/> -->
+  <hero/>
+  <instaFeed/>
   <lazyMission/>
   <lazyApproach/>
   <lazyDonationPopout/>

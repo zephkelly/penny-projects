@@ -1,5 +1,5 @@
 <template>
-  <header ref="header">
+    <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }">
     <div class="container">
       <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
         <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
@@ -7,14 +7,24 @@
       <section class="navigation" ref="navHeader" style="top:70px;">
         <ul class="nav-list">
             <Transition name="fade">
-                <NuxtLink ref="viewProjectsButton" class="view-projects-anchor" v-if="enableDonationButton">
+                <NuxtLink :to="{ path: '/projects', hash: ''}" ref="viewProjectsButton" class="view-projects-anchor" v-if="enableHeaderButtons">
                     <h5>View Projects</h5>
                 </NuxtLink>
             </Transition>
-            <Transition name="fade">
-                <button ref="donationButton" class="donation-button" v-if="enableDonationButton" @click="donationPopupOpen().value = true;">
+            <Transition name="fade" v-if="!isAdmin">
+                <button ref="donationButton" class="donation-button" v-if="enableHeaderButtons" @click="donationPopupOpen().value = true;">
                     <h5>Donate</h5>
                 </button>
+            </Transition>
+            <Transition name="fade" v-if="isAdmin">
+                <NuxtLink :to="{ path: '/projects/edit', hash: ''}"  ref="editProjectsButton" class="edit-projects-anchor" v-if="enableHeaderButtons">
+                    <h5>Edit Projects</h5>
+                </NuxtLink>
+            </Transition>
+            <Transition name="fade" v-if="isAdmin">
+                <NuxtLink :to="{ path: '/admin', hash: ''}"  ref="adminPanelButton" class="view-admin-button" v-if="enableHeaderButtons">
+                    <h5>View Admin Panel</h5>
+                </NuxtLink>
             </Transition>
         </ul>
         <!-- <img class="menu" src="~/assets/svg/icons/menu-burger.svg" style="display: none;" /> -->
@@ -26,16 +36,21 @@
 <script lang="ts" setup>
 import { donationPopupOpen } from '@/composables/donationPopupStates';
 
-const signedIn = computed(() => {
-  return false;
-})
+const props = defineProps({
+  isAdmin: Boolean
+});
 
+// Are we on admin page?
+const route = useRoute();
+const isOnAdminPage = computed(() => route.path === '/admin');
+
+// Header functionality
 const header: Ref = ref(null);
 const logoHeader: Ref = ref(null);
 const navHeader: Ref = ref(null);
 
 const donationButton: Ref = ref(null);
-const enableDonationButton: Ref = ref(false);
+const enableHeaderButtons: Ref = ref(false);
 
 let scrollTop = 0;
 let logoStartTop = 0;
@@ -73,7 +88,7 @@ onMounted(() => {
 
       header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
 
-      enableDonationButton.value = true;
+      enableHeaderButtons.value = true;
     } else {
       logoHeader.value.style.transition = ``;
       logoHeader.value.style.height = `${logoStartHeight}rem`;
@@ -83,7 +98,7 @@ onMounted(() => {
 
       header.value.style.boxShadow = ``;
 
-      enableDonationButton.value = false;
+      enableHeaderButtons.value = false;
     }
   }
 })
@@ -91,18 +106,22 @@ onMounted(() => {
 
 <style lang="scss" scoped>
   header {
-    position: fixed;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    max-height: 3.2rem;
-    background-color: #eae6d7;
-    transition: box-shadow ease-out 0.2s;
-    z-index: 100;
+        position: fixed;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        max-height: 3.2rem;
+        background-color: #eae6d7;
+        transition: box-shadow ease-out 0.2s;
+        z-index: 100;
 
-    @media (max-width: 768px) {
-      display: none;
-    }
+        @media (max-width: 768px) {
+        display: none;
+        }
+
+        &.admin {
+            background-color: var(--background-color-secondary);
+        }
   }
 
   .container {
@@ -142,26 +161,29 @@ onMounted(() => {
         height: 100%;
     }
 
-    .donation-button {
-      padding-top: 0.1rem;
-      padding-left: 1.4rem;
-      padding-right: 1.4rem;
-      background-color: var(--text-color-main);
-      border: none;
-      border-radius: 1rem;
-    //   width: 7rem;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.05rem;
-      font-size: 0.9rem;
-      color: ghostwhite;
-      text-transform: uppercase;
-      transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
-      cursor: pointer;
+    .donation-button, .view-admin-button, .edit-projects-anchor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 0.1rem;
+        padding-left: 1.4rem;
+        padding-right: 1.4rem;
+        background-color: var(--text-color-main);
+        border: none;
+        border-radius: 1rem;
+        //   width: 7rem;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.05rem;
+        font-size: 0.9rem;
+        color: ghostwhite;
+        text-transform: uppercase;
+        transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+        cursor: pointer;
 
-      &:hover {
-        background-color: var(--text-color-main-dark);
-      }
+        &:hover {
+            background-color: var(--text-color-main-dark);
+        }
     }
 
     .view-projects-anchor {
@@ -171,7 +193,7 @@ onMounted(() => {
         padding-top: 0.1rem;
         padding-left: 1.4rem;
         padding-right: 1.4rem;
-        background-color: var(--background-color-main);
+        background-color: none;
         border: none;
         border-radius: 1rem;
         font-family: 'Nunito', sans-serif;

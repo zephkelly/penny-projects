@@ -1,5 +1,5 @@
 <template>
-    <section class="instagram-feed unloaded" v-if="pending">
+    <section class="instagram-feed unloaded" v-if="status === 'pending'">
     </section>
     <section class="instagram-feed" v-else>
         <div class="instagram-feed api-active" v-if="isApiActive">
@@ -57,9 +57,7 @@
 </template>
 
 <script setup lang="ts">
-const { pending, data: posts, error } = useFetch<Array<any>>('https://feeds.behold.so/7QlDYCOmJbnFHJOqMn9L', {
-    lazy: true
-});
+const { status, data: posts, error } = await useLazyFetch<Array<any>>('https://feeds.behold.so/7QlDYCOmJbnFHJOqMn9L', { });
 
 const isApiActive: Ref<boolean> = ref(false);
 
@@ -81,14 +79,15 @@ watchEffect(() => {
 
 async function checkApiStatus() {
     try {
+        //@ts-expect-error : We check for null in watchEffect
         const post = posts.value[0];
 
         const isMediaUrlActive = await fetch(post.mediaUrl)
 
         if (isMediaUrlActive.status === 403) {
-            isApiActive.value = true;
-        } else {
             isApiActive.value = false;
+        } else {
+            isApiActive.value = true;
         }
     }
     catch (error) {
