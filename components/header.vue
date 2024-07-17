@@ -36,9 +36,7 @@
 <script lang="ts" setup>
 import { donationPopupOpen } from '@/composables/donationPopupStates';
 
-const props = defineProps({
-  isAdmin: Boolean
-});
+const { isLoggedIn, isAdmin, checkAuthStatus } = useAuth()
 
 // Are we on admin page?
 const route = useRoute();
@@ -58,49 +56,53 @@ let logoStartHeight = 0;
 let navStartTop = 0;
 let navStartHeight = 0;
 
-onMounted(() => {
-  logoStartTop = parseInt(logoHeader.value.style.top);
-  logoStartHeight = parseInt(logoHeader.value.style.height);
-  navStartTop = parseInt(navHeader.value.style.top);
-  navStartHeight = parseInt(navHeader.value.style.height);
+onMounted(async () => {
+    await checkAuthStatus()
 
-  window.addEventListener('onload', () => {
-    adjustNavbar();
-  });
+    logoStartTop = parseInt(logoHeader.value.style.top);
+    logoStartHeight = parseInt(logoHeader.value.style.height);
+    navStartTop = parseInt(navHeader.value.style.top);
+    navStartHeight = parseInt(navHeader.value.style.height);
 
-  window.addEventListener('scroll', () => {
-    adjustNavbar();
-  });
+    window.addEventListener('onload', () => {
+        adjustNavbar();
+    });
 
-  function adjustNavbar () {
-    scrollTop = window.scrollY;
-    logoHeader.value.style.top = `${logoStartTop - scrollTop}px`;
-    navHeader.value.style.top = `${navStartTop - scrollTop}px`;
+    window.addEventListener('scroll', () => {
+        adjustNavbar();
+    });
 
-    if (scrollTop > logoStartTop - 10) {
-      logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
-      logoHeader.value.style.height = `3.1rem`;
-      logoHeader.value.style.top = `-0px`;
-      logoHeader.value.style.left = `-30px`;
+    function adjustNavbar () {
+        if(!header.value || !logoHeader.value || !navHeader.value) return;
 
-      navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
-      navHeader.value.style.top = `0px`;
+        scrollTop = window.scrollY;
+        logoHeader.value.style.top = `${logoStartTop - scrollTop}px`;
+        navHeader.value.style.top = `${navStartTop - scrollTop}px`;
 
-      header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
+        if (scrollTop > logoStartTop - 10) {
+        logoHeader.value.style.transition = `top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)`;
+        logoHeader.value.style.height = `3.1rem`;
+        logoHeader.value.style.top = `-0px`;
+        logoHeader.value.style.left = `-30px`;
 
-      enableHeaderButtons.value = true;
-    } else {
-      logoHeader.value.style.transition = ``;
-      logoHeader.value.style.height = `${logoStartHeight}rem`;
-      logoHeader.value.style.left = ``;
+        navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
+        navHeader.value.style.top = `0px`;
 
-      navHeader.value.style.transition = ``;
+        header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
 
-      header.value.style.boxShadow = ``;
+        enableHeaderButtons.value = true;
+        } else {
+        logoHeader.value.style.transition = ``;
+        logoHeader.value.style.height = `${logoStartHeight}rem`;
+        logoHeader.value.style.left = ``;
 
-      enableHeaderButtons.value = false;
+        navHeader.value.style.transition = ``;
+
+        header.value.style.boxShadow = ``;
+
+        enableHeaderButtons.value = false;
+        }
     }
-  }
 })
 </script>
 
@@ -193,7 +195,7 @@ onMounted(() => {
         padding-top: 0.1rem;
         padding-left: 1.4rem;
         padding-right: 1.4rem;
-        background-color: none;
+        background-color: transparent;
         border: none;
         border-radius: 1rem;
         font-family: 'Nunito', sans-serif;

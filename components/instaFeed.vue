@@ -62,8 +62,14 @@ const { status, data: posts, error } = await useLazyFetch<Array<any>>('https://f
 const isApiActive: Ref<boolean> = ref(false);
 
 if (error.value) {
-    console.log(error.value);
+    isApiActive.value = false;
 }
+
+watchEffect(() => {
+    if (error.value) return;
+    if (posts.value == null) return;
+    checkApiStatus();
+})
 
 const imageStyle = computed(() => {  
   const numberOfPosts = 3;
@@ -71,11 +77,6 @@ const imageStyle = computed(() => {
 
   return { width };
 });
-
-watchEffect(() => {
-    if (posts.value == null) return;
-    checkApiStatus();
-})
 
 async function checkApiStatus() {
     try {

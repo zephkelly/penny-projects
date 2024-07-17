@@ -7,5 +7,5 @@ export default defineEventHandler(async (event) => {
       path: '/'
     });
   
-    return { message: 'Logged out successfully' };
+    return { success: true, message: 'Logged out successfully' };
   });

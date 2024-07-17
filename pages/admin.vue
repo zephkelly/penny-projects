@@ -1,5 +1,5 @@
 <template>
-    <section id="adminHero">
+    <section id="adminHero" v-if="isAdmin">
         <div class="container">
             <h2 class="sub-header">Hi Joel,</h2>
             <h1 class="header">Admin Panel</h1>
@@ -7,7 +7,18 @@
     </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+definePageMeta({
+    middleware: ['admin']
+})
+
+const { isAdmin, checkAuthStatus } = useAuth()
+const isCheckingAuth = ref(true)
+
+onMounted(async () => {
+  await checkAuthStatus()
+  isCheckingAuth.value = false
+})
 </script>
 
 <style scoped lang="scss">

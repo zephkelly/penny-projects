@@ -6,6 +6,8 @@ export default defineNuxtConfig({
   buildModules: ['@nuxtjs/sass'],
   modules: ['nuxt-gtag'],
 
+  plugins: ['~/plugins/checkAuth.ts'],
+
   gtag: {
     id: 'G-9X0EKVWFPG',
   },
@@ -19,7 +21,7 @@ export default defineNuxtConfig({
         meta: [
         { charset: 'utf-8' },
         //@ts-ignore
-        { description: 'Penny Projects - a community of people that help fund projects in developing countries.' },
+        { description: 'A community of people that help fund projects in developing countries.' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           hid: 'og:image',

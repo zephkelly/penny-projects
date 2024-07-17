@@ -23,15 +23,17 @@
         <meta name="google-site-verification" content="google-site-verification" />
     </Head>
     <main>
-      <Header :isAdmin="true"/>
+        <Header/>
         <slot />
+        <lazyLogoBanner />
+        <lazyFooter />
     </main>
 </template>
 
 <style lang="scss" scoped>
+
 </style>
 
-<script>
-import AdminBar from '~/components/adminBar.vue';
+<script setup lang="ts">
 
 </script>
