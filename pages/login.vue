@@ -44,7 +44,6 @@ const login = async () => {
         }
 
         if (data.value) {
-            console.log('Success:', data.value);
             navigateTo('/admin');
         }
 

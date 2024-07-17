@@ -23,6 +23,7 @@
         <meta name="google-site-verification" content="google-site-verification" />
     </Head>
     <main>
+        <toastPopup/>
         <Header/>
         <slot />
         <lazyLogoBanner />

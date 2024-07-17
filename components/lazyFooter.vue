@@ -19,7 +19,7 @@ onMounted(async () => {
 const signOut = async () => {
     try {
         await logout()
-        await navigateTo('/')
+        await navigateTo('/?toast=Logged out successfully.')
     } catch (error) {
         console.error('Error signing out:', error)
     }
@@ -28,7 +28,7 @@ const signOut = async () => {
 
 <style scoped lang="scss">
 footer {
-    height: 150px;
+    height: 100px;
     background-color: var(--background-color-main);
     display: flex;
     flex-direction: row;

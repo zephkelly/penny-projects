@@ -1,7 +1,7 @@
 <template>
     <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }">
     <div class="container">
-      <nuxt-link :to="{ path: '/', hash: '#hero-section'} " class="logo-link">
+      <nuxt-link :to="{ path: '/' }" @click.prevent="scrollToTop" class="logo-link">
         <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
@@ -56,9 +56,14 @@ let logoStartHeight = 0;
 let navStartTop = 0;
 let navStartHeight = 0;
 
-onMounted(async () => {
-    await checkAuthStatus()
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
 
+onMounted(async () => {
     logoStartTop = parseInt(logoHeader.value.style.top);
     logoStartHeight = parseInt(logoHeader.value.style.height);
     navStartTop = parseInt(navHeader.value.style.top);

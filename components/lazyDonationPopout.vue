@@ -71,7 +71,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
 </script>
 
 <style lang="scss" scoped>
-  dialogue {
+  section {
     top: 0;
     position: fixed;
     width: 100%;
