@@ -54,8 +54,8 @@
         // padding-bottom: 8rem;
 
         &:first-child {
-          padding-top: 8rem;
-          padding-bottom: 8rem;
+          padding-top: 6rem;
+          padding-bottom: 6rem;
           padding-right: 4rem;
           padding-left: 0rem;
           display: flex;
@@ -70,10 +70,10 @@
           }
           
           @media (max-width: 768px) {
-            padding-top: 31rem;
+            padding-top: 30rem;
             padding-left: 0rem;
             padding-right: 0rem;
-            padding-bottom: 7rem;
+            padding-bottom: 5rem;
             width: 90vw;
 
             p {

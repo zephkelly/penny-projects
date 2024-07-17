@@ -32,14 +32,14 @@
 </template>
 
 <style lang="scss">
-    .join {
+.join {
     height: auto;
     background-color: #ffffff;
     display: flex;
     justify-content: center;
 
     @media (max-width: 768px) {
-      padding-top: 2.2rem;
+      padding-top: 2rem;
     }
 
     .container {
@@ -51,7 +51,7 @@
 
       @media (max-width: 768px) {
         margin-top: 6rem;
-        margin-bottom: 5.8rem;
+        margin-bottom: 3em;
       }
 
       .header {
@@ -87,6 +87,12 @@
           max-width: 90vw;
           gap: 3.5rem 0.2rem;
         }
+
+        @media (max-width: 400px) {
+          width: 90vw;
+          max-width: 90vw;
+          gap: 1rem 0.2rem;
+        }
       }
 
       .item {
@@ -121,8 +127,14 @@
           }
 
           @media (max-width: 768px) {
-            height: 2.5rem;
+            height: auto;
             font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+          }
+
+          @media (max-width: 400px) {
+            height: auto;
+            font-size: 1rem;
             margin-bottom: 0.8rem;
           }
         }
@@ -130,7 +142,7 @@
         p {
           font-family: 'Nunito', sans-serif;
           font-size: 1.2rem;
-          width: 90%;
+        //   width: 90%;
           text-align: center;
           line-height: 1.2rem;
           height: 3.5rem;
@@ -185,12 +197,17 @@
 
       @media (max-width: 1000px) {
         font-size: 2.4rem;
+        max-width: 700px;
       }
 
       @media (max-width: 768px) {
+        font-size: 2.2rem;
         width: 90vw;
         text-align: center;
-        
+      }
+
+      @media (max-width: 400px) {
+        margin-bottom: 2rem;
       }
     }
   }

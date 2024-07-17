@@ -23,46 +23,45 @@
 <style lang="scss">
 .founder {
     position: relative;
-    height: 1100px;
+    min-height: 1020px;
     width: 100vw;
     background-color: var(--background-color-secondary);
     overflow: hidden;
-    margin-bottom: 2rem;
 
     @media (max-width: 1300px) {
-      height: 980px;
+      min-height: 960px;
     }
 
-    @media (max-width: 600px) {
-      height: 880px;
+    @media (max-width: 768px) {
+      min-height: 840px;
     }
     
     .round-container {
-      position: relative;
+    //   position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      top: 23rem;
-      // left: -0.4rem;
+      margin-top: 19rem;
       width: 100%;
       height: auto;
-      border-top-right-radius: 2000rem;
-      border-top-left-radius: 2000rem;
+      border-top-right-radius: 20000rem;
+      border-top-left-radius: 20000rem;
       background-color: var(--background-color-main);
       z-index: 1;
+      padding-bottom: 0rem;
 
       @media (max-width: 1300px) {
-        top: 20rem;
+        margin-top: 18rem;
       }
 
       @media (max-width: 768px) {
-        top: 15rem;
+        margin-top: 15rem;
       }
 
       @media (max-width: 500px) {
+        margin-top: 13rem;
         border-top-right-radius: 15rem;
         border-top-left-radius: 15rem;
-
       }
 
       .profile {
@@ -78,8 +77,8 @@
 
         @media (max-width: 768px) {
           top: -10rem;
-          height: 60vw;
-          width: 60vw;
+          height: clamp(14rem, 60vw, 25rem);
+          width: clamp(14rem, 60vw, 25rem);
         }
 
         @media (max-width: 500px) {
@@ -95,39 +94,35 @@
 
       .hearts {
         position: absolute;
-        top: 0rem;
+        top: 330px;
         height: 28rem;
         width: 38rem;
 
+        @media (max-width: 1300px) {
+            top: 310px;
+        }
+
         @media (max-width: 768px) {
-          top: 7rem;
-          height: 60vw;
-          width: 70vw;
+            top: 390px;
+            width: 18rem;
+            height: 20rem;
         }
 
-        @media (max-width: 700px) {
-          top: 6rem;
+        @media (max-width: 660px) { // I give up...
+            top: 58vw;
         }
 
-        @media (max-width: 600px) {
-          top: 4rem;
+        @media (max-width: 500px) { // I give up...
+            top: clamp(190px, 53vw, 100rem);
         }
-
-        @media (max-width: 500px) {
-          top: 3rem;
-        }
-
-        @media (max-width: 400px) {
-          top: 1rem;
-        }
-      }
+    }
 
       .header, .subheader {
         position: relative;
         text-align: center;
-        top: -3.4rem;
+        top: -3rem;
         width: 100%;
-        font-size: 3.5rem;
+        font-size: 2.8rem;
         font-family: 'Nunito', sans-serif;
         font-weight: 700;
         letter-spacing: 0.15rem;
@@ -135,9 +130,14 @@
         color: var(--text-color-main);
 
         @media (max-width: 768px) {
-          width: 90vw;
-          font-size: 1.6rem;
-          top: -3.5rem;
+          width: 95vw;
+          font-size: 2.2rem;
+          top: -3.2rem;
+        }
+
+        @media (max-width: 450px) {
+          font-size: 2rem;
+          top: -3.2rem;
         }
       }
 
@@ -146,6 +146,11 @@
         font-weight: 500;
         text-transform: none;
         font-style: oblique 12deg;
+
+        @media (max-width: 450px) {
+          font-size: 1.8rem;
+          top: -3.2rem;
+        }
       }
 
       .text {
@@ -155,6 +160,7 @@
         font-size: 1.2rem;
         text-align: center;
         line-height: 2rem;
+        padding-bottom: 5rem;
 
         em {
           font-weight: 600;
@@ -170,10 +176,14 @@
 
         @media (max-width: 1300px) {
           position: relative;
-          top: -0.5rem;
+          top: -1rem;
           width: 90vw;
           font-size: 1.1rem;
           line-height: 1.8rem;
+        }
+
+        @media (max-width: 768px) {
+          padding-bottom: 4rem;
         }
       }
     }

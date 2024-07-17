@@ -3,7 +3,7 @@
         <p class="email">thepennyprojects@gmail.com</p>
         <p class="address">Kafue, Zambia</p>
     </footer>
-    <ClientOnly>
+    <ClientOnly v-if="isOnLoginPage === false">
         <NuxtLink to="/login" class="admin-login" v-if="isLoggedIn === false">Admin Login</NuxtLink>
         <NuxtLink class="admin-login" v-else @click="signOut">Log out</NuxtLink>
     </ClientOnly>
@@ -11,6 +11,11 @@
 
 <script setup lang="ts">
 const { isLoggedIn, checkAuthStatus, logout } = useAuth()
+
+const route = useRoute()
+const isOnLoginPage = computed(() => route.path === '/login')
+
+
 
 onMounted(async () => {
     await checkAuthStatus()
@@ -41,7 +46,7 @@ footer {
         flex-direction: column;
         gap: 3rem;
         font-size: 1.2rem;
-        height: 300px;
+        height: 260px;
     }
 }
 

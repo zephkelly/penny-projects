@@ -38,16 +38,16 @@
   background-color: #ffffff;
 
   .container {
-    margin-top: 8rem;
-    margin-bottom: 8rem;
+    margin-top: 6rem;
+    margin-bottom: 6rem;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     @media (max-width: 768px) {
-      margin-top: 6rem;
-      margin-bottom: 7rem;
+      margin-top: 4rem;
+      margin-bottom: 5rem;
     }
 
     .group {

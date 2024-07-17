@@ -7,7 +7,7 @@
             <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
             <ul class="buttons">
                 <a id="donate-button" @click="openDonationModal()" target="_blank">Donate Now</a>
-                <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button" class="about-us-button">Learn More</NuxtLink>
+                <NuxtLink @click.prevent="scrollToAboutDesktop" id="about-us-button" class="about-us-button">Learn More</NuxtLink>
             </ul>
         </div>
         <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
@@ -32,6 +32,18 @@
 </template>
 
 <script lang="ts" setup>
+import { useScroll } from '@/composables/useScroll'
+
+const { smoothScroll } = useScroll()
+
+const scrollToAboutDesktop = () => {
+  smoothScroll('#approach', 0)
+}
+
+const scrollToAboutMobile = () => {
+  smoothScroll('#approach', 45)
+}
+
 function openDonationModal() {
   donationPopupOpen().value = true;
 }
@@ -51,7 +63,7 @@ section.hero {
 
   .container {
     margin-top: 14rem;
-    margin-bottom: 8rem;
+    margin-bottom: 6rem;
     display: grid;
     height: 420px;
     grid-template-columns: 1fr 1fr;
@@ -311,7 +323,7 @@ section.hero {
     justify-content: center;
     width: 100%;
     gap: 1rem;
-    margin-bottom: 6rem;
+    margin-bottom: 5rem;
 
     > * {
         padding-left: 1.6rem;

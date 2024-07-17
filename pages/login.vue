@@ -7,7 +7,10 @@
                 <input type="email" id="email" v-model="email" @input="clearErrorMessage" required>
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" @input="clearErrorMessage" required>
-                <button type="submit">Login</button>
+                <button class="submit" type="submit" v-if="isLoading === false">Login</button>
+                <div class="submit loading" v-else>
+                    <img class="loading-spinner" src="~/assets/svg/loading.svg" alt="Loading spinner" width="20" height="20">
+                </div>
             </form>
             <p class="login-message" v-if="displayError">{{ errorMessage }}</p>
         </div>
@@ -20,12 +23,15 @@ const password = ref('');
 
 const displayError = ref(false);
 const errorMessage = ref('');
+const isLoading = ref(false);
 
 const clearErrorMessage = () => {
     displayError.value = false;
 };
 
 const login = async () => {
+    isLoading.value = true;
+
     try {
         const { data, error } = await useFetch('/api/auth/login', {
             method: 'POST',
@@ -44,11 +50,13 @@ const login = async () => {
         }
 
         if (data.value) {
-            navigateTo('/admin');
+            navigateTo('/admin?toast=Logged in successfully.');
         }
 
     } catch (error) {
         console.error('An error occurred', error);
+    } finally {
+        isLoading.value = false;
     }
 };
 </script>
@@ -57,17 +65,18 @@ const login = async () => {
 section {
     display: flex;
     justify-content: center;
-    height: 100vh;
-    min-height: 800px;
+    min-height: 700px;
 
     .container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        margin-top: 10rem;
-        margin-bottom: 10rem;
+        margin-top: clamp(12rem, 35vh, 14rem);
         height: auto;
+
+        @media (max-width: 768px) {
+            margin-top: clamp(8rem, 25vh, 10rem);
+        }
     }
 }
 
@@ -96,14 +105,38 @@ form {
         margin-bottom: 1rem;
     }
 
-    button {
+    .submit {
         padding: 0.5rem;
         font-size: 1.2rem;
         background-color: var(--text-color-main);
         color: var(--background-color-secondary);
         border-radius: 18px;
+        border: none;
         cursor: pointer;
+
+        &.loading {
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(130, 130, 130);
+            cursor: not-allowed;
+
+            .loading-spinner {
+                animation: spin 2s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        }   
     }
+    
 }
 
 .login-message {

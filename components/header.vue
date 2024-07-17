@@ -2,7 +2,7 @@
     <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }">
     <div class="container">
       <nuxt-link :to="{ path: '/' }" @click.prevent="scrollToTop" class="logo-link">
-        <img class="logo" ref="logoHeader" src="~/assets/svg/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
+        <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
       </nuxt-link>
       <section class="navigation" ref="navHeader" style="top:70px;">
         <ul class="nav-list">
@@ -35,6 +35,9 @@
 
 <script lang="ts" setup>
 import { donationPopupOpen } from '@/composables/donationPopupStates';
+import { useScroll } from '@/composables/useScroll'
+
+const { scrollToTop } = useScroll()
 
 const { isLoggedIn, isAdmin, checkAuthStatus } = useAuth()
 
@@ -55,13 +58,6 @@ let logoStartTop = 0;
 let logoStartHeight = 0;
 let navStartTop = 0;
 let navStartHeight = 0;
-
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-}
 
 onMounted(async () => {
     logoStartTop = parseInt(logoHeader.value.style.top);

@@ -23,7 +23,7 @@ section {
     }
 
     @media (max-width: 786px) {
-        height: 520px;
+        height: 420px;
 
         img {
             height: 300px;

@@ -80,7 +80,11 @@ onMounted(() => {
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: 640px;
+    height: 620px;
+  }
+
+  @media (max-width: 400px) {
+    height: 580px;
   }
 
   .header {
@@ -96,11 +100,16 @@ onMounted(() => {
     @media (max-width: 786px) {
       width: 90vw;
     }
+
+    @media (max-width: 400px) {
+        font-size: 2rem;
+        width: 90vw;
+    }
   }
 
   .socials {
     width: 600px;
-    height: 4rem;
+    height: 5rem;
     display: flex;
     flex-direction: row;
     justify-content: center;

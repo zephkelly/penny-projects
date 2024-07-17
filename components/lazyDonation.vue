@@ -52,18 +52,18 @@ function openDonationWindow() {
         &:last-child {
           align-items: flex-start;
           padding-left: 4rem;
-          padding-top: 8rem;
-          padding-bottom: 8rem;
+          padding-top: 6rem;
+          padding-bottom: 6rem;
 
           @media (max-width: 1000px) {
             padding-left: 3rem;
           }
 
           @media (max-width: 768px) {
-            padding-top: 31rem;
+            padding-top: 30rem;
             padding-left: 0rem;
             padding-right: 0rem;
-            padding-bottom: 7rem;
+            padding-bottom: 5rem;
             
             width: 90vw;
             align-items: center;
@@ -111,6 +111,7 @@ function openDonationWindow() {
           }
 
           @media (max-width: 768px) {
+            max-width: 600px;
             text-align: center;
           }
         }
@@ -137,6 +138,11 @@ function openDonationWindow() {
       @media (max-width: 768px) {
         margin-left: 0rem;
         margin-top: 5rem;
+      }
+
+      @media (max-width: 400px) {
+        margin-left: 0rem;
+        margin-top: 3rem;
       }
 
       h4 {
