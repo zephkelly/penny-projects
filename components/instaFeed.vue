@@ -104,6 +104,7 @@ section.instagram-feed {
     background-color: var(--background-color-main);
     overscroll-behavior: none;
     padding: 0rem 1rem 0rem 1rem;
+    overflow-x: hidden;
 
     @media (max-width: 768px) {
             padding: 0rem;

@@ -17,15 +17,15 @@
         <div class="icon">
             <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
         </div>
-        <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
+        <h1 class="header">Little Gifts <span class="large">Big</span> Impact</h1>
         <div class="img-container"> 
         <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
         </div>
-        <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
+        <p class="subheader">Where a little goes a long way</p>
         <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
         <ul class="buttons">
             <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">View Projects</NuxtLink>
-            <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate Now</button>
+            <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate</button>
             <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
         </ul>
     </section>
@@ -243,10 +243,10 @@ section.hero {
 
     .icon {
       position: relative;
-      top: -1.4rem;
-      width: clamp(13.5rem, 48vw, 19rem);
-      height: clamp(11rem, 40vw, 16rem);
+      width: clamp(13.5rem, 50vw, 18rem);
+      height: clamp(11rem, 42vw, 15rem);
       overflow: hidden;
+      z-index: 10;
 
       img {
         width: 100%;
@@ -254,46 +254,46 @@ section.hero {
     }
 
     .img-container {
-      position: relative;
-      top: -3.2rem;
-      height: 400px;
-
-      @media (max-width: 430px) {
-        height: 350px;
-
+        top: -3.2rem;
+        height: 250px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        // display: none;
+        
         img {
-          height: 100%;
+            height: 120%;
+            width: auto;
         }
-      }
-
-      img {
-        height: 120%;
-        width: auto;
-      }
+        
+        .image {
+            position: absolute;
+            width: 1000px;
+            height: auto;
+            top: -18rem;
+            right: -22rem;
+            z-index: 1;
+            opacity: 8%;
+        }
     }
 
     .header {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(2.8rem, 12vw, 4rem);
-      font-weight: 600;
-      text-transform: uppercase;
-      width: 90vw;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      top: -0.8rem;
-      line-height: clamp(3rem, 12vw, 4rem);
-      color: var(--text-color-main);
-      background-color: var(--background-color-main);
+        font-family: 'Nunito', sans-serif;
+        font-size: clamp(2.8rem, 12vw, 4rem);
+        font-weight: 600;
+        text-transform: uppercase;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        line-height: clamp(3rem, 12vw, 4rem);
+        color: var(--text-color-main);
+        margin-bottom: 2rem;
+        margin-top: 0.5rem;
+        z-index: 10;
     }
 
-    .image {
-      width: clamp(20rem, 90vw, 38rem);
-      height: auto;
-      position: relative;
-      top: -0.3rem;
-      z-index: 1;
-    }
+ 
 
     .subheader, .subheader2 {
       text-align: center;
@@ -302,12 +302,18 @@ section.hero {
       font-size: clamp(1rem, 5vw, 1.3rem);
       color: var(--text-color-main);
       line-height: 1.8rem;
+      max-width: 580px;
+      z-index: 10;
+
+      @media (max-width: 570px) {
+        max-width: 460px;
+      }
     }
 
     .subheader {
         margin-top: 1rem;
-        margin-bottom: 1rem;
-        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.4rem;
         font-weight: 600;
     }
 
@@ -325,9 +331,14 @@ section.hero {
     gap: 1rem;
     margin-bottom: 5rem;
 
+    .donation-button {
+        padding-left: 2.2rem;
+        padding-right: 2.2rem;
+    }
+
     > * {
-        padding-left: 1.6rem;
-        padding-right: 1.6rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
 
     @media (max-width: 560px) {
@@ -363,8 +374,6 @@ section.hero {
         font-size: 1.1rem;
         font-weight: 600;
         border-radius: 2rem;
-        padding-left: 1.6rem;
-        padding-right: 1.6rem;
         border: none;
     }
 

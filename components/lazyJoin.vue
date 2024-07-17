@@ -39,7 +39,7 @@
     justify-content: center;
 
     @media (max-width: 768px) {
-      padding-top: 2rem;
+      padding-top: 1rem;
     }
 
     .container {
@@ -100,6 +100,13 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        @media (max-width: 500px) {
+            padding-left: 0.2rem;
+            padding-right: 0.2rem;
+        }
 
         img {
           width: 10rem;

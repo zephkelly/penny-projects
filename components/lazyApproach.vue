@@ -86,6 +86,7 @@
             font-weight: 500;
             line-height: 1.7rem;
             margin-bottom: 3rem;
+            max-width: 390px;
 
             em {
               font-weight: 600;
@@ -99,6 +100,7 @@
             word-spacing: 0.1rem;
             line-height: 1.5rem;
             width: 97%;
+            max-width: 390px;
           }
 
           .approaches {

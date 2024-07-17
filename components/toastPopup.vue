@@ -40,7 +40,6 @@ onMounted(() => {
 });
 
 watch(() => route.query, () => {
-    console.log("Watching route query");
     checkQueryParams();
 });
 </script>

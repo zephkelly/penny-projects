@@ -156,7 +156,7 @@
 
           @media (max-width: 768px) {
             width: 80vw;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
           }
         }
       }
