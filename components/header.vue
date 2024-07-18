@@ -12,7 +12,7 @@
                         </NuxtLink>
                     </Transition>
                     <Transition name="fade" v-if="!isAdmin">
-                        <button ref="donationButton" class="donation-button" v-if="enableHeaderButtons" @click="donationPopupOpen().value = true;">
+                        <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = true;" v-if="enableHeaderButtons">
                             <h5>Donate</h5>
                         </button>
                     </Transition>
@@ -85,7 +85,6 @@ function adjustDesktopNavbarStyle() {
         logoHeader.value.style.height = `3.1rem`;
         logoHeader.value.style.top = `-0px`;
         logoHeader.value.style.left = `-30px`;
-        navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
         navHeader.value.style.top = `0px`;
         header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
         enableHeaderButtons.value = true;
@@ -229,6 +228,7 @@ onMounted(async () => {
     width: auto;
     padding: 0.4rem;
     padding-right: 0rem;
+    transition: top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
     
     .nav-list {
         display: flex;
