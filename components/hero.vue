@@ -22,7 +22,7 @@
         <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
         </div>
         <p class="subheader">Where a little goes a long way</p>
-        <p class="subheader2">Our mission is simple: nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
+        <p class="subheader2">Our mission is simple: nurture and inspire students from <span class="underline">Riverside Secondary Highschool</span>, Zambia</p>
         <ul class="buttons">
             <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">View Projects</NuxtLink>
             <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate</button>
@@ -271,8 +271,8 @@ section.hero {
             position: absolute;
             width: 1000px;
             height: auto;
-            top: -18rem;
-            right: -22rem;
+            top: -22rem;
+            right: -18rem;
             z-index: 1;
             opacity: 8%;
         }
@@ -307,6 +307,11 @@ section.hero {
 
       @media (max-width: 570px) {
         max-width: 460px;
+      }
+
+
+      .underline {
+        font-style: oblique 8deg;
       }
     }
 

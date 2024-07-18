@@ -43,7 +43,6 @@ const { isAdmin } = useAuth()
 
 const isLoaded = ref(false);
 const isMobile = ref(false);
-const lastScrollPosition = ref(0);
 
 // Are we on admin page?
 const route = useRoute();
@@ -57,63 +56,85 @@ const navHeader: Ref = ref(null);
 const donationButton: Ref = ref(null);
 const enableHeaderButtons: Ref = ref(false);
 
-let scrollTop = 0;
+function adjustNavbar () {
+    if(!header.value || !logoHeader.value || !navHeader.value) return;
+    
+    mobileNavbar();
+    desktopNavbar();
+}
+
 let logoStartTop = 0;
 let logoStartHeight = 0;
 let navStartTop = 0;
-let navStartHeight = 0;
+const isDesktopNavbarLandingStyled = ref(false);
+const isDesktopNavbarRegularStyled = ref(false);
+function desktopNavbar() {
+    if (isMobile.value === true) return;
 
-function adjustNavbar () {
-    if(!header.value || !logoHeader.value || !navHeader.value) return;
+    adjustDesktopNavbarStyle();
 
-    const currentScrollPosition = window.scrollY;
-    scrollTop = window.scrollY;
-    logoHeader.value.style.top = `${logoStartTop - scrollTop}px`;
-    navHeader.value.style.top = `${navStartTop - scrollTop}px`;
+    
+}
 
-    // Mobile view
-
-
-    if (scrollTop > logoStartTop - 10) {
+function adjustDesktopNavbarStyle() {
+    if (isMobile.value === true) return;
+    
+    // Regular scrolling desktop navbar
+    if (window.scrollY > logoStartTop - 10) {
+        if (isDesktopNavbarRegularStyled.value) return;
         logoHeader.value.style.height = `3.1rem`;
         logoHeader.value.style.top = `-0px`;
         logoHeader.value.style.left = `-30px`;
-
         navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
         navHeader.value.style.top = `0px`;
-
         header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
-
         enableHeaderButtons.value = true;
-    } else {
-        logoHeader.value.style.transition = ``;
-        logoHeader.value.style.height = `${logoStartHeight}rem`;
-        logoHeader.value.style.left = ``;
-
-        navHeader.value.style.transition = ``;
-
-        header.value.style.boxShadow = ``;
-
-        enableHeaderButtons.value = false;
+        
+        isDesktopNavbarRegularStyled.value = true;
+        isDesktopNavbarLandingStyled.value = false;
+        isMobileNavbarStyled.value = false;
+        return;
     }
 
-    if (window.innerWidth <= 768) {
-        if (scrollTop > logoStartTop - 10) {
-            header.value.style.opacity = 1;
-            logoHeader.value.style.opacity = 1;
-        }
-        else {
-            header.value.style.opacity = 0;
-            logoHeader.value.style.opacity = 0;
-        }
-    }
+    // Landing 'docked' desktop navbar
+    if (isDesktopNavbarLandingStyled.value) return;
+    header.value.style.transform = '';
+    header.value.style.boxShadow = ``;
+    logoHeader.value.style.top = `${logoStartTop}px`;
+    logoHeader.value.style.transition = ``;
+    logoHeader.value.style.height = `${logoStartHeight}rem`;
+    logoHeader.value.style.left = ``;
+    navHeader.value.style.top = `${navStartTop}px`;
+    navHeader.value.style.transition = ``;
+    enableHeaderButtons.value = false;
 
-    lastScrollPosition.value = scrollTop;
+    isDesktopNavbarLandingStyled.value = true;
+    isDesktopNavbarRegularStyled.value = false;
+    isMobileNavbarStyled.value = false;
 }
 
-function adjustNavbarStyle() {
-    isMobile.value = window.innerWidth <= 768;
-    if (window.innerWidth > 768) return;
+let lastScrollPosition = 0;
+function mobileNavbar() {
+    if (isMobile.value === false) return;
+
+    if (window.scrollY > lastScrollPosition) {
+        hideNavbar(true);
+    } else {
+        hideNavbar(false);
+    }
+
+    if (window.scrollY < 10) {
+        hideNavbar(true);
+    }
+
+    lastScrollPosition = window.scrollY;
+}
+
+const isMobileNavbarStyled = ref(false);
+function adjustMobileNavbarStyle() {
+    if (isMobile.value === false) return;
+    if (isMobileNavbarStyled.value) return;
+
     logoHeader.value.style.height = `3.1rem`;
     logoHeader.value.style.top = `-0px`;
     logoHeader.value.style.left = `-30px`;
@@ -121,17 +142,34 @@ function adjustNavbarStyle() {
     navHeader.value.style.top = `0px`;
     header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
     enableHeaderButtons.value = true;
+
+    isDesktopNavbarLandingStyled.value = false;
+    isDesktopNavbarRegularStyled.value = false;
+    isMobileNavbarStyled.value = true;
+}
+
+const isNavbarCollapsed = ref(false);
+function hideNavbar(shouldHide: boolean) {
+    if (shouldHide) {
+        if (isNavbarCollapsed.value) return;
+        isNavbarCollapsed.value = true;
+        header.value.style.transform = `translateY(-100%)`;
+    } else {
+        if (!isNavbarCollapsed.value) return;
+        isNavbarCollapsed.value = false;
+        header.value.style.transform = `translateY(0)`;
+    }
 }
 
 onMounted(async () => {
     isLoaded.value = true;
+    isMobile.value = window.innerWidth <= 768;
 
     logoStartTop = parseInt(logoHeader.value.style.top);
     logoStartHeight = parseInt(logoHeader.value.style.height);
     navStartTop = parseInt(navHeader.value.style.top);
-    navStartHeight = parseInt(navHeader.value.style.height);
 
-    adjustNavbarStyle();
+    adjustMobileNavbarStyle();
     adjustNavbar();
 
     window.addEventListener('scroll', () => {
@@ -139,7 +177,10 @@ onMounted(async () => {
     });
 
     window.addEventListener('resize', () => {
-        adjustNavbarStyle();
+        isMobile.value = window.innerWidth <= 768;
+        adjustNavbar();
+        adjustMobileNavbarStyle();
+        adjustDesktopNavbarStyle();
     });
 });
 </script>
@@ -152,7 +193,7 @@ onMounted(async () => {
         justify-content: center;
         max-height: 3.2rem;
         background-color: #eae6d7;
-        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform ease-in-out 0.2s;
         z-index: 100;
 
         &.admin {
