@@ -47,8 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { donationPopupOpen } from '@/composables/donationPopupStates';
+import { donationPopupOpen } from '@/composables/usePopupStates';
 
 const section: Ref = ref(null);
 const modalEnabled: Ref = ref(false);

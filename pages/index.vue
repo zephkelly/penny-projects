@@ -3,7 +3,6 @@
     <instaFeed/>
     <lazyMission/>
     <lazyApproach/>
-    <lazyDonationPopout/>
     <lazyDonation/>
     <lazyFounder/>
     <lazyJoin/>

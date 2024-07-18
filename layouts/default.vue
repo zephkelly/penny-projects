@@ -24,6 +24,8 @@
     </Head>
     <main>
         <toastPopup/>
+        <lazyDonationPopout/>
+        <mobileMenuPopout/>
         <Header/>
         <slot />
         <lazyLogoBanner />

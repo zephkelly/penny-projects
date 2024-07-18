@@ -5,37 +5,42 @@
                 <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
             </nuxt-link>
             <section class="navigation" ref="navHeader" style="top:70px;">
-                <ul class="nav-list">
-                    <Transition name="fade">
-                        <NuxtLink :to="{ path: '/projects', hash: ''}" ref="viewProjectsButton" class="view-projects-anchor" v-if="enableHeaderButtons">
-                            <h5>Our Projects</h5>
-                        </NuxtLink>
-                    </Transition>
-                    <Transition name="fade" v-if="!isAdmin">
-                        <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = true;" v-if="enableHeaderButtons">
-                            <h5>Donate</h5>
-                        </button>
-                    </Transition>
-                    <Transition name="fade" v-if="isAdmin && !isMobile">
-                        <NuxtLink :to="{ path: '/projects/edit', hash: ''}"  ref="editProjectsButton" class="edit-projects-anchor" v-if="enableHeaderButtons">
-                            <h5>Edit Projects</h5>
-                        </NuxtLink>
-                    </Transition>
-                    <Transition name="fade" v-if="isAdmin">
-                        <NuxtLink :to="{ path: '/admin', hash: ''}"  ref="adminPanelButton" class="view-admin-button" v-if="enableHeaderButtons">
-                            <h5 v-if="isMobile">Admin Panel</h5>
-                            <h5 v-else>View Admin Panel</h5>
-                        </NuxtLink>
-                    </Transition>
-                </ul>
-                <!-- <img class="menu" src="~/assets/svg/icons/menu-burger.svg" style="display: none;" /> -->
+                <div class="mobile" v-if="isMobile">
+                    <button class="menu-button" @click="mobileMenuPopupOpen().value = true;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
+                    </button>
+                </div>
+                <div class="desktop" v-else>
+                    <ul class="nav-list">
+                        <Transition name="fade">
+                            <NuxtLink :to="{ path: '/projects', hash: ''}" ref="viewProjectsButton" class="view-projects-anchor" v-show="enableHeaderButtons">
+                                <h5>Our Projects</h5>
+                            </NuxtLink>
+                        </Transition>
+                        <Transition name="fade" v-if="!isAdmin">
+                            <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = true;" v-show="enableHeaderButtons">
+                                <h5>Donate</h5>
+                            </button>
+                        </Transition>
+                        <Transition name="fade" v-if="isAdmin">
+                            <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor" v-show="enableHeaderButtons">
+                                <h5>Edit Projects</h5>
+                            </NuxtLink>
+                        </Transition>
+                        <Transition name="fade" v-if="isAdmin">
+                            <NuxtLink :to="{ path: '/admin', hash: ''}"  ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
+                                <h5 >View Admin Panel</h5>
+                            </NuxtLink>
+                        </Transition>
+                    </ul>
+                </div>
             </section>
         </div>
     </header>
 </template>
 
 <script lang="ts" setup>
-import { donationPopupOpen } from '@/composables/donationPopupStates';
+import { donationPopupOpen, mobileMenuPopupOpen } from '~/composables/usePopupStates';
 import { useScroll } from '@/composables/useScroll'
 
 const { scrollToTop } = useScroll()
@@ -72,8 +77,6 @@ function desktopNavbar() {
     if (isMobile.value === true) return;
 
     adjustDesktopNavbarStyle();
-
-    
 }
 
 function adjustDesktopNavbarStyle() {
@@ -122,7 +125,7 @@ function mobileNavbar() {
         hideNavbar(false);
     }
 
-    if (window.scrollY < 10) {
+    if (window.scrollY < 1) {
         hideNavbar(true);
     }
 
@@ -223,103 +226,128 @@ onMounted(async () => {
 
   .navigation {
     display: flex;
-    position: relative;
     align-items: center;
-    width: auto;
     padding: 0.4rem;
     padding-right: 0rem;
     transition: top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
     
-    .nav-list {
+    .desktop {
         display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-direction: row;
         height: 100%;
 
-        @media (max-width: 768px) {
-            gap: 0.5rem;
-        }
-    }
+        .nav-list {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
 
-    .donation-button, .view-admin-button, .edit-projects-anchor {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding-top: 0.1rem;
-        padding-left: 1.2rem;
-        padding-right: 1.2rem;
-        background-color: var(--text-color-main);
-        border: none;
-        border-radius: 2rem;
-        //   width: 7rem;
-        font-family: 'Nunito', sans-serif;
-        font-weight: 600;
-        letter-spacing: 0.05rem;
-        font-size: 0.9rem;
-        color: ghostwhite;
-        text-transform: uppercase;
-        transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
-        cursor: pointer;
-
-        &:hover {
-            background-color: var(--text-color-main-dark);
+            @media (max-width: 768px) {
+                gap: 0.5rem;
+            }
         }
 
-        @media (max-width: 768px) {
-            padding-left: 0.8rem;
-            padding-right: 0.8rem;
-        }
-    }
 
-    .view-projects-anchor {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 0.1rem;
-        padding-left: 1.2rem;
-        padding-right: 1.2rem;
-        background-color: transparent;
-        border: none;
-        border-radius: 1rem;
-        font-family: 'Nunito', sans-serif;
-        font-weight: 600;
-        letter-spacing: 0.05rem;
-        font-size: 0.9rem;
-        color: var(--text-color-main);
-        text-transform: uppercase;
-        transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
-        cursor: pointer;
+        .donation-button, .view-admin-button, .edit-projects-anchor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 0.1rem;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            background-color: var(--text-color-main);
+            border: none;
+            border-radius: 2rem;
+            //   width: 7rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+            font-size: 0.9rem;
+            color: ghostwhite;
+            text-transform: uppercase;
+            transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            cursor: pointer;
     
-        &:hover {
-            color: var(--background-color-secondary);
-            background-color: var(--text-color-main-dark);
+            &:hover {
+                background-color: var(--text-color-main-dark);
+            }
+    
+            @media (max-width: 768px) {
+                padding-left: 0.8rem;
+                padding-right: 0.8rem;
+            }
         }
-
-        @media (max-width: 768px) {
-            padding-left: 0.8rem;
-            padding-right: 0.8rem;
+    
+        .view-projects-anchor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 0.1rem;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            background-color: transparent;
+            border: none;
+            border-radius: 1rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+            font-size: 0.9rem;
+            color: var(--text-color-main);
+            text-transform: uppercase;
+            transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            cursor: pointer;
+        
+            &:hover {
+                color: var(--background-color-secondary);
+                background-color: var(--text-color-main-dark);
+            }
+    
+            @media (max-width: 768px) {
+                padding-left: 0.8rem;
+                padding-right: 0.8rem;
+            }
         }
     }
 
-    h5 {
-        text-align: center;
-    }
+    .mobile {
+        height: 100%;
 
-    div {
-      height: 100%;
-      width: 1.2rem;
-    }
+        .menu-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 1rem;
+            width: auto;
+            height: 100%;
+            background-color: var(--text-color-main);
+            padding: 0rem;
 
-    img {
-      height: 100%;
+            svg {
+                height: 80%;
+                width: auto;
+                fill: white;
+            }
+        }
     }
+}
+    
+h5 {
+    text-align: center;
+}
 
-    img.menu {
-      height: 90%;
-    }
-  }
+// div {
+//     height: 100%;
+//     width: 1.2rem;
+// }
+
+img {
+    height: 100%;
+}
+
+img.menu {
+    height: 90%;
+}
+  
 
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
