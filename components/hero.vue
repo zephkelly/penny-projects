@@ -243,10 +243,10 @@ section.hero {
     }
 
     .icon {
-        margin-top: 1rem;
+        margin-top: 2rem;
         position: relative;
-        width: clamp(15rem, 50vw, 18rem);
-        height: clamp(12.8rem, 42vw, 15rem);
+        width: clamp(17rem, 50vw, 18rem);
+        height: clamp(14.5rem, 42vw, 15rem);
         overflow: hidden;
         z-index: 10;
 
@@ -263,24 +263,15 @@ section.hero {
         width: 100%;
         overflow: hidden;
         z-index: 0;
-        // display: none;
 
         .image {
             position: relative;
             width: 1000px;
             height: 663px;
-            transform: scale(1.1);
+            transform: scale(1);
             z-index: 0;
             opacity: 100%;
-
-            @media (max-width: 768px) {
-                // opacity: 30%;
-                top: -6rem;
-            }
-
-            @media (max-width: 500px) {
-                top: -8rem;
-            }
+            top: -7rem;
         }
     }
 
@@ -323,7 +314,7 @@ section.hero {
     }
 
     .subheader {
-        margin-top: 4rem;
+        margin-top: 1.4rem;
         margin-bottom: 0.5rem;
         font-size: 1.4rem;
         font-weight: 600;
