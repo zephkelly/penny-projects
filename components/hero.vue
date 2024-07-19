@@ -243,6 +243,7 @@ section.hero {
     }
 
     .icon {
+        margin-top: 3rem;
         position: relative;
         width: clamp(15rem, 50vw, 18rem);
         height: clamp(12.8rem, 42vw, 15rem);
@@ -269,11 +270,16 @@ section.hero {
             position: relative;
             width: 1000px;
             height: auto;
-            top: -11rem;
-            left: 0.1rem;
-            // right: -18rem;
             z-index: 0;
             opacity: 26%;
+
+            @media (max-width: 768px) {
+                top: -8rem;
+            }
+
+            @media (max-width: 500px) {
+                top: -10rem;
+            }
         }
     }
 
@@ -316,7 +322,7 @@ section.hero {
     }
 
     .subheader {
-        margin-top: 5rem;
+        margin-top: 2rem;
         margin-bottom: 0.5rem;
         font-size: 1.4rem;
         font-weight: 600;
