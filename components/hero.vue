@@ -232,6 +232,7 @@ section.hero {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    position: relative;
     height: auto;
     padding-top: 2rem;
     padding-bottom: 6rem;
@@ -261,13 +262,15 @@ section.hero {
         width: 100%;
         height: 100%;
         overflow: hidden;
+        z-index: 1;
         // display: none;
 
         .image {
             position: relative;
             width: 1000px;
             height: auto;
-            top: -12rem;
+            top: -11rem;
+            left: 0.1rem;
             // right: -18rem;
             z-index: 1;
             opacity: 20%;
