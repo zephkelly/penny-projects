@@ -1,10 +1,10 @@
 <template>
   <Transition name="fade">
     <section ref="section" v-show="modalEnabled" class="donation-popout">
-      <div class="clickoff-detector" @click="closePopout()">
+      <div class="clickoff-detector" @click="donationPopupOpen().value = false;">
       </div>
         <div class="modal" >
-          <button class="close" @click="closePopout()"><svg height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
+          <button class="close" @click="donationPopupOpen().value = false;"><svg height="48" viewBox="0 -960 960 960" width="48"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></button>
           <h4>Donation method:</h4>
           <div class="container">
             <p class="message">Your generous contributions will go towards supporting the local community in Zambia.</p>
@@ -52,19 +52,27 @@ import { donationPopupOpen } from '@/composables/usePopupStates';
 const section: Ref = ref(null);
 const modalEnabled: Ref = ref(false);
 
+function openPopout() {
+    modalEnabled.value = true;
+
+    document.body.style.overflow = 'hidden';
+}
+
 function closePopout() {
-  donationPopupOpen().value = false;
+    modalEnabled.value = false;
+
+    setTimeout(() => {
+        document.body.style.overflow = 'visible';
+    }, 100);
 }
 
 watch(donationPopupOpen(), (newValue, oldValue) => {
   if (newValue) {
-    document.body.style.overflow = 'hidden';
-    modalEnabled.value = true;
+    openPopout();
   }
   else
   {
-    document.body.style.overflow = 'visible';
-    modalEnabled.value = false;
+    closePopout();
   }
 });
 </script>

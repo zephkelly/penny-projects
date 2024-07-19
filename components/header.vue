@@ -1,12 +1,12 @@
 <template>
     <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="isLoaded">
         <div class="container">
-            <nuxt-link :to="{ path: '/' }" @click.prevent="scrollToTop" class="logo-link">
+            <nuxt-link :to="{ path: '/' }" @click.prevent="() => { scrollToTop();  mobileMenuPopupOpen().value = false; }" class="logo-link">
                 <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
             </nuxt-link>
             <section class="navigation" ref="navHeader" style="top:70px;">
                 <div class="mobile" v-if="isMobile">
-                    <button class="menu-button" @click="mobileMenuPopupOpen().value = true;">
+                    <button class="menu-button" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
                         <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
                     </button>
                 </div>
@@ -18,7 +18,7 @@
                             </NuxtLink>
                         </Transition>
                         <Transition name="fade" v-if="!isAdmin">
-                            <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = true;" v-show="enableHeaderButtons">
+                            <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = !donationPopupOpen().value;" v-show="enableHeaderButtons">
                                 <h5>Donate</h5>
                             </button>
                         </Transition>
@@ -81,6 +81,7 @@ function desktopNavbar() {
 
 function adjustDesktopNavbarStyle() {
     if (isMobile.value === true) return;
+    mobileMenuPopupOpen().value = false;
     
     // Regular scrolling desktop navbar
     if (window.scrollY > logoStartTop - 10) {
@@ -321,6 +322,7 @@ onMounted(async () => {
             height: 100%;
             background-color: var(--text-color-main);
             padding: 0rem;
+            cursor: pointer;
 
             svg {
                 height: 80%;
