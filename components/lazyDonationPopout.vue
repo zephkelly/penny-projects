@@ -111,7 +111,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
     padding: 1.5rem;
     padding-top: 2rem;
     margin-bottom: 12vh;
-    border-radius: 15px;
+    border-radius: 16px;
     background-color: var(--background-color-main);
     z-index: 10;
 

@@ -19,7 +19,7 @@
         </div>
         <h1 class="header">Little Gifts <span class="large">Big</span> Impact</h1>
         <div class="img-container"> 
-        <img class="image" src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
+        <img class="image" src="~/assets/images/hero-graphic-mobile.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
         </div>
         <p class="subheader">Where a little goes a long way</p>
         <p class="subheader2">Our mission is simple: nurture and inspire students from <span class="underline">Riverside Secondary Highschool</span>, Zambia</p>
@@ -242,55 +242,52 @@ section.hero {
     }
 
     .icon {
-      position: relative;
-      width: clamp(13.5rem, 50vw, 18rem);
-      height: clamp(11rem, 42vw, 15rem);
-      overflow: hidden;
-      z-index: 10;
+        position: relative;
+        width: clamp(15rem, 50vw, 18rem);
+        height: clamp(12.8rem, 42vw, 15rem);
+        overflow: hidden;
+        z-index: 10;
 
-      img {
-        width: 100%;
-      }
+        img {
+            width: 100%;
+        }
     }
 
     .img-container {
-        top: -3.2rem;
+        display: flex;
+        justify-content: center;
         height: 250px;
         position: absolute;
         width: 100%;
         height: 100%;
         overflow: hidden;
         // display: none;
-        
-        img {
-            height: 120%;
-            width: auto;
-        }
-        
+
         .image {
-            position: absolute;
+            position: relative;
             width: 1000px;
             height: auto;
-            top: -22rem;
-            right: -18rem;
+            top: -12rem;
+            // right: -18rem;
             z-index: 1;
-            opacity: 8%;
+            opacity: 20%;
         }
     }
 
     .header {
         font-family: 'Nunito', sans-serif;
-        font-size: clamp(2.8rem, 12vw, 4rem);
-        font-weight: 600;
+        font-size: clamp(3rem, 8vw, 4rem);
+        font-weight: 700;
         text-transform: uppercase;
         align-items: center;
         text-align: center;
         position: relative;
+        top: -0.2rem;
         line-height: clamp(3rem, 12vw, 4rem);
         color: var(--text-color-main);
         margin-bottom: 2rem;
-        margin-top: 0.5rem;
         z-index: 10;
+        //add shadow to text
     }
 
  
@@ -316,7 +313,7 @@ section.hero {
     }
 
     .subheader {
-        margin-top: 1rem;
+        margin-top: 5rem;
         margin-bottom: 0.5rem;
         font-size: 1.4rem;
         font-weight: 600;

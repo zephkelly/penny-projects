@@ -58,7 +58,7 @@ watch(mobileMenuPopupOpen(), (newValue) => {
         backdrop-filter: blur(10px);
         transition: backdrop-filter 0.56s cubic-bezier(0.25, 0.1, 0.25, 1);
         overflow-y: auto;
-        z-index: 300;
+        z-index: 99;
         
         .clickoff-detector {
             top: 0;
@@ -71,11 +71,19 @@ watch(mobileMenuPopupOpen(), (newValue) => {
     }
 
     .modal {
-        margin-top: 3rem;
-        height: 120vh;
+        width: 440px;
+        height: auto;
+        position: relative;
         background-color: white;
-        width: 1000px;
+        width: 100%;
         z-index: 10;
+        padding: 1.5rem;
+        padding-top: 2rem;
+        margin-bottom: 12vh;
+        border-radius: 16px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        background-color: var(--background-color-main);
     }
 
     .fade-enter-active, .fade-leave-active {
