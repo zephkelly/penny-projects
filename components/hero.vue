@@ -323,7 +323,7 @@ section.hero {
     }
 
     .subheader {
-        margin-top: 2.8rem;
+        margin-top: 3.8rem;
         margin-bottom: 0.5rem;
         font-size: 1.4rem;
         font-weight: 600;
