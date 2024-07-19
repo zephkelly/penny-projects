@@ -258,10 +258,9 @@ section.hero {
     .img-container {
         display: flex;
         justify-content: center;
-        height: 250px;
+        height: 663px;
         position: absolute;
         width: 100%;
-        height: 100%;
         overflow: hidden;
         z-index: 0;
         // display: none;
@@ -269,17 +268,18 @@ section.hero {
         .image {
             position: relative;
             width: 1000px;
-            height: auto;
+            height: 663px;
+            transform: scale(1.1);
             z-index: 0;
+            opacity: 70%;
 
             @media (max-width: 768px) {
-                opacity: 15%;
+                // opacity: 30%;
                 top: -6rem;
             }
 
             @media (max-width: 500px) {
-                opacity: 26%;
-                top: -11rem;
+                top: -8rem;
             }
         }
     }
