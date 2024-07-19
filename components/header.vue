@@ -128,6 +128,9 @@ function mobileNavbar() {
 
     if (window.scrollY < 1) {
         hideNavbar(true);
+    } 
+    else if (window.scrollY > 1 && window.scrollY < 320) {
+        hideNavbar(false);
     }
 
     lastScrollPosition = window.scrollY;

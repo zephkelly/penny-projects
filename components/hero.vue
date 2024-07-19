@@ -26,7 +26,7 @@
         <ul class="buttons">
             <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">View Projects</NuxtLink>
             <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate</button>
-            <NuxtLink :to="{ path: '/', hash: '#approach'} " id="about-us-button2" class="about-us-button">About Us</NuxtLink>
+            <NuxtLink @click.prevent="scrollToAboutMobile" id="about-us-button2" class="about-us-button">About Us</NuxtLink>
         </ul>
     </section>
 </template>
@@ -41,7 +41,7 @@ const scrollToAboutDesktop = () => {
 }
 
 const scrollToAboutMobile = () => {
-  smoothScroll('#approach', 45)
+  smoothScroll('#approach', -220)
 }
 
 function openDonationModal() {
@@ -262,7 +262,7 @@ section.hero {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        z-index: 1;
+        z-index: 0;
         // display: none;
 
         .image {
@@ -272,8 +272,8 @@ section.hero {
             top: -11rem;
             left: 0.1rem;
             // right: -18rem;
-            z-index: 1;
-            opacity: 20%;
+            z-index: 0;
+            opacity: 26%;
         }
     }
 
@@ -335,6 +335,7 @@ section.hero {
     width: 100%;
     gap: 1rem;
     margin-bottom: 5rem;
+    z-index: 1;
 
     .donation-button {
         padding-left: 2.2rem;
@@ -387,6 +388,7 @@ section.hero {
         border: 0.2rem solid var(--text-color-main);
         background-color: var(--background-color-main);
         height: calc(4rem - (0.2rem * 2));
+        cursor: pointer;
     }
 
     .about-us-button {
@@ -394,6 +396,7 @@ section.hero {
         border: 0.2rem solid var(--text-color-main);
         background-color: var(--background-color-main);
         height: calc(4rem - (0.2rem * 2));
+        cursor: pointer;
     }
   }
 }
