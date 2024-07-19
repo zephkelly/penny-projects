@@ -271,7 +271,7 @@ section.hero {
             height: 663px;
             transform: scale(1.1);
             z-index: 0;
-            opacity: 70%;
+            opacity: 100%;
 
             @media (max-width: 768px) {
                 // opacity: 30%;
