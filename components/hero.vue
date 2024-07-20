@@ -19,7 +19,7 @@
         </div>
         <h1 class="header">Little Gifts <span class="large">Big</span> Impact</h1>
         <div class="img-container"> 
-        <img class="image" src="~/assets/images/hero-graphic-mobile.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
+        <img class="image" src="~/assets/images/hero-graphic-mobile1.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
         </div>
         <p class="subheader">Where a little goes a long way</p>
         <p class="subheader2">Our mission is simple: nurture and inspire students from <span class="underline">Riverside Secondary Highschool</span>, Zambia</p>
@@ -267,11 +267,12 @@ section.hero {
         .image {
             position: relative;
             width: 1000px;
-            height: 663px;
-            transform: scale(1.1);
+            height: 1000px;
+            // transform: scale();
             z-index: 0;
             opacity: 100%;
-            top: -8rem;
+            top: -16rem;
+            opacity: 20%;
         }
     }
 

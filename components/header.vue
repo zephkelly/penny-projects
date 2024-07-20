@@ -48,10 +48,27 @@ const { isAdmin } = useAuth()
 
 const isLoaded = ref(false);
 const isMobile = ref(false);
+const currentPath = ref('');
+const lastPath = ref('');
 
 // Are we on admin page?
 const route = useRoute();
 const isOnAdminPage = computed(() => route.path === '/admin');
+
+// Display navbar on new routes
+watch(() => route.path, () => {
+    isLandingNewPage();
+});
+
+function isLandingNewPage() {
+    if (isMobile.value === false) return;
+    if (route.path === '/') {
+        hideNavbar(true);
+        return;
+    }
+
+    hideNavbar(false);
+}
 
 // Header functionality
 const header: Ref = ref(null);
@@ -127,6 +144,7 @@ function mobileNavbar() {
     }
 
     if (window.scrollY < 1) {
+        if (route.path !== '/') return;
         hideNavbar(true);
     } 
     else if (window.scrollY > 1 && window.scrollY < 320) {
@@ -144,7 +162,6 @@ function adjustMobileNavbarStyle() {
     logoHeader.value.style.height = `3.1rem`;
     logoHeader.value.style.top = `-0px`;
     logoHeader.value.style.left = `-30px`;
-    navHeader.value.style.transition = 'top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)'
     navHeader.value.style.top = `0px`;
     header.value.style.boxShadow = `0px 0px 30px 0px rgba(0,0,0,0.25)`;
     enableHeaderButtons.value = true;
@@ -184,6 +201,7 @@ onMounted(async () => {
 
     window.addEventListener('resize', () => {
         isMobile.value = window.innerWidth <= 768;
+
         adjustNavbar();
         adjustMobileNavbarStyle();
         adjustDesktopNavbarStyle();
@@ -199,7 +217,7 @@ onMounted(async () => {
         justify-content: center;
         max-height: 3.2rem;
         background-color: #eae6d7;
-        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform ease-in-out 0.2s;
+        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
         z-index: 100;
 
         &.admin {
@@ -321,14 +339,14 @@ onMounted(async () => {
             align-items: center;
             border: none;
             border-radius: 1rem;
-            width: auto;
+            width: 3rem;
             height: 100%;
             background-color: var(--text-color-main);
             padding: 0rem;
             cursor: pointer;
 
             svg {
-                height: 80%;
+                height: 70%;
                 width: auto;
                 fill: white;
             }
