@@ -6,9 +6,12 @@
             </nuxt-link>
             <section class="navigation" ref="navHeader" style="top:70px;">
                 <div class="mobile" v-if="isMobile">
-                    <button class="menu-button" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
+                    <button class="menu-button" :class="mobileMenuOpenStyle" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
                         <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
                     </button>
+                    <!-- <button class="menu-button open" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;" v-else>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
+                    </button> -->
                 </div>
                 <div class="desktop" v-else>
                     <ul class="nav-list">
@@ -28,7 +31,7 @@
                             </NuxtLink>
                         </Transition>
                         <Transition name="fade" v-if="isAdmin">
-                            <NuxtLink :to="{ path: '/admin', hash: ''}"  ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
+                            <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
                                 <h5 >View Admin Panel</h5>
                             </NuxtLink>
                         </Transition>
@@ -54,6 +57,16 @@ const lastPath = ref('');
 // Are we on admin page?
 const route = useRoute();
 const isOnAdminPage = computed(() => route.path === '/admin');
+
+//create a computed value to check if the mobile menu is open and if it is set a reactive ref to 'open' or ''
+const mobileMenuOpenStyle = ref('');
+watch(() => mobileMenuPopupOpen().value, (newValue) => {
+    if (newValue === true) {
+        mobileMenuOpenStyle.value = 'open';
+    } else {
+        mobileMenuOpenStyle.value = '';
+    }
+});
 
 // Display navbar on new routes
 watch(() => route.path, () => {
@@ -157,6 +170,13 @@ function mobileNavbar() {
 const isMobileNavbarStyled = ref(false);
 function adjustMobileNavbarStyle() {
     if (isMobile.value === false) return;
+
+    if (logoHeader.value.style.top !== '0px') {
+        logoHeader.value.style.height = `3.1rem`;
+        logoHeader.value.style.top = `-0px`;
+        logoHeader.value.style.left = `-30px`;
+    }
+
     if (isMobileNavbarStyled.value) return;
 
     logoHeader.value.style.height = `3.1rem`;
@@ -341,14 +361,22 @@ onMounted(async () => {
             border-radius: 1rem;
             width: 3rem;
             height: 100%;
-            background-color: var(--text-color-main);
+            background-color: transparent;
             padding: 0rem;
             cursor: pointer;
 
             svg {
                 height: 70%;
                 width: auto;
-                fill: white;
+                fill: var(--text-color-main);
+            }
+        }
+
+        .menu-button.open {
+            background-color: var(--text-color-main);
+
+            svg {
+                fill: var(--background-color-main);
             }
         }
     }

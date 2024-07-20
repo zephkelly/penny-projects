@@ -33,7 +33,7 @@ const login = async () => {
     isLoading.value = true;
 
     try {
-        const { data, error } = await useFetch('/api/auth/login', {
+        const { data } = await $fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,19 +42,17 @@ const login = async () => {
                 email: email.value,
                 password: password.value
             })
-        });
-
-        if (error.value) {
+        }).catch((error) => {
             displayError.value = true;
-            errorMessage.value = "Invalid email or password. Please try again.";
-        }
+            errorMessage.value = error.statusMessage;
+        });
 
         if (data.value) {
             navigateTo('/admin?toast=Logged in successfully.');
         }
 
     } catch (error) {
-        console.error('An error occurred', error);
+
     } finally {
         isLoading.value = false;
     }

@@ -41,7 +41,7 @@ const scrollToAboutDesktop = () => {
 }
 
 const scrollToAboutMobile = () => {
-  smoothScroll('#approach', -420)
+  smoothScroll('#approach', -360)
 }
 
 function openDonationModal() {
