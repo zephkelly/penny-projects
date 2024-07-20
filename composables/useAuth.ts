@@ -4,10 +4,13 @@ export const useAuth = () => {
 
     const checkAuthStatus = async () => {
         try {
-            const response = await $fetch('/api/auth/status')
-            // const data = await response.json()
-            isLoggedIn.value = response.isLoggedIn
-            isAdmin.value = response.isAdmin
+            const headers = useRequestHeaders(['cookie']);
+            const { data, error } = await useFetch('/api/auth/status', { headers })
+            
+            if (data.value && data.value.data) {
+                isLoggedIn.value = data.value.data.isLoggedIn
+                isAdmin.value = data.value.data.isAdmin;
+            }
         } catch (error) {
             console.error('Error checking auth status:', error)
             isLoggedIn.value = false
@@ -17,7 +20,8 @@ export const useAuth = () => {
 
     const logout = async () => {
         try {
-            await fetch('/api/auth/logout', { method: 'POST' })
+            await $fetch('/api/auth/logout', { method: 'POST' })
+
             isLoggedIn.value = false
             isAdmin.value = false
         } catch (error) {

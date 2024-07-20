@@ -32,29 +32,21 @@ const clearErrorMessage = () => {
 const login = async () => {
     isLoading.value = true;
 
-    try {
-        const { data } = await $fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email.value,
-                password: password.value
-            })
-        }).catch((error) => {
-            displayError.value = true;
-            errorMessage.value = error.statusMessage;
-        });
-
-        if (data.value) {
-            navigateTo('/admin?toast=Logged in successfully.');
+    const { data } = await $fetch('/api/auth/login', {
+        method: 'POST',
+        body: {
+            email: email.value,
+            password: password.value
         }
+    });
 
-    } catch (error) {
+    isLoading.value = false;
 
-    } finally {
-        isLoading.value = false;
+    if (data.statusCode === 200) {
+        navigateTo('/admin?toast=' + data.statusMessage);
+    } else {
+        displayError.value = true;
+        errorMessage.value = data.statusMessage;
     }
 };
 </script>

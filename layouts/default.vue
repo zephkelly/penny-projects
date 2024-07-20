@@ -29,7 +29,7 @@
         <Header/>
         <slot />
         <lazyLogoBanner />
-        <lazyFooter />
+        <Footer />
     </main>
 </template>
 

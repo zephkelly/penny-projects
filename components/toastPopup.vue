@@ -2,7 +2,7 @@
     <ClientOnly>
         <Transition name="fade">
             <section class="toast" ref="toast">
-                <div class="container">
+                <div class="container" :class="mobileNavOpenStyle">
                     <div class="toast-content" v-show="toastPopupOpen">
                         <p class="toast-message">{{ toastMessageRef }}</p>
                     </div>
@@ -13,11 +13,15 @@
 </template>
 
 <script lang="ts" setup>
- const route = useRoute();
+import { isNavbarOpen } from '@/composables/useNavbarStates';
+
+const route = useRoute();
 
 const toast = ref(null);
 const toastPopupOpen = ref(false);
 const toastMessageRef = ref('');
+
+const mobileNavOpenStyle = computed(() => isNavbarOpen().value ? '' : 'nav-collapsed');
 
 const checkQueryParams = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -69,6 +73,13 @@ section.toast {
     display: flex;
     justify-content: flex-end;
     margin-top: 4rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    transition: margin-top cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
+
+    &.nav-collapsed {
+        margin-top: 1rem;
+    }
 }
 
 .toast-content {

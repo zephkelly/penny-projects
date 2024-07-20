@@ -1,87 +1,70 @@
 <template>
-    <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="isLoaded">
-        <div class="container">
-            <nuxt-link :to="{ path: '/' }" @click.prevent="() => { scrollToTop();  mobileMenuPopupOpen().value = false; }" class="logo-link">
-                <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
-            </nuxt-link>
-            <section class="navigation" ref="navHeader" style="top:70px;">
-                <div class="mobile" v-if="isMobile">
-                    <button class="menu-button" :class="mobileMenuOpenStyle" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
-                    </button>
-                    <!-- <button class="menu-button open" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;" v-else>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
-                    </button> -->
-                </div>
-                <div class="desktop" v-else>
-                    <ul class="nav-list">
-                        <Transition name="fade">
-                            <NuxtLink :to="{ path: '/projects', hash: ''}" ref="viewProjectsButton" class="view-projects-anchor" v-show="enableHeaderButtons">
-                                <h5>Our Projects</h5>
-                            </NuxtLink>
-                        </Transition>
-                        <Transition name="fade" v-if="!isAdmin">
-                            <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = !donationPopupOpen().value;" v-show="enableHeaderButtons">
-                                <h5>Donate</h5>
-                            </button>
-                        </Transition>
-                        <Transition name="fade" v-if="isAdmin">
-                            <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor" v-show="enableHeaderButtons">
-                                <h5>Edit Projects</h5>
-                            </NuxtLink>
-                        </Transition>
-                        <Transition name="fade" v-if="isAdmin">
-                            <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
-                                <h5 >View Admin Panel</h5>
-                            </NuxtLink>
-                        </Transition>
-                    </ul>
-                </div>
-            </section>
-        </div>
-    </header>
+    <ClientOnly>
+        <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="isLoaded">
+            <div class="container">
+                <nuxt-link :to="{ path: '/' }" @click.prevent="() => { scrollToTop();  mobileMenuPopupOpen().value = false; }" class="logo-link">
+                    <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
+                </nuxt-link>
+                <section class="navigation" ref="navHeader" style="top:70px;">
+                    <div class="mobile" v-if="isMobile">
+                        <button class="menu-button" :class="mobileMenuOpenStyle" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
+                        </button>
+                        <!-- <button class="menu-button open" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;" v-else>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
+                        </button> -->
+                    </div>
+                    <div class="desktop" v-else>
+                        <ul class="nav-list">
+                            <Transition name="fade">
+                                <NuxtLink :to="{ path: '/projects', hash: ''}" ref="viewProjectsButton" class="view-projects-anchor" v-show="enableHeaderButtons">
+                                    <h5>Our Projects</h5>
+                                </NuxtLink>
+                            </Transition>
+                            <Transition name="fade" v-if="!isAdmin">
+                                <button ref="donationButton" class="donation-button" @click="donationPopupOpen().value = !donationPopupOpen().value;" v-show="enableHeaderButtons">
+                                    <h5>Donate</h5>
+                                </button>
+                            </Transition>
+                            <Transition name="fade" v-if="isAdmin">
+                                <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor" v-show="enableHeaderButtons">
+                                    <h5>Edit Projects</h5>
+                                </NuxtLink>
+                            </Transition>
+                            <Transition name="fade" v-if="isAdmin">
+                                <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
+                                    <h5 >Admin Panel</h5>
+                                </NuxtLink>
+                            </Transition>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </header>
+    </ClientOnly>
 </template>
 
 <script lang="ts" setup>
 import { donationPopupOpen, mobileMenuPopupOpen } from '~/composables/usePopupStates';
 import { useScroll } from '@/composables/useScroll'
+import { isNavbarOpen } from '@/composables/useNavbarStates'
 
 const { scrollToTop } = useScroll()
 const { isAdmin } = useAuth()
+const route = useRoute();
 
 const isLoaded = ref(false);
 const isMobile = ref(false);
-const currentPath = ref('');
-const lastPath = ref('');
 
-// Are we on admin page?
-const route = useRoute();
 const isOnAdminPage = computed(() => route.path === '/admin');
+const mobileMenuOpenStyle = computed(() => mobileMenuPopupOpen().value ? 'open' : '');
 
-//create a computed value to check if the mobile menu is open and if it is set a reactive ref to 'open' or ''
-const mobileMenuOpenStyle = ref('');
-watch(() => mobileMenuPopupOpen().value, (newValue) => {
-    if (newValue === true) {
-        mobileMenuOpenStyle.value = 'open';
-    } else {
-        mobileMenuOpenStyle.value = '';
-    }
-});
 
 // Display navbar on new routes
 watch(() => route.path, () => {
-    isLandingNewPage();
-});
-
-function isLandingNewPage() {
     if (isMobile.value === false) return;
-    if (route.path === '/') {
-        hideNavbar(true);
-        return;
-    }
-
     hideNavbar(false);
-}
+});
 
 // Header functionality
 const header: Ref = ref(null);
@@ -105,7 +88,6 @@ const isDesktopNavbarLandingStyled = ref(false);
 const isDesktopNavbarRegularStyled = ref(false);
 function desktopNavbar() {
     if (isMobile.value === true) return;
-
     adjustDesktopNavbarStyle();
 }
 
@@ -191,22 +173,22 @@ function adjustMobileNavbarStyle() {
     isMobileNavbarStyled.value = true;
 }
 
-const isNavbarCollapsed = ref(false);
 function hideNavbar(shouldHide: boolean) {
     if (shouldHide) {
-        if (isNavbarCollapsed.value) return;
-        isNavbarCollapsed.value = true;
+        if (isNavbarOpen().value === false) return;
+        isNavbarOpen().value = false;
         header.value.style.transform = `translateY(-100%)`;
     } else {
-        if (!isNavbarCollapsed.value) return;
-        isNavbarCollapsed.value = false;
+        if (isNavbarOpen().value === true) return;
+        isNavbarOpen().value = true;
         header.value.style.transform = `translateY(0)`;
     }
 }
 
 onMounted(async () => {
+    await nextTick();
+    isMobile.value = window.innerWidth < 768;
     isLoaded.value = true;
-    isMobile.value = window.innerWidth <= 768;
 
     logoStartTop = parseInt(logoHeader.value.style.top);
     logoStartHeight = parseInt(logoHeader.value.style.height);
@@ -220,7 +202,7 @@ onMounted(async () => {
     });
 
     window.addEventListener('resize', () => {
-        isMobile.value = window.innerWidth <= 768;
+        isMobile.value = window.innerWidth < 768;
 
         adjustNavbar();
         adjustMobileNavbarStyle();

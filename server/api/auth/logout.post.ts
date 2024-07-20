@@ -1,11 +1,26 @@
 //@ts-ignore
 export default defineEventHandler(async (event) => {
     //@ts-ignore
-    deleteCookie(event, 'auth_token', {
-      httpOnly: true,
-      sameSite: true,
-      path: '/'
-    });
+    try {
+        deleteCookie(event, 'auth_token', {
+          httpOnly: true,
+          sameSite: true,
+          path: '/'
+        });
+    }
+    catch (error) {
+        return {
+            data: {
+                statusCode: 500,
+                statusMessage: 'An error has occured. Please try again.',
+            }
+        }
+    }
   
-    return { success: true, message: 'Logged out successfully' };
+    return { 
+        data: {
+            statusCode: 200, 
+            statusMessage: 'Logged out successfully' 
+        }
+    };
   });

@@ -1,0 +1,1 @@
+export const isNavbarOpen = () => useState<boolean>('isNavbarOpen', () => false);

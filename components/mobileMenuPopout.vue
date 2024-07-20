@@ -1,31 +1,30 @@
 <template>
-    <Transition name="fade">
-        <section ref="section" v-show="modalEnabled" class="mobile-menu">
-            <div class="clickoff-detector" @click="mobileMenuPopupOpen().value = false;">
-            </div>
-            <Transition name="scroll">
-                <div class="modal" :class="{ 'admin': isAdmin }" v-show="modalEnabled">
-                    <ul>
-                        <li class="donate-button" v-if="isAdmin.value === false">
-                            <NuxtLink @click="clickDonateButton()">Donate</NuxtLink>
-                        </li>
-                        <li class="admin-panel-button" v-if="isAdmin">
-                            <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/admin">View Admin Panel</NuxtLink>
-                        </li>
-                        <li v-if="route.path !== '/'">
-                            <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/">Home</NuxtLink>
-                        </li>
-                        <li v-if="route.path !== '/projects'">
-                            <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/projects">Our Projects</NuxtLink>
-                        </li>
-                        <li v-if="route.path !== '/projects/edit'">
-                            <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/projects">Edit Projects</NuxtLink>
-                        </li>
-                    </ul>
+    <ClientOnly>  
+        <Transition name="fade">
+            <section ref="section" v-show="modalEnabled" class="mobile-menu">
+                <div class="clickoff-detector" @click="mobileMenuPopupOpen().value = false;">
                 </div>
-            </Transition>
-        </section>
-    </Transition>
+                <Transition name="scroll">
+                    <div class="modal" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="modalEnabled">
+                        <ul>
+                            <li class="highlight" v-if="isAdmin === false">
+                                <NuxtLink @click="clickDonateButton()">Donate</NuxtLink>
+                            </li>
+                            <li class="highlight" v-if="isAdmin === true">
+                                <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/admin">Admin Panel</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/">Home</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/projects">Projects</NuxtLink>
+                            </li>
+                        </ul>
+                    </div>
+                </Transition>
+            </section>
+        </Transition>
+    </ClientOnly> 
 </template>
 
 <script lang="ts" setup>
@@ -33,7 +32,8 @@ import { mobileMenuPopupOpen, donationPopupOpen } from '@/composables/usePopupSt
 import { useScroll } from '@/composables/useScroll';
 
 const route = useRoute();
-const { isAdmin } = useAuth()
+const { isAdmin, checkAuthStatus } = useAuth()
+const isOnAdminPage = computed(() => route.path === '/admin')
 
 const modalEnabled = ref(false);
 function clickDonateButton() {
@@ -147,7 +147,7 @@ watch(mobileMenuPopupOpen(), (newValue) => {
                 border-radius: 16px;
                 transition: background-color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
 
-                &.donate-button {
+                &.highlight {
                     background-color: var(--text-color-main);
 
                     a {

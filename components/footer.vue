@@ -4,7 +4,7 @@
         <p class="address">Kafue, Zambia</p>
     </footer>
     <ClientOnly v-if="isOnLoginPage === false">
-        <NuxtLink to="/login" class="admin-login" v-if="isLoggedIn === false">Admin Login</NuxtLink>
+        <NuxtLink to="/login" class="admin-login" v-if="isLoggedIn === false">Admin Portal</NuxtLink>
         <NuxtLink class="admin-login" v-else @click="signOut">Log out</NuxtLink>
     </ClientOnly>
 </template>
@@ -14,8 +14,6 @@ const { isLoggedIn, checkAuthStatus, logout } = useAuth()
 
 const route = useRoute()
 const isOnLoginPage = computed(() => route.path === '/login')
-
-
 
 onMounted(async () => {
     await checkAuthStatus()

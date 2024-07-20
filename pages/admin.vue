@@ -1,8 +1,8 @@
 <template>
-    <section id="adminHero" v-if="isAdmin">
+    <section id="adminHero" v-if="isAdmin && isCheckingAuth === false">
         <div class="container">
-            <h2 class="sub-header">Hi Joel,</h2>
             <h1 class="header">Admin Panel</h1>
+            
         </div>
     </section>
 </template>
@@ -16,6 +16,7 @@ const { isAdmin, checkAuthStatus } = useAuth()
 const isCheckingAuth = ref(true)
 
 onMounted(async () => {
+    isCheckingAuth.value = true;
   await checkAuthStatus()
   isCheckingAuth.value = false
 })
@@ -25,14 +26,14 @@ onMounted(async () => {
 section {
     display: flex;
     justify-content: center;
-    width: 100%;
+    padding: 0rem 1rem 0rem 1rem;
     height: 1000px;
     background-color: var(--background-color-secondary);
 
     .container {
         display: flex;
         flex-direction: column;
-        margin-top: 14rem;
+        margin-top: 10rem;
     }
 }
 
