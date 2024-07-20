@@ -38,9 +38,6 @@
     display: flex;
     justify-content: center;
 
-    @media (max-width: 768px) {
-      padding-top: 1rem;
-    }
 
     .container {
       margin-top: 10rem;

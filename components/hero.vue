@@ -2,7 +2,7 @@
     <section class="hero desktop" id="hero-section">
         <div class="container">
         <div class="group">
-            <h1 class="header">Little Gifts, <span class="large">Big</span> Impact</h1>
+            <h1 class="header">Little Gifts, Big Impact</h1>
             <p class="subheader">Welcome to <em>Penny Projects</em>, where a little goes a long way</p>
             <p class="subheader2">Our mission is simple: to nurture and inspire students from Riverside Secondary Highschool, Zambia</p>
             <ul class="buttons">

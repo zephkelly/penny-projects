@@ -55,7 +55,7 @@
       }
 
       @media (max-width: 768px) {
-        margin-top: 15rem;
+        margin-top: 14rem;
       }
 
       @media (max-width: 500px) {
@@ -183,7 +183,7 @@
         }
 
         @media (max-width: 768px) {
-          padding-bottom: 4rem;
+          padding-bottom: 3rem;
         }
       }
     }

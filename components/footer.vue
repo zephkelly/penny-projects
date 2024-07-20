@@ -39,12 +39,14 @@ footer {
     align-items: center;
     gap: 6.5rem;
     font-size: 1.2rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
 
     @media (max-width: 768px) {
         flex-direction: column;
         gap: 3rem;
         font-size: 1.2rem;
-        height: 260px;
+        height: auto;
     }
 }
 
@@ -54,9 +56,10 @@ p, a {
 }
 
 .admin-login {
+    color: var(--text-color-main);
     display: block;
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin: 2rem;
     margin-top: 0rem;
     cursor: pointer;

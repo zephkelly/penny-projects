@@ -47,7 +47,7 @@
 
     @media (max-width: 768px) {
       margin-top: 4rem;
-      margin-bottom: 5rem;
+      margin-bottom: 4rem;
     }
 
     .group {

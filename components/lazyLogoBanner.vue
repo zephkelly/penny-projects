@@ -23,9 +23,11 @@ section {
     }
 
     @media (max-width: 786px) {
-        height: 420px;
+        height: auto;
 
         img {
+            margin-top: 1.8rem;
+            margin-bottom: 1.8rem;
             height: 300px;
         }
     }

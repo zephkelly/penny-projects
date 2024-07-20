@@ -80,11 +80,7 @@ onMounted(() => {
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: 620px;
-  }
-
-  @media (max-width: 400px) {
-    height: 580px;
+    height: auto;
   }
 
   .header {
@@ -94,6 +90,7 @@ onMounted(() => {
     font-weight: 700;
     font-size: 2.4rem;
     padding-bottom: 2rem;
+    margin-top: 4rem;
     color: var(--text-color-main);
     text-align: center;
 
@@ -116,6 +113,7 @@ onMounted(() => {
     z-index: 1;
     padding-top: 2rem;
     gap: 1.5rem;
+    margin-bottom: 4rem;
 
     @media (max-width: 768px) {
       padding-top: 11.5rem;

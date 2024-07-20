@@ -63,7 +63,7 @@ function openDonationWindow() {
             padding-top: 26rem;
             padding-left: 0rem;
             padding-right: 0rem;
-            padding-bottom: 5rem;
+            padding-bottom: 4rem;
             
             width: 90vw;
             align-items: center;

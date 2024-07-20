@@ -212,6 +212,10 @@ watch(mobileMenuPopupOpen(), (newValue) => {
         transform: translateY(0);
     }
 
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
     .fade-enter-from, .fade-leave-to {
         opacity: 0%;
     }
