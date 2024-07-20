@@ -70,7 +70,7 @@
           }
           
           @media (max-width: 768px) {
-            padding-top: 30rem;
+            padding-top: 26rem;
             padding-left: 0rem;
             padding-right: 0rem;
             padding-bottom: 5rem;
@@ -154,7 +154,7 @@
         right: 0;
         top: 0;
         width: 100%;
-        height: clamp(12rem, 100%, 26rem);
+        height: clamp(10rem, 100%, 22rem);
       }
     }
   }

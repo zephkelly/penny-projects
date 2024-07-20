@@ -59,7 +59,7 @@
       }
 
       @media (max-width: 500px) {
-        margin-top: 13rem;
+        margin-top: 12.5rem;
         border-top-right-radius: 15rem;
         border-top-left-radius: 15rem;
       }

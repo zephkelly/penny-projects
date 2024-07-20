@@ -41,7 +41,7 @@ const scrollToAboutDesktop = () => {
 }
 
 const scrollToAboutMobile = () => {
-  smoothScroll('#approach', -220)
+  smoothScroll('#approach', -420)
 }
 
 function openDonationModal() {
@@ -268,7 +268,6 @@ section.hero {
             position: relative;
             width: 1000px;
             height: 1000px;
-            // transform: scale();
             z-index: 0;
             opacity: 100%;
             top: -16rem;
