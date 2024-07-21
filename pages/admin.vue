@@ -1,8 +1,8 @@
 <template>
-    <section id="adminHero" v-if="isAdmin && isCheckingAuth === false">
+    <section id="adminHero" v-if="isAdmin">
         <div class="container">
             <h1 class="header">Admin Panel</h1>
-            
+            <lazyTipTapEditor :content="pageContent" />
         </div>
     </section>
 </template>
@@ -17,9 +17,22 @@ const isCheckingAuth = ref(true)
 
 onMounted(async () => {
     isCheckingAuth.value = true;
-  await checkAuthStatus()
-  isCheckingAuth.value = false
-})
+    await checkAuthStatus()
+    isCheckingAuth.value = false
+});
+
+const pageContent = ref(`
+  <h1>Welcome to Our Page</h1>
+  <h2>Here is a subheading that you would use for extra context</h2>
+  <h3>Features</h3>
+  <h4>Features</h4>
+  <ul>
+    <li>Headers</li>
+    <li>Paragraphs</li>
+    <li>Lists</li>
+  </ul>
+  <blockquote>And even blockquotes!</blockquote>
+`);
 </script>
 
 <style scoped lang="scss">
@@ -33,7 +46,7 @@ section {
     .container {
         display: flex;
         flex-direction: column;
-        margin-top: 10rem;
+        margin-top: 14rem;
     }
 }
 

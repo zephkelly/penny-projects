@@ -339,7 +339,7 @@ section.instagram-feed {
 }
 
 .fade2-enter-active, .fade2-leave-active {
-    transition: opacity ease-in-out 0.8s;
+    transition: opacity ease-in-out 1s;
 }
 
 .fade2-enter-from, .fade2-leave-to {

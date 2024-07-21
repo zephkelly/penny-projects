@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   css: ['~/assets/scss/global.scss'],
 
   buildModules: ['@nuxtjs/sass'],
-  modules: ['nuxt-gtag'],
+  modules: ['nuxt-gtag', "nuxt-tiptap-editor"],
 
   plugins: ['~/plugins/checkAuth.ts'],
 
