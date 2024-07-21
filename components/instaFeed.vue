@@ -1,7 +1,7 @@
 <template>
     <section class="instagram-feed">
         <div class="container">
-            <h2 class="header">Follow our <span class="hide">work on</span> Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
+            <h2 class="action-call">Follow our <span class="hide">work on</span> Instagram <a target="_blank" href="https://www.instagram.com/pennyprojectsrs/">@pennyprojectsrs</a></h2>
             <Transition name="fade"> 
                 <div class="feed-container uloaded" v-if="status === 'pending'">
                     <div class="post-container unloaded"></div>
@@ -127,12 +127,12 @@ section.instagram-feed {
     flex-direction: row;
     justify-content: space-between;
     gap: 2rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-
+    overflow: hidden;
+    overflow-x: scroll;
+    
     @media (max-width: 768px) {
-        overflow: hidden;
-        overflow-x: scroll;
+        padding-left: 1rem;
+        padding-right: 1rem;
         -ms-overflow-style: none;
         scrollbar-width: none; 
     }
@@ -262,7 +262,7 @@ section.instagram-feed {
 }
     
     
-.header {
+.action-call {
     width: 100%;
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;

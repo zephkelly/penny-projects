@@ -23,7 +23,7 @@
                 <div class="box"></div>
               </div>
               <div class="bank-transfer">
-                <h4 class="header">Bank Transfer</h4>
+                <h4 class="title">Bank Transfer</h4>
                 <div class="background">
                   <div class="item">
                     <h5 class="name">Name:</h5>
@@ -273,7 +273,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
             margin-left: 0rem;
           }
 
-          .header {
+          .title {
             font-family: "Nunito", sans-serif;
             font-weight: 600;
             font-size: 1.3rem;

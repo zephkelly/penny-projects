@@ -88,9 +88,6 @@ section.hero {
           color: var(--text-color-main);
           text-transform: uppercase;
 
-          .large {
-            margin-left: -0.05rem;
-          }
 
           @media (max-width: 1000px) {
             font-size: 3.4rem;
