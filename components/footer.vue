@@ -10,14 +10,14 @@
 </template>
 
 <script setup lang="ts">
-const { isLoggedIn, checkAuthStatus, logout } = useAuth()
+const { isLoggedIn, logout } = useAuth()
 
 const route = useRoute()
 const isOnLoginPage = computed(() => route.path === '/login')
 
-onMounted(async () => {
-    await checkAuthStatus()
-})
+// onMounted(async () => {
+//     await checkAuthStatus()
+// })
 
 const signOut = async () => {
     try {

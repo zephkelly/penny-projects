@@ -1,5 +1,5 @@
 <template>
-    <section class="admin-panel component">
+    <section class="admin-panel">
         <div class="container" v-if="isAdmin">
             <h1>Admin Panel</h1>
         </div>
@@ -10,11 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-const { isAdmin, checkAuthStatus } = useAuth();
-
-onMounted(async () => {
-    await checkAuthStatus();
-});
+const { isAdmin } = useAuth();
 </script>
 
 <style lang="scss" scoped>

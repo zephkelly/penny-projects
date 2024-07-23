@@ -25,26 +25,26 @@ const data = [
     {
         title: 'Project 1',
         description: 'This is a description of project 1',
-        image: 'project1.jpg',
-        link: '/project1'
+        image: '',
+        link: '/'
     },
     {
         title: 'Project 2',
         description: 'This is a description of project 2',
-        image: 'project2.jpg',
-        link: '/project2'
+        image: '',
+        link: '/'
     },
     {
         title: 'Project 3',
         description: 'This is a description of project 3',
-        image: 'project3.jpg',
-        link: '/project3'
+        image: '',
+        link: '/'
     },
     {
         title: 'Project 4',
         description: 'This is a description of project 4',
-        image: 'project4.jpg',
-        link: '/project4'
+        image: '',
+        link: '/'
     }
 ];
 </script>

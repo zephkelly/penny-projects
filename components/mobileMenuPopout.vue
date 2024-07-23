@@ -32,7 +32,7 @@ import { mobileMenuPopupOpen, donationPopupOpen } from '@/composables/usePopupSt
 import { useScroll } from '@/composables/useScroll';
 
 const route = useRoute();
-const { isAdmin, checkAuthStatus } = useAuth()
+const { isAdmin } = useAuth()
 const isOnAdminPage = computed(() => route.path === '/admin')
 
 const modalEnabled = ref(false);
@@ -82,6 +82,8 @@ watch(mobileMenuPopupOpen(), (newValue) => {
         transition: backdrop-filter 0.56s cubic-bezier(0.25, 0.1, 0.25, 1);
         overflow-y: auto;
         z-index: 99;
+        padding-left: 0rem;
+        padding-right: 0rem;
         
         .clickoff-detector {
             top: 0;

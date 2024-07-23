@@ -1,14 +1,14 @@
 <template>
     <ClientOnly>
-        <Transition name="fade">
-            <section class="toast component" ref="toast">
-                <div class="container" :class="mobileNavOpenStyle">
-                    <div class="toast-content" v-show="toastPopupOpen">
+        <section class="toast component" ref="toast" >
+            <Transition name="fade">
+                <div class="container" :class="mobileNavOpenStyle" v-show="toastPopupOpen">
+                    <div class="toast-content">
                         <p class="toast-message">{{ toastMessageRef }}</p>
                     </div>
                 </div>
-            </section>
-        </Transition>
+            </Transition>
+        </section>
     </ClientOnly>   
 </template>
 
@@ -23,19 +23,37 @@ const toastMessageRef = ref('');
 
 const mobileNavOpenStyle = computed(() => isNavbarOpen().value ? '' : 'nav-collapsed');
 
+let toastTimer: number | null = null;
+
+const showToast = (message: string) => {
+  if (toastTimer !== null) {
+    clearTimeout(toastTimer);
+  }
+
+  toastPopupOpen.value = true;
+  toastMessageRef.value = message;
+
+  toastTimer = window.setTimeout(() => {
+    toastPopupOpen.value = false;
+    toastTimer = null;
+
+    setTimeout(() => {
+        toastMessageRef.value = '';
+    }, 300);
+  }, 6000);
+};
+
 const checkQueryParams = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const toastMessage = urlParams.get('toast');
 
     if (toastMessage) {
-        toastPopupOpen.value = true;
-        toastMessageRef.value = toastMessage;
-        window.history.replaceState({}, document.title, window.location.pathname);
+        showToast(toastMessage);
 
-        setTimeout(() => {
-                toastPopupOpen.value = false;
-                toastMessageRef.value = '';
-        }, 6000);
+        urlParams.delete('toast');
+        const newUrl = new URL(window.location.href);
+        newUrl.search = urlParams.toString();
+        window.history.replaceState({}, '', newUrl.toString());
     }
 }
 
@@ -46,18 +64,16 @@ onMounted(() => {
 watch(() => route.query, () => {
     checkQueryParams();
 });
+
+onBeforeUnmount(() => {
+    if (toastTimer !== null) {
+        clearTimeout(toastTimer);
+    }
+});
 </script>
 
 <style scoped lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 
 section.toast {
     position: fixed;
@@ -65,7 +81,8 @@ section.toast {
     z-index: 1000;
     cursor: none;
     pointer-events: none;
-    
+    padding-left: 0rem;
+    padding-right: 0rem;
 }
 
 .container {
@@ -78,7 +95,11 @@ section.toast {
     transition: margin-top cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
 
     &.nav-collapsed {
-        margin-top: 1rem;
+        margin-top: 4.6rem;
+
+        @media (max-width: 768px) {
+            margin-top: 1rem;
+        }
     }
 }
 
@@ -97,9 +118,19 @@ section.toast {
         color: var(--text-color-main);
         font-size: 1rem;
         margin: 0rem;
-        // text-align: justify;
     }
 }
 
-// localhost:3001?toastMessage=Sucessfully+signed+out+of+the+application+and+now+you+can+die
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.fade-enter-from, .fade-leave-to {
+    transition-duration: 0.3s;
+    opacity: 0%;
+}
+
+.fade-enter-to, .fade-leave-from {
+    opacity: 100%;
+}
 </style>

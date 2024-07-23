@@ -80,31 +80,32 @@
 </template>
 
 <script setup lang="ts">
-const { status, data: posts, error } = await useLazyFetch<Array<any>>('https://feeds.behold.so/7QlDYCOmJbnFHJOqMn9L', { });
+const { status, data: posts, error } = await useLazyAsyncData<Array<any>>('posts', () => $fetch('https://feeds.behold.so/7QlDYCOmJbnFHJOqMn9L'));
 
 const isApiActive: Ref<boolean> = ref(false);
 
-if (error.value) {
-    isApiActive.value = false;
-}
+watch(status, (value) => {
+    if (value === 'pending') {
+        isApiActive.value = false;
+        return;
+    }
 
-watchEffect(() => {
-    if (error.value) return;
-    if (posts.value == null) return;
+    if (value === 'error') {
+        isApiActive.value = false;
+        return;
+    }
+
     checkApiStatus();
 })
 
+
 async function checkApiStatus() {
     try {
-        const post = posts.value?.[0];
+        const postsValue = posts.value as Array<any>;
+        const mediaUrl = postsValue[0].mediaUrl;
 
-        const isMediaUrlActive = await fetch(post.mediaUrl)
-
-        if (isMediaUrlActive.status === 403) {
-            isApiActive.value = false;
-        } else {
-            isApiActive.value = true;
-        }
+        const isMediaUrlActive = await $fetch<any>(mediaUrl, { method: 'HEAD' });
+        isApiActive.value = isMediaUrlActive.status !== 403;
     }
     catch (error) {
         isApiActive.value = false;
@@ -165,7 +166,11 @@ section.instagram-feed {
     &.unloaded {
         width: 100%;
         position: absolute;
-        margin-top: 4.5rem;
+        margin-top: 4.1rem;
+
+        @media (max-width: 850px) {
+            margin-top: 4.54rem;
+        }
     }
 
     @media (max-width: 850px) {
@@ -353,8 +358,7 @@ section.instagram-feed {
     height: 3rem;
 
     .hide {
-        margin-left: 0.4rem;
-        margin-right: 0.4rem;
+        margin-left: 0.1rem;
     }
 
     @media (max-width: 850px) {

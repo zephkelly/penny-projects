@@ -60,7 +60,7 @@ const mobileMenuOpenStyle = computed(() => mobileMenuPopupOpen().value ? 'open' 
 // Display navbar on new routes
 watch(() => route.path, () => {
     if (isMobile.value === false) return;
-    hideNavbar(false);
+    hideMobileNavbar(false);
 });
 
 // Header functionality
@@ -95,6 +95,8 @@ function adjustDesktopNavbarStyle() {
     // Regular scrolling desktop navbar
     if (window.scrollY > logoStartTop - 10) {
         if (isDesktopNavbarRegularStyled.value) return;
+        isNavbarOpen().value = true;
+
         logoHeader.value.style.height = `3.1rem`;
         logoHeader.value.style.top = `-0px`;
         logoHeader.value.style.left = `-30px`;
@@ -110,6 +112,8 @@ function adjustDesktopNavbarStyle() {
 
     // Landing 'docked' desktop navbar
     if (isDesktopNavbarLandingStyled.value) return;
+    isNavbarOpen().value = false;
+
     header.value.style.transform = '';
     header.value.style.boxShadow = ``;
     logoHeader.value.style.top = `${logoStartTop}px`;
@@ -130,17 +134,17 @@ function mobileNavbar() {
     if (isMobile.value === false) return;
 
     if (window.scrollY > lastScrollPosition) {
-        hideNavbar(true);
+        hideMobileNavbar(true);
     } else {
-        hideNavbar(false);
+        hideMobileNavbar(false);
     }
 
     if (window.scrollY < 1) {
         if (route.path !== '/') return;
-        hideNavbar(true);
+        hideMobileNavbar(true);
     } 
     else if (window.scrollY > 1 && window.scrollY < 320) {
-        hideNavbar(false);
+        hideMobileNavbar(false);
     }
 
     lastScrollPosition = window.scrollY;
@@ -170,7 +174,7 @@ function adjustMobileNavbarStyle() {
     isMobileNavbarStyled.value = true;
 }
 
-function hideNavbar(shouldHide: boolean) {
+function hideMobileNavbar(shouldHide: boolean) {
     if (shouldHide) {
         if (isNavbarOpen().value === false) return;
         isNavbarOpen().value = false;

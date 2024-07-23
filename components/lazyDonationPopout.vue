@@ -92,6 +92,8 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
     overflow-y: scroll;
     scrollbar-width: thin;
     z-index: 300;
+    padding-left: 0rem;
+    padding-right: 0rem;
 
     .clickoff-detector {
       top: 0;
@@ -102,7 +104,6 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
       z-index: 9;
     }
   }
-
 
   .modal {
     top: 12vh;

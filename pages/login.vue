@@ -26,7 +26,6 @@ const errorMessage = ref('');
 const isLoading = ref(false);
 const redirectPath = ref('');
 
-
 onMounted(() => {
     checkQueryParams();
 });
@@ -37,6 +36,12 @@ function checkQueryParams() {
 
     if (redirect) {
         redirectPath.value = redirect;
+        urlParams.delete('redirect');
+
+        const newUrl = new URL(window.location.href);
+        newUrl.search = urlParams.toString();
+        
+        window.history.replaceState({}, '', newUrl.toString());
     }
 }
 
@@ -47,31 +52,30 @@ const clearErrorMessage = () => {
 const login = async () => {
     isLoading.value = true;
 
-    const { data } = await $fetch('/api/auth/login', {
+    const response = await $fetch<{data: { statusCode: number, statusMessage: string;}}>('/api/auth/login', {
         method: 'POST',
         body: {
             email: email.value,
             password: password.value
-        }
+        },
+        credentials: 'include'
     });
 
     isLoading.value = false;
 
-    if (data.statusCode === 200) {
-        if (redirectPath.value !== '') 
+    if (response.data.statusCode === 200) {
+        if (redirectPath.value !== '/login' && redirectPath.value !== '') 
         {
-            navigateTo(redirectPath.value + '?' + 'toast=' + data.statusMessage);
+            navigateTo(redirectPath.value + '?' + 'toast=' + response.data.statusMessage);
             return;
         }
 
-        navigateTo('/admin?toast=' + data.statusMessage);
+        navigateTo('/admin?toast=' + response.data.statusMessage);
     } else {
         displayError.value = true;
-        errorMessage.value = data.statusMessage;
+        errorMessage.value = response.data.statusMessage;
     }
 };
-
-//grab a querey parameter from the url
 </script>
 
 <style scoped lang="scss">

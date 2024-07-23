@@ -12,12 +12,12 @@ definePageMeta({
     middleware: ['admin']
 })
 
-const { isAdmin, checkAuthStatus } = useAuth()
+const { isAdmin } = useAuth()
 const isCheckingAuth = ref(true)
 
 onMounted(async () => {
     isCheckingAuth.value = true;
-    await checkAuthStatus()
+    // await checkAuthStatus()
     isCheckingAuth.value = false
 });
 </script>

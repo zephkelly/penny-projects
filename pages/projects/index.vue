@@ -4,7 +4,9 @@
             <h1 class="header">Our Projects</h1>
             <p class="subheader">We believe that small actions can lead to big changes. Our projects, both ongoing and completed, demonstrate the collective power of people like you. Read more about our work below.</p>
             <ProjectTileset />
-            <lazyAdminPanel v-if="isAdmin" />
+            <ClientOnly>
+                <lazyAdminPanel v-if="isAdmin" />
+            </ClientOnly>
         </div>
     </section>
 </template>
@@ -13,11 +15,7 @@
 import ProjectTileset from '~/components/projects/tileset.vue';
 import LazyAdminPanel from '~/components/projects/lazyAdminPanel.vue';
 
-const { isAdmin, checkAuthStatus } = useAuth();
-
-onMounted(async () => {
-    await checkAuthStatus();
-});
+const { isAdmin } = useAuth();
 </script>
 
 <style lang="scss" scoped>
