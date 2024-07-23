@@ -90,6 +90,7 @@ watch(donationPopupOpen(), (newValue, oldValue) => {
     backdrop-filter: blur(10px);
     transition: backdrop-filter 0.56s cubic-bezier(0.25, 0.1, 0.25, 1);
     overflow-y: scroll;
+    scrollbar-width: thin;
     z-index: 300;
 
     .clickoff-detector {

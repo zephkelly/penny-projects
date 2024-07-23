@@ -24,9 +24,9 @@
 .founder {
     position: relative;
     min-height: 1020px;
-    width: 100vw;
     background-color: var(--background-color-secondary);
     overflow: hidden;
+    padding: 0rem;
 
     @media (max-width: 1300px) {
       min-height: 960px;
@@ -37,15 +37,14 @@
     }
     
     .round-container {
-    //   position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 19rem;
-      width: 100%;
+        flex: 1;
       height: auto;
-      border-top-right-radius: 20000rem;
-      border-top-left-radius: 20000rem;
+      border-top-right-radius: 2000px;
+      border-top-left-radius: 2000px;
       background-color: var(--background-color-main);
       z-index: 1;
       padding-bottom: 0rem;

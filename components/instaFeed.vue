@@ -137,18 +137,17 @@ section.instagram-feed {
         max-width: 1000px;
         flex-direction: column;
         box-sizing: border-box;
+        overflow-y: hidden;
 
         &.unloaded {
-            //Post height + action call height + margin bottom
-            min-height: calc(480px + 4.5rem);
-            overflow-y: hidden;
+            min-height: calc(480px + 6.5rem);
 
             @media (max-width: 850px) {
-                min-height: calc(70vw + 4.5rem);
+                min-height: calc(70vw + 6.5rem);
             }
 
             @media (max-width: 560px) {
-                min-height: calc(110vw + 4.5rem);
+                min-height: calc(110vw + 6.5rem);
             }
         }
     }
@@ -188,7 +187,7 @@ section.instagram-feed {
 @media (max-width: 850px) and (pointer: fine) {
     .feed-container {
         overflow-x: auto;
-        scrollbar-width: auto;
+        scrollbar-width: thin;
         -ms-overflow-style: auto;
         scrollbar-color: var(--text-color-main) var(--background-color-secondary);
         

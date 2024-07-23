@@ -5,9 +5,11 @@
 </template>
 
 <style scoped lang="scss">
-section {
+section.banner.component {
     display: flex;
     justify-content: center;
+
+    padding: 0rem;
 }
 
 .banner {

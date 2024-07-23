@@ -217,6 +217,7 @@ onMounted(async () => {
         max-height: 3.2rem;
         background-color: #eae6d7;
         transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
+        will-change: transform;
         z-index: 100;
 
         &.admin {
