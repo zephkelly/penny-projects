@@ -10,9 +10,6 @@
                         <button class="menu-button" :class="mobileMenuOpenStyle" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;">
                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
                         </button>
-                        <!-- <button class="menu-button open" @click="mobileMenuPopupOpen().value = !mobileMenuPopupOpen().value;" v-else>
-                            <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
-                        </button> -->
                     </div>
                     <div class="desktop" v-else>
                         <ul class="nav-list">

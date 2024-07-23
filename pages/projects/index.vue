@@ -1,6 +1,8 @@
 <template>
-    <section class="projects">
-        <h1>Projects</h1>
+    <section class="projects component">
+        <div class="container">
+            <h1>Projects</h1>
+        </div>
     </section>
 </template>
 
@@ -8,6 +10,14 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+section {
+    min-height: 500px;
+
+
+    .container {
+        margin-top: 14rem;
+    }
+}
 
 </style>

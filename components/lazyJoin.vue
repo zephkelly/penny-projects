@@ -1,5 +1,5 @@
 <template>
-    <section class="join">
+    <section class="join component">
     <div class="container">
       <div class="header">
         <img src="~/assets/svg/hearts.svg" alt="Hearts icon" loading="lazy">

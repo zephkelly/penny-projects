@@ -58,15 +58,23 @@
 }
 
 :root {
-  --text-color-main: #8e351e;
-  --text-color-main-light: rgb(241, 225, 210);
-  --text-color-main-lighter: #f4eae7;
-  --text-color-main-dark: #42170c;
-  --text-color-secondary: #f1ac9c;
-  --background-color-main: #eae6d7;
-  --background-color-main-dark: rgb(214, 209, 191);
-  --background-color-secondary: #ffffff;
-  --text-color-dark: #252525;
+    --main2: rgb(187, 97, 75);
+    --text-color-main: #8e351e;
+    --text-color-main-light: rgb(241, 225, 210);
+    --text-color-main-lighter: #f4eae7;
+    --text-color-main-dark: #42170c;
+    --text-color-secondary: #f1ac9c;
+    --background-color-main: #eae6d7;
+    --background-color-main-dark: rgb(214, 209, 191);
+    --background-color-secondary: #ffffff;
+    --black1: #000000;
+    --black2: #161616;
+    --grey1: #414141;
+    --grey2: #707070;
+    --grey3: #8f8f8f;
+    --grey4: #bcbcbc;
+    --grey5: #d3d3d3;
+    --white2: #ebebeb;
 }
 
 body {
@@ -82,13 +90,12 @@ main {
   overflow: hidden;
 }
 
-section, header {
+.component, header {
     .container {
         width: 100%;
         max-width: 1000px;
         height: 100%;
         display: flex;
-        flex-direction: row;
     
         > * {
         display: flex;
@@ -101,7 +108,6 @@ section, header {
     font-size: 3.6rem;
     letter-spacing: 0.3rem;
     font-weight: 700;
-    width: 34rem;
     color: var(--text-color-main);
     text-transform: uppercase;
 }

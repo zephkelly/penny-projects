@@ -30,6 +30,7 @@ onMounted(() => {
     checkQueryParams();
 });
 
+//@ts-ignore
 watch(() => route.path, () => {
     checkQueryParams();
 });

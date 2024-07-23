@@ -1,60 +1,85 @@
 <template>
-    <!-- <ClientOnly> -->
-        <div class="editor" v-if="isAdmin && editor">
-            <div class="fixed-menu">
-                <div class="elements">
-                    <button @click="editor.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                    <button @click="editor.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                    <button @click="editor.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
-                    <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
-                    <button @click="editor.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
-                    <button @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ active: editor.isActive('codeBlock') }">Code Block</button>
-                    <button @click="editor.chain().focus().toggleCode().run()" :class="{ active: editor.isActive('code') }">Code</button>
-                    <button @click="editor.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
-                    <button @click="editor.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
-                    <button @click="editor.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
-                    <button @click="editor.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
-                    <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">Left</button>
-                    <button @click="editor.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">Center</button>
-                    <button @click="editor.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">Right</button>
-                    <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">Justify</button>
+    <section class="tiptap component">
+        <div class="outer-container">
+            <div class="container">
+                <div class="editor" v-if="isAdmin && editor">
+                    <div class="fixed-menu">
+                        <div class="elements">
+                            <h6>Elements</h6>
+                            <div class="wrapper">
+                                <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
+                                <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
+                                <button @click="editor?.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                                <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H3</button>
+                                <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button>
+                            </div>
+                        </div>
+                        <div class="styles">
+                            <h6>Styling</h6>
+                            <div class="wrapper">
+                                <div class="group">
+                                    <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                                    <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                                    <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                                    <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
+                                    <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
+                                    <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
+                                    <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
+                                </div>
+                                <div class="group">
+                                    <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                    </button>
+                                    <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
+                                        <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
+                                    </button>
+                                    <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                    </button>
+                                    <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
+                                        <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
+                                    </button>
+                                </div>
+                                <div class="group">
+                                    <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
+                                    <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <h6>Actions</h6>
+                            <div class="wrapper">
+                                <button @click="editor?.chain().focus().undo().run()">Undo</button>
+                                <button @click="editor?.chain().focus().redo().run()">Redo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <floating-menu :editor="editor" :tippy-options="{ duration: 100 }">
+                        <div class="floating-menu">
+                            <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">P</button>
+                            <button @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
+                            <button @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                        </div>
+                    </floating-menu>
+                    <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
+                        <div class="bubble-menu">
+                            <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                            <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                            <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                        </div>
+                    </bubble-menu>
+                    <editor-content :editor="editor" />
                 </div>
-                <div class="actions">
-                    <button @click="editor.chain().focus().undo().run()">Undo</button>
-                    <button @click="editor.chain().focus().redo().run()">Redo</button>                    
-                </div>
-                <div class="styling">
-                    <button @click="editor.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
-                    <button @click="editor.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                    <button @click="editor.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
-                    <button @click="editor.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H3</button>
-                    <button @click="editor.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button>
+                <div v-else>
+                    <p>Only admins can access the editor.</p>
                 </div>
             </div>
-            <floating-menu :editor="editor" :tippy-options="{ duration: 100 }">
-                <div class="floating-menu">
-                    <button @click="editor.chain().focus().toggleParagraph().run()" :class="{ active: editor.isActive('paragraph') }">P</button>
-                    <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                    <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
-                </div>
-            </floating-menu>
-            <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
-                <div class="bubble-menu">
-                    <button @click="editor.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                    <button @click="editor.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                    <button @click="editor.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
-                </div>
-            </bubble-menu>
-            <editor-content :editor="editor" />
         </div>
-        <div v-else>
-            <p>Only admins can access the editor.</p>
-        </div>
-    <!-- </ClientOnly> -->
+    </section>
 </template>
 
-<script lang="ts" setup>
-import { useAuth } from '@/composables/useAuth';
+<script setup lang="ts">
+import { useAuth } from '../composables/useAuth';
 import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/vue-3';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
@@ -62,7 +87,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit'
 
 const props = defineProps<{
-    content: EditorContent;
+    content: string;
 }>();
 
 const { isAdmin } = useAuth();
@@ -76,14 +101,10 @@ const editor = useEditor({
     ],
     content: props.content,
 });
-
 </script>
 
 <style lang="scss" scoped>
 .editor {
-    border: 1px solid #ccc;
-    border-left: none;
-    border-right: none;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -96,11 +117,12 @@ const editor = useEditor({
     padding: 0.1rem;
     border-radius: 0.5rem;
     gap: 0.25rem;
+    
 }
 
 .bubble-menu {
     background-color: white;
-    border: 1px solid grey;
+    border: 1px solid var(--grey4);
     border-radius: 0.7rem;
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.25);
     display: flex;
@@ -110,37 +132,60 @@ const editor = useEditor({
 
 .fixed-menu {
     display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 3fr 1fr;
-    gap: 0.25rem;
+    grid-template-columns: 0.6fr 2.6fr 0.6fr;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.02);
+    gap: 1rem;
     position: sticky;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    background: white;
-    border-bottom: 1px solid #ccc;
+    padding: 1rem;
+    border: 1px solid var(--grey5);
+    background: var(--background-color-secondary);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
     z-index: 1;
+    
+    > div {
+        border-radius: 0.5rem;
+        // border: 1px solid var(--grey5);
+        box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.05);
+        padding: 0.5rem;
 
-    > * {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25rem;
+        h6 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark1);
+        }
 
+        * > div {
+            display: flex;
+            gap: 0.25rem;
+
+        }
+
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
     }
-
-    .actions {
-        justify-content: flex-end;
-    } 
 }
 
 button {
     font-family: 'Inter', sans-serif;
     background-color: #f0eeec;
     border: none;
-    height: 1.8rem;
+    height: 1.75rem;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: color 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-wrap: nowrap;
 
     &:hover {
         background-color: #e0e0e0;
@@ -149,6 +194,22 @@ button {
     &.active {
         background-color: var(--text-color-main);
         color: var(--background-color-secondary);
+
+        svg {
+            fill: var(--background-color-secondary);
+        }
+    }
+
+    svg {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        fill: black;
+
+        &.center, &.justify {
+            width: 21.56px;
+            height: 21.56px;
+        }
     }
 }
 </style>
@@ -166,7 +227,7 @@ button {
 
     h1, h2, h3, h4, p, ul {
         font-family: 'Inter', sans-serif;
-        color: var(--text-color-dark);
+        color: var(--black2);
         font-weight: 500;
 
         strong {
@@ -179,7 +240,15 @@ button {
     }
 
     h1 {
-        font-size: 2.8rem;
+        font-family: 'Nunito', 'Inter', sans-serif;
+    }
+
+    h2, h3, h4 {
+        font-family: "Poppins", sans-serif;
+    }
+
+    h1 {
+        font-size: 3.6rem;
         line-height: 52px;
     }
 
@@ -190,13 +259,13 @@ button {
     }
 
     h3 {
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
     h4 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         margin-top: 2rem;
         margin-bottom: 1rem;
     }

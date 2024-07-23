@@ -1,5 +1,5 @@
 <template>
-    <section class="banner">
+    <section class="banner component">
         <img src="~/assets/images/school-banner.webp" alt="Aerial image Riverside Secondary Highschool, Zambia" loading="lazy">
     </section>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <ClientOnly>  
         <Transition name="fade">
-            <section ref="section" v-show="modalEnabled" class="mobile-menu">
+            <section ref="section" v-show="modalEnabled" class="mobile-menu component">
                 <div class="clickoff-detector" @click="mobileMenuPopupOpen().value = false;">
                 </div>
                 <Transition name="scroll">
@@ -55,12 +55,6 @@ function closePopout() {
     setTimeout(() => {
         document.body.style.overflow = 'visible';
     }, 100);
-}
-
-function scrollToAbout() {
-    setTimeout(() => {
-        smoothScroll('#approach', -360);
-    }, 200);
 }
 
 watch(mobileMenuPopupOpen(), (newValue) => {

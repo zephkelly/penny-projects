@@ -1,5 +1,5 @@
 <template>
-    <section class="donation" id="donation">
+    <section class="donation component" id="donation">
         <img src="~/assets/images/donations-1.webp" alt="A group of student gathered in a circle celebrating, lifting their arms to the sky." loading="lazy">
         <div class="container">
             <div class="group empty-group"></div>

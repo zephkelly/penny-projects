@@ -9,7 +9,7 @@
                 <input type="password" id="password" v-model="password" @input="clearErrorMessage" required>
                 <button class="submit" type="submit" v-if="isLoading === false">Login</button>
                 <div class="submit loading" v-else>
-                    <img class="loading-spinner" src="~/assets/svg/loading.svg" alt="Loading spinner" width="20" height="20">
+                    <svg class="loading-spinner" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/></svg>
                 </div>
             </form>
             <p class="login-message" v-if="displayError">{{ errorMessage }}</p>
@@ -24,6 +24,21 @@ const password = ref('');
 const displayError = ref(false);
 const errorMessage = ref('');
 const isLoading = ref(false);
+const redirectPath = ref('');
+
+
+onMounted(() => {
+    checkQueryParams();
+});
+
+function checkQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+
+    if (redirect) {
+        redirectPath.value = redirect;
+    }
+}
 
 const clearErrorMessage = () => {
     displayError.value = false;
@@ -43,12 +58,20 @@ const login = async () => {
     isLoading.value = false;
 
     if (data.statusCode === 200) {
+        if (redirectPath.value !== '') 
+        {
+            navigateTo(redirectPath.value + '?' + 'toast=' + data.statusMessage);
+            return;
+        }
+
         navigateTo('/admin?toast=' + data.statusMessage);
     } else {
         displayError.value = true;
         errorMessage.value = data.statusMessage;
     }
 };
+
+//grab a querey parameter from the url
 </script>
 
 <style scoped lang="scss">

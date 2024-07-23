@@ -1,13 +1,13 @@
 <template>
-    <section id="adminHero" v-if="isAdmin">
+    <section id="adminHero" class="component" v-if="isAdmin">
         <div class="container">
             <h1 class="header">Admin Panel</h1>
-            <!-- <lazyTipTapEditor :content="pageContent" /> -->
+            
         </div>
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 definePageMeta({
     middleware: ['admin']
 })

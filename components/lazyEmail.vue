@@ -1,5 +1,5 @@
 <template>
-  <section class="email">
+  <section class="email component">
     <h3 class="header">Join our online family!</h3>
     <div id="mc_embed_signup">
         <form action="https://pennyprojects.us9.list-manage.com/subscribe/post?u=d915e9e09cea505cc1a8b8d0e&amp;id=4c02ec613b&amp;f_id=00f814e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="">

@@ -1,5 +1,5 @@
 <template>
-  <section class="approach desktop" id="approach">
+  <section class="approach desktop component" id="approach">
     <div class="container">
       <div class="group">
         <h2>Our Approach</h2>

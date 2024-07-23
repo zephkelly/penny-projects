@@ -1,7 +1,7 @@
 <template>
     <ClientOnly>
         <Transition name="fade">
-            <section class="toast" ref="toast">
+            <section class="toast component" ref="toast">
                 <div class="container" :class="mobileNavOpenStyle">
                     <div class="toast-content" v-show="toastPopupOpen">
                         <p class="toast-message">{{ toastMessageRef }}</p>

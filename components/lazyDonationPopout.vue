@@ -1,6 +1,6 @@
 <template>
   <Transition name="fade">
-    <section ref="section" v-show="modalEnabled" class="donation-popout">
+    <section ref="section" v-show="modalEnabled" class="donation-popout component">
       <div class="clickoff-detector" @click="donationPopupOpen().value = false;">
       </div>
         <div class="modal" >
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { donationPopupOpen } from '@/composables/usePopupStates';
+import { donationPopupOpen } from '../composables/usePopupStates';
 
 const section: Ref = ref(null);
 const modalEnabled: Ref = ref(false);

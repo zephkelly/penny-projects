@@ -11,12 +11,15 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/node": "^20.14.11",
     "nuxt": "^3.12.3",
     "nuxt-gtag": "^1.1.1",
     "nuxt-tiptap-editor": "^1.1.2",
     "sass": "^1.69.5",
+    "typescript": "^5.5.3",
     "vue": "^3.3.8",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^2.0.28"
   },
   "dependencies": {
     "@tiptap/extension-bubble-menu": "^2.5.4",

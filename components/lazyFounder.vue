@@ -1,5 +1,5 @@
 <template>
-    <section class="founder">
+    <section class="founder component">
     <div class="round-container">
       <div class="profile">
         <img src="~/assets/images/joel-headshot.webp" alt="Headshot of penny-projects founder, Joel Slade." loading="lazy">

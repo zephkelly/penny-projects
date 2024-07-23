@@ -1,5 +1,5 @@
 <template>
-    <section class="banner">
+    <section class="banner component">
         <img src="~/assets/images/logo-pennyprojects-round.webp" alt="Penny-Projects round logo banner" loading="lazy">
     </section>
 </template>

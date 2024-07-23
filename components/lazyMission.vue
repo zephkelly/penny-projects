@@ -1,5 +1,5 @@
 <template>
-  <section class="mission" style="">
+  <section class="mission component" style="">
     <div class="container">
       <h2>Our Mission</h2>
       <div class="group">

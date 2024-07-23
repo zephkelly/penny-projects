@@ -4,6 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     await checkAuthStatus()
     
     if (!isAdmin.value) {
-      return navigateTo('/login')
+        const fromPath = from.path
+        return navigateTo('/login?redirect=' + fromPath)
     }
   })

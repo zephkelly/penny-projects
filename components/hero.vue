@@ -1,5 +1,5 @@
 <template>
-    <section class="hero desktop" id="hero-section">
+    <section class="hero desktop component" id="hero-section">
         <div class="container">
         <div class="group">
             <h1 class="header">Little Gifts, Big Impact</h1>
@@ -13,7 +13,7 @@
         <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
         </div>
     </section>
-    <section class="hero mobile">
+    <section class="hero mobile component">
         <div class="icon">
             <img src="~/assets/images/hero-logo-mobile.webp" alt="Penny-Projects logo"/>
         </div>
