@@ -58,14 +58,20 @@
 }
 
 :root {
-    --main2: rgb(187, 97, 75);
-    --text-color-main: #8e351e;
+    --main: #8e361f;
+    --main1: rgb(187, 97, 75);
+    --main-dark: #5a2a1a;
+
+    --admin: #6d8358;
+    --admin-dark: #525b41;
+
+    --text-color-main: #8e361f;
     --text-color-main-light: rgb(241, 225, 210);
     --text-color-main-lighter: #f4eae7;
-    --text-color-main-dark: #42170c;
+    --text-color-main-dark: #612f1e;
     --text-color-secondary: #f1ac9c;
     --background-color-main: #eae6d7;
-    --background-color-main-dark: rgb(214, 209, 191);
+    --background-color-main-dark: rgb(218, 214, 199);
     --background-color-secondary: #ffffff;
     --black1: #000000;
     --black2: #161616;

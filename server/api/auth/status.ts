@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken'
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'auth_token')
     if (!token) {
-        console.log('No token found');
         return { 
             data: {
                 isLoggedIn: false, 

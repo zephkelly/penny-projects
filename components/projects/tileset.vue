@@ -3,7 +3,7 @@
         <div class="container featured">
             <h2>Featured Projects</h2>
             <div class="group">
-                <ProjectTile :postData="data[i]" v-for="i in 3"/>
+                <ProjectTile :postData="data[i-1]" v-for="i in 3"/>
             </div>
         </div>
         <div class="container latest">
@@ -16,9 +16,6 @@
 
 <script setup lang="ts">
 import ProjectTile from '@/components/projects/tile.vue';
-
-//grab api data
-const postNumber = 5;
 
 //data object with 3 posts
 const data = [
@@ -37,7 +34,7 @@ const data = [
     {
         title: 'Project 3',
         description: 'This is a description of project 3',
-        image: '',
+        image: '/images/instaFeed1.webp',
         link: '/'
     },
     {

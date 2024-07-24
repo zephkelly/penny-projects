@@ -1,7 +1,9 @@
 <template>
     <article>
         <div class="group cover">
-            <img :src="postData?.image" alt="project image"/>
+            <div class="wrapper">
+                <img :src="postData?.image" alt="project image"/>
+            </div>
         </div>
         <div class="group content">
             <h3>{{ postData?.title }}</h3>
@@ -23,28 +25,23 @@ defineProps({
 article {
     display: flex;
     flex-direction: column;
-    // padding: 1rem;
     border: 1px solid var(--text-color-main);
-    border-radius: 5px;
+    border-radius: 8px;
     min-height: 300px;
+}
 
-    .group.cover {
-        min-height: 320px;
-    }
-
-    .group.content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border-top: 1px solid var(--text-color-main);
-        padding: 1rem;
-        padding-top: 0rem;
-        padding-bottom: 1rem;
-        box-sizing: border-box;
-        height: 40%;
-        min-height: 140px;
-    }
-
+.group.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 1px solid var(--text-color-main);
+    padding: 1rem;
+    padding-top: 0rem;
+    padding-bottom: 1rem;
+    box-sizing: border-box;
+    height: 40%;
+    min-height: 140px;
+    
     h3 {
         margin-top: 1.5rem;
         margin-bottom: 0.5rem;
@@ -58,19 +55,36 @@ article {
         margin-bottom: 6rem;
     }
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        margin-bottom: 1rem;
-    }
-
     a {
         padding: 0.5rem 1rem;
         background-color: var(--text-color-main);
         color: white;
         border-radius: 5px;
         text-decoration: none;
+    }
+}
+
+.group.cover {
+    display: flex;
+    max-height: 320px;
+    background-color: var(--background-color-main-dark);
+    
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    
+    .wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        img {
+            width: 85%;
+            height: 80%;
+            object-fit: cover;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
     }
 }
 </style>

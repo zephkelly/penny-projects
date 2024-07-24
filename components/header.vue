@@ -24,12 +24,12 @@
                                 </button>
                             </Transition>
                             <Transition name="fade" v-if="isAdmin">
-                                <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor" v-show="enableHeaderButtons">
+                                <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor admin" v-show="enableHeaderButtons">
                                     <h5>Edit Projects</h5>
                                 </NuxtLink>
                             </Transition>
                             <Transition name="fade" v-if="isAdmin">
-                                <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button" v-show="enableHeaderButtons">
+                                <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button admin" v-show="enableHeaderButtons">
                                     <h5 >Admin Panel</h5>
                                 </NuxtLink>
                             </Transition>
@@ -280,7 +280,7 @@ onMounted(async () => {
             padding-top: 0.1rem;
             padding-left: 1.2rem;
             padding-right: 1.2rem;
-            background-color: var(--text-color-main);
+            background-color: var(--main);
             border: none;
             border-radius: 2rem;
             //   width: 7rem;
@@ -292,9 +292,17 @@ onMounted(async () => {
             text-transform: uppercase;
             transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
             cursor: pointer;
+
+            &.admin {
+                background-color: var(--admin);
+
+                &:hover {
+                    background-color: var(--admin-dark);
+                }
+            }
     
             &:hover {
-                background-color: var(--text-color-main-dark);
+                background-color: var(--main-dark);
             }
     
             @media (max-width: 768px) {
@@ -324,7 +332,7 @@ onMounted(async () => {
         
             &:hover {
                 color: var(--background-color-secondary);
-                background-color: var(--text-color-main-dark);
+                background-color: var(--main-dark);
             }
     
             @media (max-width: 768px) {
