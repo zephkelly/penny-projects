@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'auth_token')
     if (!token) {
+        console.log('No token found');
         return { 
             data: {
                 isLoggedIn: false, 
@@ -13,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-        return { 
+        return {
             data: {
                 isLoggedIn: true,
                 isAdmin: decodedToken.isAdmin

@@ -1,27 +1,42 @@
+import type { Status }from '@/types/status'
+
 export const useAuth = () => {
     const isAdmin = useState('isAdmin', () => false);
-    // const isAdmin = ref(isAdminState.value);
     const isLoggedIn = useState('isLoggedIn', () => false);
 
     const checkAuthStatus = async () => {
         try {
             const headers = useRequestHeaders(['cookie']);
-            
-            let data: any;
-            
-            // if (import.meta.client) {
-            //     const { data: fetchedData } = await useFetch('/api/auth/status', { headers, lazy: true, server: false })
-            //     data = fetchedData      
-            // }
-            // else {
-                const { data: fetchedData } = await useFetch('/api/auth/status', { headers })
-                data = fetchedData
-            // }
-            
-            if (data.value && data.value.data) {
-                isLoggedIn.value = data.value.data.isLoggedIn
-                isAdmin.value = data.value.data.isAdmin;
+            let status: Status = {
+                isLoggedIn: false,
+                isAdmin: false
+            };
+
+            if (import.meta.client) {
+                const response = await $fetch('/api/auth/status', { headers, credentials: 'include', lazy: true, server: false });
+
+                if (response === undefined || response.data === null) return;
+
+                status = {
+                    isLoggedIn: response.data.isLoggedIn,
+                    isAdmin: response.data.isAdmin
+                }
             }
+            else {
+                const response = await useFetch('/api/auth/status', { headers, credentials: 'include' });
+
+                if (response.data.value === undefined || response.data.value === null) return;
+                if (response.error) return;
+            
+                status = {
+                    isLoggedIn: response.data.value.data.isLoggedIn,
+                    isAdmin: response.data.value.data.isAdmin
+                }
+            }
+
+            if (status === null) return;
+            isLoggedIn.value = status.isLoggedIn;
+            isAdmin.value = status.isAdmin;
         } 
         catch (error) {
             console.error('Error checking auth status:', error)

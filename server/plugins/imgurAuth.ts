@@ -1,12 +1,7 @@
+import type { Nitro } from 'nitropack';
+import type { ImgurToken } from '@/types/imgur';
 import fs from 'fs/promises';
 import path from 'path';
-
-interface ImgurToken {
-    access_token: string;
-    refresh_token: string;
-    expires_at: number;
-}
-
 
 const TOKEN_FILE = path.join(process.cwd(), 'imgurToken.json');
 
@@ -42,3 +37,7 @@ async function saveToken(token: ImgurToken): Promise<void> {
 //     await saveToken(newToken)
 //     return newToken
 //   }
+
+export default async (_nitroApp: Nitro) => {
+    console.log("Conneting to imgur");
+  }

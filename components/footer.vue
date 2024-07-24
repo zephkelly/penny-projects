@@ -15,10 +15,6 @@ const { isLoggedIn, logout } = useAuth()
 const route = useRoute()
 const isOnLoginPage = computed(() => route.path === '/login')
 
-// onMounted(async () => {
-//     await checkAuthStatus()
-// })
-
 const signOut = async () => {
     try {
         await logout()

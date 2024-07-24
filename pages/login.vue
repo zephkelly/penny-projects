@@ -18,6 +18,8 @@
 </template>
 
 <script setup lang="ts">
+const { isLoggedIn, checkAuthStatus } = useAuth();
+
 const email = ref('');
 const password = ref('');
 
@@ -64,6 +66,14 @@ const login = async () => {
     isLoading.value = false;
 
     if (response.data.statusCode === 200) {
+        await checkAuthStatus();
+
+        if (isLoggedIn.value === false) {
+            displayError.value = true;
+            errorMessage.value = 'Cannot verify authentication status, contact site maintainer.';
+            return;
+        }
+
         if (redirectPath.value !== '/login' && redirectPath.value !== '') 
         {
             navigateTo(redirectPath.value + '?' + 'toast=' + response.data.statusMessage);
@@ -159,7 +169,9 @@ form {
 .login-message {
     font-family: 'Nunito', sans-serif;
     font-size: 1.2rem;
+    text-align: center;
     color: red;
     margin-top: 1rem;
+    max-width: 24rem;
 }
 </style>
