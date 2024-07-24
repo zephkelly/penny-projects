@@ -12,27 +12,27 @@ export const useAuth = () => {
                 isAdmin: false
             };
 
-            if (import.meta.client) {
-                const response = await $fetch('/api/auth/status', { headers, credentials: 'include', lazy: true, server: false });
+            // if (import.meta.client) {
+            const response = await $fetch('/api/auth/status', { headers, credentials: 'include', lazy: true, server: false });
 
-                if (response === undefined || response.data === null) return;
+            if (response === undefined || response.data === null) return;
 
-                status = {
-                    isLoggedIn: response.data.isLoggedIn,
-                    isAdmin: response.data.isAdmin
-                }
+            status = {
+                isLoggedIn: response.data.isLoggedIn,
+                isAdmin: response.data.isAdmin
             }
-            else {
-                const response = await useFetch('/api/auth/status', { headers, credentials: 'include' });
+            // }
+            // else {
+            //     const response = await $('/api/auth/status', { headers, credentials: 'include' });
 
-                if (response.data.value === undefined || response.data.value === null) return;
-                if (response.error) return;
+            //     if (response.data.value === undefined || response.data.value === null) return;
+            //     if (response.error.value !== null) return;
             
-                status = {
-                    isLoggedIn: response.data.value.data.isLoggedIn,
-                    isAdmin: response.data.value.data.isAdmin
-                }
-            }
+            //     status = {
+            //         isLoggedIn: response.data.value.data.isLoggedIn,
+            //         isAdmin: response.data.value.data.isAdmin
+            //     }
+            // }
 
             if (status === null) return;
             isLoggedIn.value = status.isLoggedIn;

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import type { Nitro } from 'nitropack';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,10 +8,9 @@ export const connectDB = async () => {
     console.log("MongoDB connection established.");
   } catch (err) {
     console.error("MongoDB connection failed.", err);
-    // process.exit(1);
   }
 };
 
-export default async (_nitroApp: Nitro) => {
-  await connectDB();
-}
+export default defineNitroPlugin((nitroApp) => {
+    connectDB();
+});

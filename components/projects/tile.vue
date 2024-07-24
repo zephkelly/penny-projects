@@ -66,7 +66,8 @@ article {
 
 .group.cover {
     display: flex;
-    max-height: 320px;
+    max-height: 440px;
+    min-height: 320px;
     background-color: var(--background-color-main-dark);
     
     border-top-left-radius: 8px;

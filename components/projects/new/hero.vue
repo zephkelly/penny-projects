@@ -17,4 +17,8 @@ section {
         flex-direction: column;
     }
 }
+
+.header {
+    color: var(--admin);
+}
 </style>

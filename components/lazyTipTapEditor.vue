@@ -1,77 +1,77 @@
 <template>
     <section class="tiptap component">
-        <div class="outer-container">
-            <div class="container">
-                <div class="editor" v-if="isAdmin && editor">
-                    <div class="fixed-menu">
-                        <div class="elements">
-                            <h6>Elements</h6>
-                            <div class="wrapper">
-                                <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
-                                <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                                <button @click="editor?.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
-                                <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H3</button>
-                                <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button>
-                            </div>
+        <div class="container" :class="{ inactive: (!isAdmin || !editor) }">
+            <div class="editor" v-if="editor && isAdmin">
+                <div class="fixed-menu">
+                    <div class="elements">
+                        <h6>Elements</h6>
+                        <div class="wrapper">
+                            <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
+                            <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
+                            <button @click="editor?.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                            <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H3</button>
+                            <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button>
                         </div>
-                        <div class="styles">
-                            <h6>Styling</h6>
-                            <div class="wrapper">
-                                <div class="group">
-                                    <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                                    <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                                    <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
-                                    <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
-                                    <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
-                                    <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
-                                    <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
-                                </div>
-                                <div class="group">
-                                    <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
-                                        <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
-                                        <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
-                                    </button>
-                                </div>
-                                <div class="group">
-                                    <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
-                                    <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
-                                </div>
+                    </div>
+                    <div class="styles">
+                        <h6>Styling</h6>
+                        <div class="wrapper">
+                            <div class="group">
+                                <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                                <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                                <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                                <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
+                                <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
+                                <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
+                                <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
                             </div>
-                        </div>
-                        <div class="actions">
-                            <h6>Actions</h6>
-                            <div class="wrapper">
-                                <button @click="editor?.chain().focus().undo().run()">Undo</button>
-                                <button @click="editor?.chain().focus().redo().run()">Redo</button>
+                            <div class="group">
+                                <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                </button>
+                                <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
+                                    <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
+                                </button>
+                                <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                </button>
+                                <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
+                                    <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
+                                </button>
+                            </div>
+                            <div class="group">
+                                <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
+                                <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
                             </div>
                         </div>
                     </div>
-                    <floating-menu :editor="editor" :tippy-options="{ duration: 100 }">
-                        <div class="floating-menu">
-                            <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">P</button>
-                            <button @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                            <button @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                    <div class="actions">
+                        <h6>Actions</h6>
+                        <div class="wrapper">
+                            <button @click="editor?.chain().focus().undo().run()">Undo</button>
+                            <button @click="editor?.chain().focus().redo().run()">Redo</button>
                         </div>
-                    </floating-menu>
-                    <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
-                        <div class="bubble-menu">
-                            <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                            <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                            <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
-                        </div>
-                    </bubble-menu>
-                    <editor-content :editor="editor" />
+                    </div>
                 </div>
-                <div v-else>
-                    <p>Only admins can access the editor.</p>
+                <floating-menu :editor="editor" :tippy-options="{ duration: 100 }">
+                    <div class="floating-menu">
+                        <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">P</button>
+                        <button @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
+                        <button @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                    </div>
+                </floating-menu>
+                <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
+                    <div class="bubble-menu">
+                        <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                        <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                        <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                    </div>
+                </bubble-menu>
+                <editor-content :editor="editor" />
+            </div>
+            <div class="editor" v-else>
+                <div class="fixed-menu inactive">
+                    <p><span>Unuthorised access:</span> You shouldn't be able to see this message! Try reloading your browser. If issue persists contact site maintainer.</p>
                 </div>
             </div>
         </div>
@@ -104,6 +104,40 @@ const editor = useEditor({
 </script>
 
 <style lang="scss" scoped>
+.container {
+    &.inactive {
+        .editor {
+            width: 100%;
+            flex: 0 0 auto;
+            height: 400px;
+
+            .fixed-menu {
+                margin: 0rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                max-height: 6.15rem;
+
+                p {
+                    font-family: 'Inter', sans-serif;
+                    width: auto;
+                    max-width: 80%;
+                    font-size: 0.8rem;
+                    color: var(--grey3);
+                    text-align: center;
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+
+                    span {
+                        color: var(--grey3);
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .editor {
     border-radius: 4px;
     display: flex;
@@ -142,6 +176,11 @@ const editor = useEditor({
     border-radius: 0.5rem;
     box-sizing: border-box;
     z-index: 1;
+
+    &.inactive {
+        flex: 1;
+        max-width: 1000px;
+    }
     
     > div {
         border-radius: 0.5rem;
@@ -192,7 +231,7 @@ button {
     }
 
     &.active {
-        background-color: var(--text-color-main);
+        background-color: var(--admin);
         color: var(--background-color-secondary);
 
         svg {
@@ -283,7 +322,7 @@ button {
 
     ul {
         padding: 0 1rem;
-        margin-top: 1.25rem 1rem 1.25rem .4rem;
+        margin: 1.25rem 1rem 1.25rem 0.4rem;
         box-sizing: border-box;
         list-style-type: disc;
 

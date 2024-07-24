@@ -5,13 +5,14 @@ export default defineNuxtConfig({
     buildModules: ['@nuxtjs/sass'],
     modules: ['nuxt-gtag', "nuxt-tiptap-editor"],
 
-    plugins: ['~/plugins/checkAuth.ts'],
+    // plugins: ['~/plugins/checkAuth.ts'],
 
     gtag: {
         id: 'G-9X0EKVWFPG',
     },
 
     nitro: {
+        plugins: ['@/server/plugins/mongodb.ts'],
         compressPublicAssets: true,
     },
 
