@@ -80,7 +80,9 @@
     --grey3: #8f8f8f;
     --grey4: #bcbcbc;
     --grey5: #d3d3d3;
+    --white1: #ffffff;
     --white2: #ebebeb;
+    --white-transparent: #ebebebd3;
 }
 
 body {
@@ -105,9 +107,7 @@ main {
 .component, header {
     .container {
         flex: 1;
-        // width: 100%;
         max-width: 1000px;
-        // height: 100%;
         display: flex;
     
         > * {

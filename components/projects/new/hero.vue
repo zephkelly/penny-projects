@@ -7,6 +7,19 @@
 </template>
 
 <style lang="scss" scoped>
+.header {
+    font-family: 'Nunito', sans-serif;
+    font-size: 3.6rem;
+    letter-spacing: 0.3rem;
+    font-weight: 700;
+    color: var(--text-color-main);
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+        font-size: clamp(3rem, 8vw, 4rem);
+    }
+}
+
 section {
     margin-top: 14rem;
     margin-bottom: 4rem;

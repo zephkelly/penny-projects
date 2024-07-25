@@ -104,6 +104,19 @@ const editor = useEditor({
 </script>
 
 <style lang="scss" scoped>
+.header {
+    font-family: 'Nunito', sans-serif;
+    font-size: 3.6rem;
+    letter-spacing: 0.3rem;
+    font-weight: 700;
+    color: var(--text-color-main);
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+        font-size: clamp(3rem, 8vw, 4rem);
+    }
+}
+
 .container {
     &.inactive {
         .editor {
@@ -122,7 +135,7 @@ const editor = useEditor({
                     font-family: 'Inter', sans-serif;
                     width: auto;
                     max-width: 80%;
-                    font-size: 0.8rem;
+                    font-size: 1rem;
                     color: var(--grey3);
                     text-align: center;
                     margin-top: 1rem;

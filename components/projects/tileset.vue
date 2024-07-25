@@ -3,45 +3,49 @@
         <div class="container featured">
             <h2>Featured Projects</h2>
             <div class="group">
-                <ProjectTile :postData="data[i-1]" v-for="i in 3"/>
+                <FeaturedTile :postData="data[i-1]" v-for="i in 3"/>
             </div>
         </div>
         <div class="container latest">
             <div class="group">
-                <ProjectTile :postData="data[i]" v-for="i in data.length"/>
+                <FeaturedTile :postData="data[i]" v-for="i in data.length"/>
             </div>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import ProjectTile from '@/components/projects/tile.vue';
+import FeaturedTile from '@/components/projects/featuredTile.vue';
 
 //data object with 3 posts
 const data = [
     {
         title: 'Project 1',
-        description: 'This is a description of project 1',
-        image: '',
-        link: '/'
+        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
+        image: '/images/instaFeed2.webp',
+        link: '/',
+        status: 'ongoing'
     },
     {
         title: 'Project 2',
         description: 'This is a description of project 2',
         image: '',
-        link: '/'
+        link: '/',
+        status: 'completed'
     },
     {
         title: 'Project 3',
         description: 'This is a description of project 3',
         image: '/images/instaFeed1.webp',
-        link: '/'
+        link: '/',
+        status: 'proposed'
     },
     {
         title: 'Project 4',
         description: 'This is a description of project 4',
         image: '',
-        link: '/'
+        link: '/',
+        status: 'completed'
     }
 ];
 </script>

@@ -24,7 +24,7 @@
         <p class="subheader">Where a little goes a long way</p>
         <p class="subheader2">Our mission is simple: nurture and inspire students from <span class="underline">Riverside Secondary Highschool</span>, Zambia</p>
         <ul class="buttons">
-            <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">View Projects</NuxtLink>
+            <NuxtLink :to="{ path: '/projects', hash: ''} " id="view-projects-anchor" class="view-projects-anchor">Our Projects</NuxtLink>
             <button @click="openDonationModal()" id="donate-button2" target="_blank" class="donation-button">Donate</button>
             <NuxtLink @click.prevent="scrollToAboutMobile" id="about-us-button2" class="about-us-button">About Us</NuxtLink>
         </ul>
@@ -266,9 +266,9 @@ section.hero {
             width: 1000px;
             height: 1000px;
             z-index: 0;
-            opacity: 100%;
-            top: -16rem;
-            opacity: 20%;
+            top: -15rem;
+            opacity: 30%;
+            transform: scale(1.1);
         }
     }
 

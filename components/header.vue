@@ -3,7 +3,7 @@
         <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="isLoaded">
             <div class="container">
                 <nuxt-link :to="{ path: '/' }" @click.prevent="() => { scrollToTop();  mobileMenuPopupOpen().value = false; }" class="logo-link">
-                    <img class="logo" ref="logoHeader" src="~/assets/images/penny-project-header.png" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;" loading="lazy"/>
+                    <img class="logo" ref="logoHeader" :src="logoSrc" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;"/>
                 </nuxt-link>
                 <section class="navigation" ref="navHeader" style="top:70px;">
                     <div class="mobile" v-if="isMobile">
@@ -42,9 +42,12 @@
 </template>
 
 <script lang="ts" setup>
-import { donationPopupOpen, mobileMenuPopupOpen } from '~/composables/usePopupStates';
+import { donationPopupOpen, mobileMenuPopupOpen } from '@/composables/usePopupStates';
 import { useScroll } from '@/composables/useScroll'
 import { isNavbarOpen } from '@/composables/useNavbarStates'
+
+import pennyProjectLogo from '~/assets/images/penny-project-header.webp'
+import adminLogo from '~/assets/images/penny-project-header-admin.webp'
 
 const { scrollToTop } = useScroll()
 const { isAdmin } = useAuth()
@@ -56,6 +59,16 @@ const isMobile = ref(false);
 const isOnAdminPage = computed(() => route.path === '/admin');
 const mobileMenuOpenStyle = computed(() => mobileMenuPopupOpen().value ? 'open' : '');
 
+//Change to admin header on admin routes
+const isAdminRoute = computed(() => {
+  return isAdmin.value && ['/admin', '/projects/new', '/projects/edit'].includes(route.path);
+});
+
+const logoSrc = computed(() => {
+  return isAdminRoute.value
+    ? adminLogo
+    : pennyProjectLogo;
+});
 
 // Display navbar on new routes
 watch(() => route.path, () => {

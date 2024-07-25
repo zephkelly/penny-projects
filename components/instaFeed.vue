@@ -134,7 +134,7 @@ section.instagram-feed {
         overflow-y: hidden;
 
         &.unloaded {
-            min-height: calc(480px + 6.5rem);
+            min-height: calc(420px + 6.5rem);
 
             @media (max-width: 850px) {
                 min-height: calc(70vw + 6.5rem);
@@ -206,7 +206,7 @@ section.instagram-feed {
 }
     
 .post-container {
-    height: 480px;
+    height: 420px;
     box-sizing: border-box;
     position: relative;
     border-radius: 8px;
@@ -221,12 +221,12 @@ section.instagram-feed {
     }
 
     @media (max-width: 850px) {
-        height: 70vw;
+        height: 60vw;
         min-width: 40vw;
     }
 
     @media (max-width: 560px) {
-        height: 110vw;
+        height: 90vw;
         min-width: 65vw;
     }
 

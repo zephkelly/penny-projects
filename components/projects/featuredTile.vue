@@ -6,6 +6,7 @@
             </div>
         </div>
         <div class="group content">
+            <span class="status" :class="postData?.status">{{ postData?.status }}</span>
             <h3>{{ postData?.title }}</h3>
             <p>{{ postData?.description }}</p>
             <NuxtLink :to="postData?.link">Read more</NuxtLink>
@@ -31,7 +32,9 @@ article {
 }
 
 .group.content {
+    font-family: 'Poppins', sans-serif;
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: space-between;
     border-top: 1px solid var(--text-color-main);
@@ -41,6 +44,7 @@ article {
     box-sizing: border-box;
     height: 40%;
     min-height: 140px;
+    max-height: 200px;
     
     h3 {
         margin-top: 1.5rem;
@@ -52,13 +56,15 @@ article {
     p {
         margin-bottom: 1rem;
         color: var(--text-color-main);
-        margin-bottom: 6rem;
+        margin-bottom: 1rem;
     }
 
     a {
+        text-align: center;
         padding: 0.5rem 1rem;
         background-color: var(--text-color-main);
         color: white;
+        width: 6rem;
         border-radius: 5px;
         text-decoration: none;
     }
@@ -66,8 +72,8 @@ article {
 
 .group.cover {
     display: flex;
-    max-height: 440px;
-    min-height: 320px;
+    max-height: 250px;
+    min-height: 200px;
     background-color: var(--background-color-main-dark);
     
     border-top-left-radius: 8px;
@@ -80,12 +86,51 @@ article {
         align-items: flex-end;
 
         img {
-            width: 85%;
-            height: 80%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
+    }
+}
+
+.status {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    position: absolute;
+    text-align: center;
+    top: 1.5rem;
+    right: 1rem;
+    padding: 0.3rem 0.6rem;
+    width: auto;
+    border-radius: 8px;
+    color: var(--white-transparent);
+
+    &::first-letter {
+        text-transform: uppercase;
+    }
+
+    &.completed {
+        width: 4.6rem;
+        background-color: #ab351815;
+        border: 1px solid #8e351fca;
+        color: #8e351fca;
+    }
+
+    &.ongoing {
+        width: 3.6rem;
+        background-color: #6d83582c;
+        border: 1px solid #4c6a30de;
+        color: #4c6a30d1;
+    }
+
+    &.proposed {
+        width: 4.1rem;
+        background-color: #ab621815;
+        border: 1px solid #a35210d3;
+        color: #a35210d3;
     }
 }
 </style>
