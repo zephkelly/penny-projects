@@ -216,6 +216,14 @@ section.instagram-feed {
     justify-content: center;
     align-items: center;
 
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
     &.unloaded {
         background-color: var(--background-color-main-dark);
     }
@@ -245,17 +253,11 @@ section.instagram-feed {
         opacity: 0;
         }
     }
-
-    a {
-        flex: 1;
-    }
     
     .post {
-        flex: 1;
         position: relative;
         object-fit: cover;
-        // border-top-left-radius: 8px;
-        // border-top-right-radius: 8px;
+        object-position: center;
         
         transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
         
@@ -276,8 +278,8 @@ section.instagram-feed {
         padding: 0.5rem;
 
         .caption {
+            display: flex;
             width: 87%;
-            height: 100%;
             padding: 0rem 0.5rem 0.5rem 0.2rem;
             color: black;
             font-family: 'Segoe UI', sans-serif;
@@ -299,14 +301,14 @@ section.instagram-feed {
         }
 
         .text-ellipsis {
-        display: -webkit-box;
-        line-clamp: 3;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        line-height: 1.5;
-        max-height: 2.8rem;
-        text-overflow: ellipsis;
+            display: -webkit-box;
+            line-clamp: 3;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+            max-height: 3rem;
+            text-overflow: ellipsis;
         }
     }
 

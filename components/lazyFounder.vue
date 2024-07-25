@@ -2,7 +2,7 @@
     <section class="founder component">
     <div class="round-container">
       <div class="profile">
-        <img src="~/assets/images/joel-headshot.webp" alt="Headshot of penny-projects founder, Joel Slade." loading="lazy">
+        <img src="~/assets/images/profile-main.webp" alt="Headshot of penny-projects founder, Joel Slade." loading="lazy">
       </div>
       <img class="hearts" src="~/assets/svg/hearts.svg" alt="A collection of three small heart icons">
       <h3 class="header">Meet our Founder</h3>

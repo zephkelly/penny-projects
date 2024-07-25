@@ -1,14 +1,14 @@
 <template>
-    <article>
+    <article class="project featured">
         <div class="group cover">
+            <span class="tag" :class="postData?.status">{{ postData?.status }}</span>
             <div class="wrapper">
                 <img :src="postData?.image" alt="project image"/>
             </div>
         </div>
         <div class="group content">
-            <span class="status" :class="postData?.status">{{ postData?.status }}</span>
             <h3>{{ postData?.title }}</h3>
-            <p>{{ postData?.description }}</p>
+            <h4>{{ postData?.description }}</h4>
             <NuxtLink :to="postData?.link">Read more</NuxtLink>
         </div>
     </article>
@@ -29,6 +29,7 @@ article {
     border: 1px solid var(--text-color-main);
     border-radius: 8px;
     min-height: 300px;
+    overflow: hidden;
 }
 
 .group.content {
@@ -38,13 +39,15 @@ article {
     flex-direction: column;
     justify-content: space-between;
     border-top: 1px solid var(--text-color-main);
+    // background-color: var(--background-color-secondary);
     padding: 1rem;
     padding-top: 0rem;
     padding-bottom: 1rem;
     box-sizing: border-box;
-    height: 40%;
+    flex: 1;
     min-height: 140px;
-    max-height: 200px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
     
     h3 {
         margin-top: 1.5rem;
@@ -53,7 +56,7 @@ article {
         color: var(--text-color-main);
     }
 
-    p {
+    h4 {
         margin-bottom: 1rem;
         color: var(--text-color-main);
         margin-bottom: 1rem;
@@ -72,9 +75,10 @@ article {
 
 .group.cover {
     display: flex;
+    position: relative;
     max-height: 250px;
     min-height: 200px;
-    background-color: var(--background-color-main-dark);
+    // background-color: var(--background-color-main-dark);
     
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -84,8 +88,13 @@ article {
         display: flex;
         justify-content: center;
         align-items: flex-end;
-
+        padding: 0rem 2rem;
+        padding-top: 3.7rem;
+        overflow: hidden;
+        
         img {
+            border: 1px solid var(--main);
+            border-bottom: none;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -95,42 +104,9 @@ article {
     }
 }
 
-.status {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
+.tag {
     position: absolute;
-    text-align: center;
-    top: 1.5rem;
-    right: 1rem;
-    padding: 0.3rem 0.6rem;
-    width: auto;
-    border-radius: 8px;
-    color: var(--white-transparent);
-
-    &::first-letter {
-        text-transform: uppercase;
-    }
-
-    &.completed {
-        width: 4.6rem;
-        background-color: #ab351815;
-        border: 1px solid #8e351fca;
-        color: #8e351fca;
-    }
-
-    &.ongoing {
-        width: 3.6rem;
-        background-color: #6d83582c;
-        border: 1px solid #4c6a30de;
-        color: #4c6a30d1;
-    }
-
-    &.proposed {
-        width: 4.1rem;
-        background-color: #ab621815;
-        border: 1px solid #a35210d3;
-        color: #a35210d3;
-    }
+    top: 1rem;
+    right: 2rem;
 }
 </style>

@@ -60,6 +60,7 @@
 :root {
     --main: #8e361f;
     --main1: rgb(187, 97, 75);
+    --main5: rgba(187, 97, 75, 0.193);
     --main-dark: #5a2a1a;
 
     --admin: #6d8358;
@@ -105,7 +106,7 @@ main {
 }
 
 .component, header {
-    .container {
+    > .container {
         flex: 1;
         max-width: 1000px;
         display: flex;
