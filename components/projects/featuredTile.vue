@@ -88,18 +88,17 @@ article {
         display: flex;
         justify-content: center;
         align-items: flex-end;
-        padding: 0rem 2rem;
-        padding-top: 3.7rem;
+        //padding: 0rem 2rem;
+        // padding-top: 3rem;
         overflow: hidden;
         
         img {
-            border: 1px solid var(--main);
-            border-bottom: none;
+            border-top: 1px solid var(--main);
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            // border-top-left-radius: 8px;
+            // border-top-right-radius: 8px;
         }
     }
 }
@@ -108,5 +107,6 @@ article {
     position: absolute;
     top: 1rem;
     right: 2rem;
+    background-color: var(--background-color-main);
 }
 </style>

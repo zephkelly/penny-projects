@@ -3,7 +3,8 @@
         <div class="container featured">
             <h2>Featured Projects</h2>
             <div class="group">
-                <ProjectsFeaturedTile :postData="data[i-1]" v-for="i in 3"/>
+                <!-- <ProjectsFeaturedTile :postData="data[i-1]" v-for="i in 3"/> -->
+                 <ProjectsFeaturedCarousel :slides="data"/>
             </div>
         </div>
         <div class="container latest">
