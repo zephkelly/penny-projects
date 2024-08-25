@@ -1,8 +1,13 @@
 import formidable from 'formidable'
 import { defineEventHandler } from 'h3'
 import type { ImgurUploadMinimalResponse } from '@/types/imgur'
-import fs from 'fs'
-import path from 'path'
+
+type ColorExtractionResponse = {
+    success: boolean;
+    color?: string;
+    textColor?: string;
+    error?: string;
+  }
 
 export default defineEventHandler(async (event) => {
     try {
@@ -34,10 +39,19 @@ export default defineEventHandler(async (event) => {
         });
 
         if (response.success) {
+            const colorResponse = await $fetch<ColorExtractionResponse>('/api/upload/extract-color', {
+                method: 'POST',
+                body: JSON.stringify({
+                    imageUrl: response.data.link
+                })
+            });
+
             return {
                 success: true,
                 link: response.data.link,
-                deleteHash: response.data.deletehash
+                deleteHash: response.data.deletehash,
+                dominantColor: colorResponse.success ? colorResponse.color : null,
+                legibleTextColor: colorResponse.success ? colorResponse.textColor : null
             }
         } 
         else {

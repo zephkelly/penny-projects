@@ -50,10 +50,10 @@ article {
     grid-template-rows: calc(26px + 1.2rem) 180px;
     position: relative;
     box-sizing: border-box;
-    margin-bottom: 1.2rem;
+    cursor: pointer;
 
     .container.info {
-        max-width: calc(((700px - 240px) - 8%) - 6%);
+        // max-width: calc(((700px - 240px) - 8%) - 6%);
         display: grid;
         grid-template-columns: 1fr 0.2fr;
         margin-bottom: 1.2rem;
@@ -114,7 +114,7 @@ article {
                 .wrapper {
                     width: 100%;
                     height: 100%;
-                    border-radius: 6px;
+                    border-radius: 12px;
                     overflow: hidden;
 
                     img {
@@ -122,6 +122,8 @@ article {
                         height: 100%;
                         object-fit: cover;
                         object-position: center;
+                        transition: transform 0.3s;
+                        will-change: transform;
                     }
                 }
             }
@@ -202,6 +204,20 @@ article {
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
+    }
+}
+
+article:hover {
+    .container.main {
+        .group {
+            &.cover {
+                .wrapper {
+                    img {
+                        transform: scale(1.02);
+                    }
+                }
+            }
+        }
     }
 }
 

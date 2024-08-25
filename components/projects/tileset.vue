@@ -1,7 +1,6 @@
 <template>
     <section class="tileset">
         <div class="container featured">
-            <h2>Featured Projects</h2>
             <div class="group">
                 <!-- <ProjectsFeaturedTile :postData="data[i-1]" v-for="i in 3"/> -->
                  <ProjectsFeaturedCarousel :slides="data"/>
@@ -11,9 +10,9 @@
             <div class="group feed">
                 <ProjectsTile :postData="data[i-1]" v-for="i in data.length"/>
             </div>
-            <div class="group notifications">
+            <!-- <div class="group notifications">
 
-            </div>
+            </div> -->
         </div>
     </section>
 </template>
@@ -23,39 +22,47 @@ const data = [
     {
         title: 'Building Peggy and her family a new home.',
         description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
-        image: '/images/instaFeed2.webp',
+        image: '/images/test_image.jpg',
+        dominantColor: 'rgb(193, 193, 193)',
+        textColor: '#000000',
         link: '/',
         status: 'ongoing',
         authorAvatar: '/images/profile-author.webp',
         authorName: 'Joel Slade'
     },
     {
-        title: 'Helping Simon get a prosthetic leg.',
-        description: 'This is a description of project 2',
-        image: '/images/cover1.JPG',
+        title: 'Building Peggy and her family a new home.',
+        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
+        image: '/images/test_image.jpg',
+        dominantColor: 'rgb(193, 193, 193)',
+        textColor: '#000000',
         link: '/',
-        status: 'active',
+        status: 'ongoing',
         authorAvatar: '/images/profile-author.webp',
         authorName: 'Joel Slade'
     },
     {
-        title: 'Project 3',
-        description: 'This is a description of project 3',
-        image: '/images/instaFeed1.webp',
+        title: 'Building Peggy and her family a new home.',
+        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
+        image: '/images/test_image.jpg',
+        dominantColor: 'rgb(193, 193, 193)',
+        textColor: '#000000',
         link: '/',
-        status: 'proposed',
+        status: 'ongoing',
         authorAvatar: '/images/profile-author.webp',
         authorName: 'Joel Slade'
     },
     {
-        title: 'Project 4',
-        description: 'This is a description of project 4',
-        image: '/images/instaFeed1.webp',
+        title: 'Building Peggy and her family a new home.',
+        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
+        image: '/images/test_image.jpg',
+        dominantColor: 'rgb(193, 193, 193)',
+        textColor: '#000000',
         link: '/',
-        status: 'completed',
+        status: 'ongoing',
         authorAvatar: '/images/profile-author.webp',
         authorName: 'Joel Slade'
-    }
+    },
 ];
 </script>
 
@@ -71,11 +78,10 @@ const data = [
 
 .featured {
     .group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
+        display: flex;
+        // grid-template-columns: 1fr 1fr;
         box-sizing: border-box;
-        gap: 1.5rem;
+        position: relative;
     }
 }
 
@@ -84,7 +90,8 @@ const data = [
     flex-direction: row;
 
     .group.feed {
-        max-width: 800px;
+        // max-width: 800px;
+        gap: 1.2rem;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;

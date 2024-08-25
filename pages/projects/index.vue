@@ -1,5 +1,5 @@
 <template>
-    <section class="projects component">
+    <section class="projects component" style="justify-content: center">
         <div class="container">
             <h1 class="header">Our Projects</h1>
             <h2 class="subheader">We believe that small actions can lead to big changes. Our projects, both ongoing and completed, demonstrate the collective power of people like you. Read more about our work below.</h2>
@@ -25,6 +25,7 @@ section {
     .container {
         margin-top: 14rem;
         flex-direction: column;
+        width: 100%;
     }
 }
 
