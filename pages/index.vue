@@ -1,13 +1,13 @@
 <template>
     <hero/>
     <instaFeed/>
-    <lazyMission/>
-    <lazyApproach/>
-    <lazyDonation/>
-    <lazyFounder/>
-    <lazyJoin/>
-    <lazySchoolBanner/>
-    <lazyEmail/>
+    <mission/>
+    <Approach/>
+    <Donation/>
+    <founder/>
+    <join/>
+    <schoolBanner/>
+    <email/>
 </template>
 
 <script lang="ts" setup>

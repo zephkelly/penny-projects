@@ -1,6 +1,6 @@
 <template>
     <ProjectsNewHero />
-    <lazyTipTapEditor :content="pageContent" />
+    <tipTapEditor :content="pageContent" />
 </template>
 
 <script setup lang="ts">
