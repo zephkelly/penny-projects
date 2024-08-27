@@ -57,6 +57,28 @@
   font-display: swap;
 }
 
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-800.ttf') format('truetype');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-700.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-500.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+
 :root {
     --main: #8e361f;
     --main1: rgb(187, 97, 75);
@@ -64,9 +86,11 @@
     --main-dark: #5a2a1a;
 
     --admin: #6d8358;
+    --admin-transparent: rgba(109, 131, 88, 0.6);
     --admin-dark: #525b41;
 
     --text-color-main: #8e361f;
+    --text-color-main-transparent: rgba(142, 54, 31, 0.6);
     --text-color-main-light: rgb(241, 225, 210);
     --text-color-main-lighter: #f4eae7;
     --text-color-main-dark: #612f1e;
@@ -84,6 +108,8 @@
     --white1: #ffffff;
     --white2: #ebebeb;
     --white-transparent: #ebebebd3;
+
+    --error: #c73d3d;
 }
 
 body {

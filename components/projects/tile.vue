@@ -29,7 +29,7 @@
             </div>
             <div class="group cover">
                 <div class="wrapper">
-                    <img :src="postData?.image" alt="project image"/>
+                    <img :src="postData?.image" alt="project image" loading="lazy"/>
                 </div>
             </div>
         </div>

@@ -7,10 +7,10 @@
                         <h6>Elements</h6>
                         <div class="wrapper">
                             <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
-                            <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                            <button @click="editor?.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
-                            <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H3</button>
-                            <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button>
+                            <!-- <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
+                            <button @click="editor?.chain().focus().setHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button> -->
+                            <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">Heading</button>
+                            <!-- <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H4</button> -->
                         </div>
                     </div>
                     <div class="styles">
@@ -155,7 +155,7 @@ const editor = useEditor({
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    height: 1000px;
+    min-height: 1000px;
 }
 
 .floating-menu {

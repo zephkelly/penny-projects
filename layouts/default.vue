@@ -24,11 +24,11 @@
     </Head>
     <main>
         <toastPopup/>
-        <lazyDonationPopout/>
+        <donationPopout/>
         <mobileMenuPopout/>
         <Header/>
         <slot />
-        <lazyLogoBanner />
+        <logoBanner />
         <Footer />
     </main>
 </template>

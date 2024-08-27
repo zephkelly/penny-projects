@@ -3,7 +3,7 @@
         <header ref="header" :class="{ 'admin': isAdmin && isOnAdminPage }" v-show="isLoaded">
             <div class="container">
                 <nuxt-link :to="{ path: '/' }" @click.prevent="() => { scrollToTop();  mobileMenuPopupOpen().value = false; }" class="logo-link">
-                    <img class="logo" ref="logoHeader" :src="logoSrc" alt="Penny Project Logo" title="The Penny Project" style="top:50px; width:auto; height:6rem;"/>
+                    <img class="logo" ref="logoHeader" :src="logoSrc" alt="Penny Project Logo" title="The Penny Project" loading="eager" style="top:50px; width:auto; height:6rem;"/>
                 </nuxt-link>
                 <section class="navigation" ref="navHeader" style="top:70px;">
                     <div class="mobile" v-if="isMobile">
@@ -233,8 +233,8 @@ onMounted(async () => {
         justify-content: center;
         max-height: 3.2rem;
         background-color: #eae6d7;
-        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.4s;
-        will-change: transform;
+        transition: box-shadow ease-out 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+        will-change: transform, box-shadow, opacity;
         z-index: 100;
 
         &.admin {
@@ -261,6 +261,7 @@ onMounted(async () => {
     width: auto;
     position: relative;
     transition: top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1), left 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    will-change: top, height, left;
   }
 
   .navigation {
@@ -269,6 +270,7 @@ onMounted(async () => {
     padding: 0.4rem;
     padding-right: 0rem;
     transition: top 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    will-change: top;
     
     .desktop {
         display: flex;
@@ -296,7 +298,6 @@ onMounted(async () => {
             background-color: var(--main);
             border: none;
             border-radius: 2rem;
-            //   width: 7rem;
             font-family: 'Nunito', sans-serif;
             font-weight: 600;
             letter-spacing: 0.05rem;
@@ -304,6 +305,7 @@ onMounted(async () => {
             color: ghostwhite;
             text-transform: uppercase;
             transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            will-change: background-color, color, opacity;
             cursor: pointer;
 
             &.admin {
@@ -341,6 +343,7 @@ onMounted(async () => {
             color: var(--text-color-main);
             text-transform: uppercase;
             transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s, opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            will-change: background-color, color, opacity;
             cursor: pointer;
         
             &:hover {
@@ -391,11 +394,6 @@ h5 {
     text-align: center;
 }
 
-// div {
-//     height: 100%;
-//     width: 1.2rem;
-// }
-
 img {
     height: 100%;
 }
@@ -404,9 +402,9 @@ img.menu {
     height: 90%;
 }
   
-
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: opacity;
   }
 
   .fade-enter-from, .fade-leave-to {

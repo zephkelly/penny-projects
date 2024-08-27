@@ -1,5 +1,5 @@
 <template>
-    <section class="new-project-hero component">
+    <section class="new-project-hero component" style="justify-content: center;">
         <div class="container">
             <h1 class="header">Create New Project</h1>
         </div>

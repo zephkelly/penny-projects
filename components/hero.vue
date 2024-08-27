@@ -10,7 +10,7 @@
                 <NuxtLink @click.prevent="scrollToAboutDesktop" id="about-us-button" class="about-us-button">Learn More</NuxtLink>
             </ul>
         </div>
-        <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth"/>
+        <img src="~/assets/images/hero-graphic-desktop.webp" alt="Graphic of people gathered around a well which resembles the earth" loading="eager"/>
         </div>
     </section>
     <section class="hero mobile component">
@@ -97,7 +97,6 @@ section.hero {
 
         .subheader, .subheader2 {
           font-family: 'Poppins', sans-serif;
-        //   text-align: normal;
           font-size: 1.4rem;
           font-weight: 400;
           width: 30rem;
@@ -153,6 +152,7 @@ section.hero {
             letter-spacing: 0.06rem;
             text-transform: uppercase;
             transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+            will-change: background-color;
           }
 
           #donate-button {
@@ -178,7 +178,8 @@ section.hero {
             background-color: var(--background-color-main);
             cursor: pointer;
             box-sizing: border-box;
-            transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+            transition: color cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s, background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s, border cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+            will-change: color, background-color, border;
 
             &:hover {
               color: var(--background-color-secondary);
@@ -285,7 +286,6 @@ section.hero {
         color: var(--text-color-main);
         margin-bottom: 2rem;
         z-index: 10;
-        //add shadow to text
     }
 
  

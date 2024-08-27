@@ -258,8 +258,8 @@ section.instagram-feed {
         position: relative;
         object-fit: cover;
         object-position: center;
-        
         transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+        will-change: transform;
         
         &:hover {
             opacity: 0.95;
@@ -293,6 +293,7 @@ section.instagram-feed {
                 font-weight: 600;
                 margin-right: 0.3rem;
                 transition: color 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+                will-change: color;
 
                 &:hover {
                     color: rgb(155, 145, 145);
@@ -320,6 +321,7 @@ section.instagram-feed {
         width: 1.2rem;
         z-index: 1;
         transition: opacity 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+        will-change: opacity;
 
         &.no-caption {
         filter: invert(100%);
@@ -373,6 +375,7 @@ section.instagram-feed {
         color: var(--text-color-main);
         text-decoration: none;
         transition: color 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+        will-change: color;
 
         @media (max-width: 768px) {
             color: var(--text-color-tertiary);
@@ -388,6 +391,7 @@ section.instagram-feed {
 
 .fade-enter-active, .fade-leave-active {
     transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: opacity;
 }
 
 .fade-enter-from, .fade-leave-to {

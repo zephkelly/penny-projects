@@ -133,6 +133,7 @@ function openDonationWindow() {
       margin-top: 4rem;
       overflow: hidden;
       transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+      will-change: background-color;
       cursor: pointer;
 
       @media (max-width: 768px) {
@@ -155,6 +156,7 @@ function openDonationWindow() {
         color: ghostwhite;
         margin-right: 0.7rem;
         transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+        will-change: opacity;
       }
 
       img {
@@ -164,6 +166,7 @@ function openDonationWindow() {
         width: auto;
         pointer-events: none;
         transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+        will-change: opacity;
       }
 
       &:hover {
