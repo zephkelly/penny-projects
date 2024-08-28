@@ -27,6 +27,10 @@
             type: String,
             required: true
         },
+        startExpanded: {
+            type: Boolean,
+            default: false
+        },
         totalOptions: {
             type: Number,
             default: 0
@@ -38,8 +42,7 @@
     });
 
     const emit = defineEmits(['update:completed']);
-    
-    const isExpanded = ref(false);
+    const isExpanded = ref(props.startExpanded);
     const isCompleted = ref(false);
     const isIncompleted = ref(false);
     
@@ -50,6 +53,10 @@
     const completionPercentage = computed(() => {
         if (props.totalOptions === 0) return 0;
         return (props.completedOptions / props.totalOptions) * 100;
+    });
+
+    onMounted(() => {
+        isExpanded.value = props.startExpanded;
     });
 
     watch(() => props.completedOptions, (newValue) => {
@@ -98,6 +105,10 @@
         transition: border-color 0.3s 0.3s ease, padding 0.3s ease, background-color 0.3s 0.3s ease, border-radius 0.3s ease, border 0.3s ease, border-bottom 0.3s ease;
         will-change: border-color, padding, background-color, border-radius;
 
+        &:hover {
+            padding: 1.3rem 1rem;
+        }
+
         &.completed {
             border: 1px solid var(--background-color-secondary);
         }
@@ -113,6 +124,11 @@
             transition: border-color 0.3s ease, padding 0.3s ease, background-color 0.3s ease, border 0.3s ease;
             border-bottom-left-radius: 0px;
             border-bottom-right-radius: 0px;
+
+            &:hover {
+                padding: 1.5rem 1rem;
+                background-color: var(--background-color-secondary);
+            }
         }
     }
     
@@ -181,6 +197,7 @@
     
     .expander-content-inner {
         flex: 1;
+        width: 100%;
         padding: 0rem;
         padding-top: 1.5rem;
     }
