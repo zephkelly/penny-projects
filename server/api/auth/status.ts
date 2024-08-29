@@ -1,14 +1,10 @@
 //@ts-ignore
 import jwt from 'jsonwebtoken'
 
+import { type JWTPayload } from '~/types/auth'
 import { connectSupabase } from '~/utils/supabase'
 import { isUserAdmin } from '~/utils/auth';
 
-interface DecodedToken {
-    userId: string;
-    iat: number;
-    exp: number;
-}
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'auth_token')
@@ -22,7 +18,7 @@ export default defineEventHandler(async (event) => {
         }
     }
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
         const isAdmin = await isUserAdmin(decodedToken.userId);
 
         return {

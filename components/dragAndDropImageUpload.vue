@@ -42,16 +42,31 @@
         flexToParent: {
             type: Boolean,
             default: false
+        },
+        imageUrl: {
+            type: String,
+            default: null
         }
     });
 
-    const isFlexToParent = ref(props.flexToParent);
-    
     const emit = defineEmits(['image-selected', 'image-removed']);
     
     const isDragging = ref(false);
     const imagePreview = ref(null);
     const fileInput = ref(null);
+    const isFlexToParent = ref(props.flexToParent);
+
+    watch(() => props.imageUrl, (newValue) => {
+        if (newValue) {
+            imagePreview.value = newValue;
+        }
+    });
+
+    onMounted(() => {
+        if (props.imageUrl) {
+            imagePreview.value = props.imageUrl;
+        }
+    });
     
     const handleDrop = (e) => {
         isDragging.value = false;

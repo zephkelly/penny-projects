@@ -19,23 +19,23 @@
                                     <div class="group">
                                         <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
                                         <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                                        <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                                        <!-- <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button> -->
                                         <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
                                         <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
-                                        <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
+                                        <!-- <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button> -->
                                         <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
-                                        <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                        </button>
-                                        <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
+                                        <!-- <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }"> -->
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                        </button> -->
+                                        <!-- <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
                                             <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
                                         </button>
                                         <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                        </button>
-                                        <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
+                                        </button> -->
+                                        <!-- <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
                                             <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
-                                        </button>
+                                        </button> -->
                                         <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
                                         <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
                                     </div>
@@ -70,6 +70,13 @@
                     </div>
                 </bubble-menu>
                 <div class="editor-content">
+                    <div class="main-settings-content">
+                        <div class="container">
+                            <h1>{{ mainSettingsContent.title }}</h1>
+                            <h2>{{ mainSettingsContent.subtitle }}</h2>
+                            <p>{{ mainSettingsContent.description }}</p>
+                        </div>
+                    </div>
                     <editor-content class="page" :editor="editor" />
                 </div>
             </div>
@@ -86,27 +93,40 @@
 import { useAuth } from '../composables/useAuth';
 import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/vue-3';
 import Link from '@tiptap/extension-link';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image';
 
 const props = defineProps<{
     content: string;
+    mainSettingsContent: any;
 }>();
 
+
 const { isAdmin } = useAuth();
+
+const emit = defineEmits(['update:content']);
 
 const editor = useEditor({
     extensions: [
         StarterKit,
         Link,
-        Underline,
         Image,
-        TextAlign.configure({ types: ['heading', 'paragraph'] })
     ],
     content: props.content,
+    onUpdate({ editor }) {
+        emit('update:content', editor.getHTML());
+    }
 });
+
+    // watch(() => props.mainSettingsContent, (newSettings) => {
+    // if (editor.value) {
+    //     editor.value.commands.setContent(`
+    //         <h1>${newSettings.title}</h1>
+    //         <h2>${newSettings.subtitle}</h2>
+    //         <p>${newSettings.description}</p>
+    //     `);
+    // }
+    // }, { deep: true });
 
 function addImage() {
     const url = window.prompt('URL')
@@ -365,6 +385,21 @@ button {
         }
     }
 }
+
+.main-settings-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem;
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+    }
+}
 </style>
 
 <style lang="scss">
@@ -379,9 +414,8 @@ button {
     background-color: var(--background-color-secondary);  
 }
 
-.tiptap {
+.tiptap, .main-settings-content {
     width: 100%;
-    max-width: 1000px;
 
     &.ProseMirror-focused {
         &:focus {
@@ -405,10 +439,11 @@ button {
 
     h1 {
         font-family: 'Nunito', sans-serif;
-        font-size: 3.8rem;
+        font-size: 3rem;
         font-weight: 800; 
         margin-top: 2rem;
         margin-bottom: 1rem;
+        width: 100%;
     }
 
     h3 {
@@ -449,6 +484,14 @@ button {
             }
         }
     }
+
+    img {
+        width: 100%;
+    }
+}
+
+.tiptap {
+    max-width: 1000px;
 }
 // Add global tip tap styles
 

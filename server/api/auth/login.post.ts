@@ -3,6 +3,7 @@ import { type User } from '~/models/user';
 import bcrypt from 'bcrypt';
 //@ts-expect-error
 import jwt from 'jsonwebtoken';
+import { type JWTPayload } from '~/types/auth';
 
 import { connectSupabase } from '~/utils/supabase';
 
@@ -39,8 +40,9 @@ export default defineEventHandler(async (event) => {
     }
 
     // Generate JWT token
-    const jwtPayload = {
+    const jwtPayload: JWTPayload  = {
         userId: user.UserId,
+        profileImageUrl: user.ProfileImage,
     };
 
     const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: '24h' });

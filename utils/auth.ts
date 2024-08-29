@@ -1,12 +1,7 @@
 //@ts-expect-error
 import jwt from 'jsonwebtoken';
 import { connectSupabase } from './supabase';
-
-interface JWTPayload {
-    userId: string;
-    iat: number;
-    exp: number;
-}
+import { type JWTPayload } from './../types/auth';
 
 export function generateToken(userId: string): string {
     return jwt.sign(

@@ -76,6 +76,7 @@
                             <div class="preview-wrapper">
                                 <DragAndDropImageUpload 
                                 :flexToParent="true"
+                                :imageUrl="authorImage"
                                 @image-selected="handleAuthorImageSelected"
                                 @image-removed="handleAuthorImageRemoved"/>
                             </div>
@@ -89,11 +90,17 @@
             </form>
         </Expander>
     </section>
-    <tipTapEditor :content="pageContent" style="justify-content: center;"/>
+    <tipTapEditor
+        :content="pageContent"
+        :mainSettingsContent="settingsFieldsContent"
+        style="justify-content: center;"/>
 </template>
 
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
+import { type ProjectSettingField } from '~/types/project';
+
+const { getProfileImage } = useAuth();
 
 definePageMeta({
     middleware: ['admin']
@@ -113,24 +120,28 @@ const pageContent = ref(`
   <p></p>
 `);
 
-interface SettingField {
-    value: string | boolean;
-    error: ValidationError | null;
-    maxLength?: number;
-}
-
 // Main Settings
 const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
     description: { value: '', error: null, maxLength: 500 },
-    coverImage: { value: false, error: null } as SettingField,
-    createdDate: { value: '', error: null } as SettingField,
+    coverImage: { value: false, error: null } as ProjectSettingField,
+    createdDate: { value: '', error: null } as ProjectSettingField,
 });
+
+const settingsFieldsContent = computed(() => reactive({
+    title: mainFields.title.value,
+    subtitle: mainFields.subtitle.value,
+    description: mainFields.description.value,
+    coverImage: mainFields.coverImage.value,
+    createdDate: mainFields.createdDate.value,
+    authorImage: seoFields.authorImage.value,
+    authorName: seoFields.authorName.value,
+}));
 
 const mainFieldCount = computed(() => Object.values(mainFields).length);
 
-const validateMainForm = (field: SettingField) => {
+const validateMainForm = (field: ProjectSettingField) => {
     if ('maxLength' in field === false) return;
 
     const result = validator.validateField(field.value as string, field.maxLength as number);
@@ -168,12 +179,14 @@ const seoFields = reactive({
     seoTitle: { value: '', error: null, maxLength: 60 },
     metaDescription: { value: '', error: null, maxLength: 160 },
     authorName: { value: '', error: null, maxLength: 50 },
-    authorImage: { value: false, error: null } as SettingField,
+    authorImage: { value: false, error: null } as ProjectSettingField,
 });
+
+const authorImage: any = await getProfileImage();
 
 const seoFieldCount = computed(() => Object.values(seoFields).length);
 
-const validateSEOForm = (field: SettingField) => {
+const validateSEOForm = (field: ProjectSettingField) => {
     if ('maxLength' in field === false) return;
 
     const result = validator.validateField(field.value as string, field.maxLength as number);

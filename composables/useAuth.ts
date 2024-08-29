@@ -4,6 +4,21 @@ export const useAuth = () => {
     const isAdmin = useState('isAdmin', () => false);
     const isLoggedIn = useState('isLoggedIn', () => false);
 
+    const getProfileImage = async () => {
+        try {
+            const headers = useRequestHeaders(['cookie']);
+            const response = await $fetch('/api/auth/profile-image', { headers, credentials: 'include', lazy: true, server: false });
+
+            if (response === undefined || response.data === null) return;
+
+            //@ts-expect-error
+            return response.data.profileImage;
+        } 
+        catch (error) {
+            console.error('Error getting profile image:', error)
+        }
+    }
+
     const checkAuthStatus = async () => {
         try {
             const headers = useRequestHeaders(['cookie']);
@@ -49,6 +64,7 @@ export const useAuth = () => {
         isLoggedIn,
         isAdmin,
         checkAuthStatus,
+        getProfileImage,
         logout
     }
 }
