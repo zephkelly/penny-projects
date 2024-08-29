@@ -1,6 +1,7 @@
-// import { User } from '~/models/user';
+import { type User } from '~/models/user';
 //@ts-ignore
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
+import { connectSupabase } from '~/utils/supabase';
 
 export default defineEventHandler(async (event) => {
     return { 
@@ -8,19 +9,35 @@ export default defineEventHandler(async (event) => {
         body: { message: 'Registering disabled' }
     };
 //   try {
-//     // Read the request body
-//     const { email, password, name } = await readBody(event);
+//     const { email, password, firstName, lastName, userType } = await readBody(event);
+
+//     console.log(email, password, firstName, lastName, userType);
 
 //     // Validate input
-//     if (!email || !password || !name) {
+//     if (!email || !password || !firstName || !lastName ) {
 //       throw createError({
 //         statusCode: 400,
-//         statusMessage: 'Email, password, and username are required',
+//         statusMessage: 'Email, password, and names are required',
 //       });
 //     }
 
+//     const supabase = await connectSupabase();
+
 //     // Check if user already exists
-//     const existingUser = await User.findOne({ email });
+//     const { data: existingUser, error: checkError } = await supabase
+//       .from('USER')
+//       .select('UserId')
+//       .eq('Email', email)
+//       .single();
+
+//     if (checkError && checkError.code !== 'PGRST116') { // PGRST116 means no rows returned
+//       console.error('Error checking existing user:', checkError);
+//       throw createError({
+//         statusCode: 500,
+//         statusMessage: 'An unexpected error occurred during registration',
+//       });
+//     }
+
 //     if (existingUser) {
 //       throw createError({
 //         statusCode: 409,
@@ -33,22 +50,38 @@ export default defineEventHandler(async (event) => {
 //     const hashedPassword = await bcrypt.hash(password, salt);
 
 //     // Create new user
-//     const newUser = new User({
-//       email,
-//       password: hashedPassword,
-//       name
-//     });
+//     const { data: newUser, error: insertError } = await supabase
+//         .from('USER')
+//         .insert([{ 
+//             Email: email,
+//             Password: hashedPassword,
+//             FirstName: firstName,
+//             LastName: lastName,
+//             UserType: userType
+//         }
+//     ])
+//     .select()
+//     .single();
 
-//     // Save the user to the database
-//     await newUser.save();
+//     if (insertError) {
+//       console.error('Error inserting new user:', insertError);
+//       throw createError({
+//         statusCode: 500,
+//         statusMessage: 'An unexpected error occurred during registration',
+//       });
+//     }
 
 //     // Return success response
-//     return { 
+//     return {
 //       statusCode: 201,
-//       body: { message: 'User registered successfully' }
+//       body: { message: 'User registered successfully', userId: newUser.id }
 //     };
 
-//   } catch (error) {
+//   } catch (error: any) {
+//     if (error.statusCode) {
+//       // If it's an error we threw, pass it along
+//       throw error;
+//     }
 //     console.error('Registration error:', error);
 //     throw createError({
 //       statusCode: 500,

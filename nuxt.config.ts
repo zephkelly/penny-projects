@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     },
 
     nitro: {
-        plugins: ['@/server/plugins/mongodb.ts'],
         compressPublicAssets: true,
         externals: {
             inline: ['@/utils/legibleColor']
