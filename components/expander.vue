@@ -109,17 +109,14 @@
             padding: 1.3rem 1rem;
         }
 
-        &.completed {
-            border: 1px solid var(--background-color-secondary);
-        }
-
         &.incompleted {
             border: 1px solid var(--error);
         }
 
         &.is-expanded {
             padding: 1rem 0rem;
-            border-bottom: 1px dashed var(--black2);
+            border-color: transparent;
+            border-bottom: 1px dashed var(--error);
             background-color: transparent;
             transition: border-color 0.3s ease, padding 0.3s ease, background-color 0.3s ease, border 0.3s ease;
             border-bottom-left-radius: 0px;
@@ -128,7 +125,24 @@
             &:hover {
                 padding: 1.5rem 1rem;
                 background-color: var(--background-color-secondary);
+
+                &.incompleted {
+                    border: 1px solid var(--error);
+                }
+
+                &.completed {
+                    border: 1px solid var(--complete);
+                }
             }
+
+            &.completed {
+                border: transparent;
+                border-bottom: 1px dashed var(--complete);
+            }
+        }
+
+        &.completed {
+            border: 1px solid var(--complete);
         }
     }
     
@@ -140,9 +154,12 @@
     }
     
     .expander-header h3 {
-        
         font-size: 1.2rem;
         margin: 0;
+
+        // &.is-expanded {
+
+        // }
     }
 
     .expander-toggle {
@@ -167,12 +184,12 @@
     }
 
     .completion-status.completed {
-        background-color: #4caf50;
+        background-color: var(--complete);
         color: white;
     }
 
     .expander-settings.is-completed {
-        border: 2px solid #4caf50;
+        border: 2px solid var(--complete);
     }
     
     .expander-header svg {

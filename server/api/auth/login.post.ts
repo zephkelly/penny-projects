@@ -25,7 +25,12 @@ export default defineEventHandler(async (event) => {
         }
     }
     try {
-        const token = jwt.sign({ userId: user._id, isAdmin: user.admin }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const jwtPayload = { 
+            userId: user._id,
+            isAdmin: user.admin 
+        };
+
+        const token = jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: '24h' });
    
         setCookie(event, 'auth_token', token, {
             httpOnly: true,

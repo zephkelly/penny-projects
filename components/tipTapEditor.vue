@@ -2,52 +2,55 @@
     <section class="tiptap-custom component">
         <div class="container" :class="{ inactive: (!isAdmin || !editor) }">
             <div class="editor" v-if="editor && isAdmin">
-                <div class="fixed-menu">
-                    <div class="settings-block">
-                        <div class="elements">
-                            <h6>Elements</h6>
-                            <div class="wrapper">
-                                <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Paragraph</button>
-                                <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">Heading</button>
-                            </div>
-                        </div>
-                        <div class="styles">
-                            <h6>Styling</h6>
-                            <div class="wrapper">
-                                <div class="group">
-                                    <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                                    <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                                    <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
-                                    <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
-                                    <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
-                                    <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
-                                    <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
-                                    <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
-                                        <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
-                                        <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
-                                    </button>
-                                    <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
-                                    <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
-                                </div>
-                                <div class="group">
-                                </div>
-                                <div class="group">
+                <div class="fixed-menu-wrapper">
+                    <div class="fixed-menu">
+                        <div class="settings-block">
+                            <div class="elements">
+                                <h6>Elements</h6>
+                                <div class="wrapper">
+                                    <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
+                                    <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">Heading</button>
+                                    <button @click="addImage">Image</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="actions">
-                            <h6>Actions</h6>
-                            <div class="wrapper">
-                                <button @click="editor?.chain().focus().undo().run()">Undo</button>
-                                <button @click="editor?.chain().focus().redo().run()">Redo</button>
+                            <div class="styles">
+                                <h6>Styling</h6>
+                                <div class="wrapper">
+                                    <div class="group">
+                                        <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                                        <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                                        <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                                        <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
+                                        <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
+                                        <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button>
+                                        <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
+                                        <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
+                                            <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
+                                            <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
+                                        <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
+                                    </div>
+                                    <div class="group">
+                                    </div>
+                                    <div class="group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <h6>Actions</h6>
+                                <div class="wrapper">
+                                    <button @click="editor?.chain().focus().undo().run()">Undo</button>
+                                    <button @click="editor?.chain().focus().redo().run()">Redo</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,7 +69,9 @@
                         <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
                     </div>
                 </bubble-menu>
-                <editor-content class="page" :editor="editor" />
+                <div class="editor-content">
+                    <editor-content class="page" :editor="editor" />
+                </div>
             </div>
             <div class="editor" v-else>
                 <div class="fixed-menu inactive">
@@ -84,6 +89,7 @@ import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image';
 
 const props = defineProps<{
     content: string;
@@ -96,10 +102,19 @@ const editor = useEditor({
         StarterKit,
         Link,
         Underline,
+        Image,
         TextAlign.configure({ types: ['heading', 'paragraph'] })
     ],
     content: props.content,
 });
+
+function addImage() {
+    const url = window.prompt('URL')
+
+    if (url && editor.value) {
+        editor.value.chain().focus().setImage({ src: url }).run()
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -123,6 +138,7 @@ const editor = useEditor({
 }
 
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -164,18 +180,24 @@ const editor = useEditor({
     }
 }
 
+.editor-content {
+    width: 100%;
+    flex-grow: 1;
+    // overflow-y: auto;
+}
+
 .editor {
-    box-sizing: border-box;
-    border-radius: 4px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 1000px;
     width: 100%;
-    // padding: 1rem;
-    background-color: var(--background-color-secondary);
+    min-height: 1000px;
     border: 1px solid var(--grey5);
     border-radius: 0.5rem;
+    background-color: var(--background-color-secondary);
+    box-sizing: border-box;
+    margin-bottom: 6rem;
 }
 
 .floating-menu {
@@ -196,12 +218,26 @@ const editor = useEditor({
     gap: 0.25rem;
 }
 
+.fixed-menu-wrapper {
+    position: sticky;
+    top: 2.9rem;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+
+    @media (max-width: 767px) {
+        position: relative;
+        top: 0;
+    }
+}
+
 .fixed-menu {
     display: flex;
     justify-content: center;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.02);
     gap: 1rem;
-    position: sticky;
     width: 100%;
     padding: 2rem 1rem;
     border-bottom: 1px solid var(--grey5);
@@ -263,9 +299,8 @@ const editor = useEditor({
     .settings-block > div {
         border-radius: 0.5rem;
         width: auto;
-        // border: 1px solid var(--grey5);
         box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.05);
-        padding: 0.5rem;
+        padding: 0.8rem;
 
         h6 {
             font-family: 'Inter', sans-serif;
@@ -341,8 +376,7 @@ button {
     box-sizing: border-box;
     width: 100%;
     padding: 1rem;
-    background-color: var(--background-color-secondary);
-    
+    background-color: var(--background-color-secondary);  
 }
 
 .tiptap {

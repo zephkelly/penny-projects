@@ -61,7 +61,7 @@ const mobileMenuOpenStyle = computed(() => mobileMenuPopupOpen().value ? 'open' 
 
 //Change to admin header on admin routes
 const isAdminRoute = computed(() => {
-  return isAdmin.value && ['/admin', '/projects/new', '/projects/edit'].includes(route.path);
+  return isAdmin.value && ['/admin', '/new/projects', '/projects/edit'].includes(route.path);
 });
 
 const logoSrc = computed(() => {
@@ -228,6 +228,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
   header {
         position: fixed;
+        top: 0;
         width: 100%;
         display: flex;
         justify-content: center;

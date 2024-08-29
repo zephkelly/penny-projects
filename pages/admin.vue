@@ -16,6 +16,17 @@
             <img :src="uploadedImage.data.link" alt="Uploaded Image" />
             </div> -->
             </div>
+
+            <div>
+                <h1>Delete Image Via Hash</h1>
+                <form @submit.prevent="handleFileUpload()">
+                    <button type="submit" @click.prevent="deleteImageViaHash()">Delete</button>
+                </form>
+            <!-- <div v-if="uploadedImage">
+            <h2>Uploaded Image</h2>
+            <img :src="uploadedImage.data.link" alt="Uploaded Image" />
+            </div> -->
+            </div>
         </div>
     </section>
 </template>
@@ -48,9 +59,21 @@ async function handleFileUpload() {
             method: 'POST',
             body: { image: base64Image }
         });
-   
-        console.log(response);
     };
+}
+
+async function deleteImageViaHash() {
+    const hash = window.prompt('Insert Image Hash');
+
+    if (!hash) {
+        console.error('No hash provided');
+        return;
+    }
+
+    const response = await useFetch('/api/delete/image', {
+        method: 'POST',
+        body: { deleteHash: hash }
+    });
 }
 
 definePageMeta({

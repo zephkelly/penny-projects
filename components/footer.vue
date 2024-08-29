@@ -54,7 +54,6 @@ p, a {
 .admin-login {
     color: var(--text-color-main);
     display: block;
-    width: 100%;
     font-size: 0.8rem;
     margin: 2rem;
     margin-top: 0rem;

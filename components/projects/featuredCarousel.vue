@@ -156,6 +156,7 @@
         width: 100%;
         height: 400px;
         overflow: hidden;
+        border-radius: 12px;
     }
   
     .carousel-container {

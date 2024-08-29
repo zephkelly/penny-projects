@@ -51,7 +51,7 @@ export interface ImgurUploadResponse {
 export interface ImgurUploadMinimalResponse {
     data: {
         link: string;
-        deletehash?: string; // Include this if you still want the delete hash
+        deletehash?: string;
     };
     success: boolean;
 }

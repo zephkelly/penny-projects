@@ -11,7 +11,6 @@ type ColorExtractionResponse = {
 
 export default defineEventHandler(async (event) => {
     try {
-
         const imgurClient = event.context.imgur;
         const form = formidable({
             multiples: true,
