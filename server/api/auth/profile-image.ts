@@ -18,12 +18,12 @@ export default defineEventHandler(async (event) => {
 
         return {
             data: {
-                profileImage: decodedToken.profileImageUrl
+                profileImage: decodedToken.profile_image
             }
         }
     } catch (error) {
         console.error('Error in auth handler:', error)
-        
+
         deleteCookie(event, 'auth_token');
         return {
             data: {

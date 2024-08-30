@@ -37,8 +37,8 @@ export default defineEventHandler(async (event) => {
     
         // Generate JWT token
         const jwtPayload: JWTPayload = {
-            userId: user.user_id,
-            profileImageUrl: user.profile_image,
+            sub: user.user_id,
+            profile_image: user.profile_image,
         };
         const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: '24h' });
     

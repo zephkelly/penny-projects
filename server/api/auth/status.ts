@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken'
 
 import { type JWTPayload } from '~/types/auth'
-import { isUserAdmin, verifyToken } from '~/utils/auth';
+import { isUserAdmin } from '~/utils/auth';
 
 
 export default defineEventHandler(async (event) => {
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     }
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
-        const isAdmin = await isUserAdmin(decodedToken.userId);
+        const isAdmin = await isUserAdmin(decodedToken.sub);
 
         return {
             data: {
