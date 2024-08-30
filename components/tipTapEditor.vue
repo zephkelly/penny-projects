@@ -75,7 +75,7 @@
                             <h1>{{ pageRelatedSettings.title }}</h1>
                             <h2>{{ pageRelatedSettings.subtitle }}</h2>
                             <div class="post-information">
-                                <img :src="pageRelatedSettings.authorImage" alt="Main settings image" />
+                                <img class="profile-image" :src="pageRelatedSettings.authorImage" />
                                 <div class="text-information">
                                     <p>{{ pageRelatedSettings.authorName }}</p>
                                     <p>{{ pageRelatedSettings.date }}</p>
@@ -107,6 +107,10 @@ const props = defineProps<{
     pageRelatedSettings: any;
 }>();
 
+watch(() => props.pageRelatedSettings, (newSettings) => {
+    console.log(newSettings);
+}, { deep: true });
+
 
 const { isAdmin } = useAuth();
 
@@ -119,9 +123,9 @@ const editor = useEditor({
         Image,
     ],
     content: props.content,
-    onUpdate({ editor }) {
-        emit('update:content', editor.getHTML());
-    }
+    // onUpdate({ editor }) {
+    //     emit('update:content', editor.getHTML());
+    // }
 });
 
     // watch(() => props.mainSettingsContent, (newSettings) => {
@@ -414,6 +418,12 @@ button {
         max-width: 1000px;
         margin: auto;
     }
+
+    .post-information {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
 }
 
 .page-main-content {
@@ -464,7 +474,6 @@ button {
         font-size: 2.9rem;
         font-weight: 600; 
         margin-top: 2rem;
-        margin-bottom: 1rem;
         line-height: 3.8rem;
     }
 
@@ -472,6 +481,8 @@ button {
         font-size: 1.4rem;
         line-height: 1.8rem;
         color: var(--grey2);
+        margin-top: 0.4rem;
+        margin-bottom: 30px;
     }
 
     h3 {
@@ -513,9 +524,17 @@ button {
         }
     }
 
+    .profile-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--grey5);
+        border: 1px solid var(--grey5);
+    }
+
     img {
         width: 100%;
-        container-type: inline-size;
+        height: auto;
 
         // @container (min-width: 600px) {
         //     max-width: 800px;

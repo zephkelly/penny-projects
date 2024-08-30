@@ -32,7 +32,11 @@
 </template>
 
 <script lang="ts" setup>
+import { type user } from '~/types/database';
 const image = ref(null);
+
+const response = await useFetch<user>('/api/auth/user-info');
+console.log(response.data.value?.created_date)
 
 async function handleFileUpload() {
     //@ts-ignore

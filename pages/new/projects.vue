@@ -37,7 +37,7 @@
                             <div class="preview-wrapper">
                                 <DragAndDropImageUpload 
                                 :flexToParent="true"
-                                :imageUrl="authorImage"
+                                :imageUrl="profileImage"
                                 @image-selected="handleAuthorImageSelected"
                                 @image-removed="handleAuthorImageRemoved"/>
                             </div>
@@ -104,15 +104,18 @@ const pageContent = ref(`
   <p></p>
 `);
 
+const profileImage = await getProfileImage() ?? '';
+
 // Main Settings
 const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
     createdDate: { value: '', error: null } as ProjectSettingField,
     authorName: { value: '', error: null, maxLength: 50 },
-    authorImage: { value: false, error: null } as ProjectSettingField,
+    authorImage: { value: profileImage, error: null } as ProjectSettingField,
     coverImage: { value: false, error: null } as ProjectSettingField,
 });
+
 
 const mainFieldCount = computed(() => Object.values(mainFields).length);
 
@@ -137,13 +140,13 @@ const completedMainFields = computed(() => {
     return getCompletedFieldsCount(mainFields);
 });
 
-const handleAuthorImageSelected = () => {
-    mainFields.authorImage.value = true;
+const handleAuthorImageSelected = (file: File) => {
+    mainFields.authorImage.value = URL.createObjectURL(file);
     mainFields.authorImage.error = null;
 };
 
 const handleAuthorImageRemoved = () => {
-    mainFields.authorImage.value = false;
+    mainFields.authorImage.value = '';
     mainFields.authorImage.error = ValidationError.REQUIRED;
 };
 
@@ -164,8 +167,6 @@ const seoFields = reactive({
     seoTitle: { value: '', error: null, maxLength: 60 },
     metaDescription: { value: '', error: null, maxLength: 160 },
 });
-
-const authorImage: any = await getProfileImage();
 
 const seoFieldCount = computed(() => Object.values(seoFields).length);
 
@@ -190,7 +191,7 @@ Object.values(seoFields).forEach(field => {
     watch(() => field.value, () => validateSEOForm(field));
 });
 
-const completedSEOFields = computed((field: any) => {
+const completedSEOFields = computed(() => {
     return getCompletedFieldsCount(seoFields);
 });
 
@@ -201,7 +202,7 @@ function getCompletedFieldsCount(fields: Object): number {
 }
 
 const defaultValues = {
-    title: 'Your new project',
+    title: 'Your New Project Title',
     subtitle: 'Write a longer, attention-grabbing subtitle here',
     createdDate: '',
     authorName: '',
@@ -212,7 +213,7 @@ const pageRelatedSettings = computed(() => reactive({
     subtitle: mainFields.subtitle.value === '' ? defaultValues.subtitle : mainFields.subtitle.value,
     createdDate: mainFields.createdDate.value,
     authorName: mainFields.authorName.value,
-    authorImage: authorImage,
+    authorImage: mainFields.authorImage.value,
 }));
 </script>
 
