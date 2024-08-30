@@ -5,11 +5,11 @@
         <h2>Our Approach</h2>
         <p class="descriptor">With the support of Riverside Secondary School, we offer hands-on student-led experiential learning. This approach focuses on:</p>
         <div class="approaches">
-          <p>1. Identifying the community's needs</p>
+          <p>1. Identifying the needs of the community</p>
           <p>2. Crafting effective solutions</p>
           <p>3. Implementing projects</p>
         </div>
-        <p class="descriptor-2">This approach fosters student pride and ownership, all while ensuring the projects meet specifc community needs</p>
+        <p class="descriptor-2">This approach helps students foster pride and ownership in their work, and ensures the projects meet the specific needs of the their local community</p>
       </div>
       <div class="group">
       </div>
@@ -45,13 +45,11 @@
       }
 
       .group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
         max-height: 100%;
-        // padding-top: 8rem;
-        // padding-bottom: 8rem;
+        
+        @media (max-width: 768px) {
+          align-items: center;
+        }
 
         &:first-child {
           padding-top: 6rem;

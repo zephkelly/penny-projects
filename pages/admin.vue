@@ -48,6 +48,9 @@ async function handleFileUpload() {
         return;
     }
 
+    const imageSize = await checkImageSize(imageFile)
+    console.log(imageSize)
+
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onload = async () => {
@@ -60,6 +63,38 @@ async function handleFileUpload() {
             body: { image: base64Image }
         });
     };
+}
+
+function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+   
+    reader.onload = function(e: ProgressEvent<FileReader>) {
+      const img = new Image();
+     
+      img.onload = (event: Event) => {
+        const loadedImg = event.target as HTMLImageElement;
+        const size = {
+          width: loadedImg.width,
+          height: loadedImg.height,
+          fileSize: file.size
+        };
+        resolve(size);
+      };
+     
+      img.onerror = function() {
+        reject(new Error('Failed to load image'));
+      };
+     
+      img.src = e.target?.result as string;
+    };
+   
+    reader.onerror = function() {
+      reject(new Error('Failed to read file'));
+    };
+   
+    reader.readAsDataURL(file);
+  });
 }
 
 async function deleteImageViaHash() {

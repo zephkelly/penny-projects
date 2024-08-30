@@ -70,14 +70,20 @@
                     </div>
                 </bubble-menu>
                 <div class="editor-content">
-                    <div class="main-settings-content">
+                    <div class="page-heading-content">
                         <div class="container">
-                            <h1>{{ mainSettingsContent.title }}</h1>
-                            <h2>{{ mainSettingsContent.subtitle }}</h2>
-                            <p>{{ mainSettingsContent.description }}</p>
+                            <h1>{{ pageRelatedSettings.title }}</h1>
+                            <h2>{{ pageRelatedSettings.subtitle }}</h2>
+                            <div class="post-information">
+                                <img :src="pageRelatedSettings.authorImage" alt="Main settings image" />
+                                <div class="text-information">
+                                    <p>{{ pageRelatedSettings.authorName }}</p>
+                                    <p>{{ pageRelatedSettings.date }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <editor-content class="page" :editor="editor" />
+                    <editor-content class="page-main-content" :editor="editor" />
                 </div>
             </div>
             <div class="editor" v-else>
@@ -98,7 +104,7 @@ import Image from '@tiptap/extension-image';
 
 const props = defineProps<{
     content: string;
-    mainSettingsContent: any;
+    pageRelatedSettings: any;
 }>();
 
 
@@ -203,7 +209,7 @@ function addImage() {
 .editor-content {
     width: 100%;
     flex-grow: 1;
-    // overflow-y: auto;
+    padding-top: 4rem;
 }
 
 .editor {
@@ -215,7 +221,7 @@ function addImage() {
     min-height: 1000px;
     border: 1px solid var(--grey5);
     border-radius: 0.5rem;
-    background-color: var(--background-color-secondary);
+    background-color: var(--off-white);
     box-sizing: border-box;
     margin-bottom: 6rem;
 }
@@ -385,42 +391,58 @@ button {
         }
     }
 }
+</style>
 
-.main-settings-content {
+<style lang="scss">
+.page-heading-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     width: 100%;
+    // max-width: calc(1000px + 4rem);
+    background-color: var(--white1);
+    margin: auto;
+    border-top: 1px solid var(--grey5);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
     padding: 1rem;
+    padding-top: 4rem;
 
     .container {
         max-width: 1000px;
         margin: auto;
     }
 }
-</style>
 
-<style lang="scss">
-.page {
+.page-main-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     width: 100%;
+    // max-width: calc(1000px + 4rem);
+    margin: auto;
+    min-height: 1000px;
     padding: 1rem;
-    background-color: var(--background-color-secondary);  
+    background-color: var(--white1);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
-.tiptap, .main-settings-content {
+.tiptap, .page-heading-content {
     width: 100%;
 
     &.ProseMirror-focused {
         &:focus {
             outline: none;
         }
+    }
+
+    h1, h2 {
+        width: 100%;
     }
 
     h1, h2, h3, h4, p, ul {
@@ -438,12 +460,18 @@ button {
     }
 
     h1 {
-        font-family: 'Nunito', sans-serif;
-        font-size: 3rem;
-        font-weight: 800; 
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.9rem;
+        font-weight: 600; 
         margin-top: 2rem;
         margin-bottom: 1rem;
-        width: 100%;
+        line-height: 3.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        color: var(--grey2);
     }
 
     h3 {
@@ -487,6 +515,13 @@ button {
 
     img {
         width: 100%;
+        container-type: inline-size;
+
+        // @container (min-width: 600px) {
+        //     max-width: 800px;
+        //     margin: 0 auto;
+        //     display: block;
+        // }
     }
 }
 

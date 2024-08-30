@@ -11,7 +11,6 @@ export const useAuth = () => {
 
             if (response === undefined || response.data === null) return;
 
-            //@ts-expect-error
             return response.data.profileImage;
         } 
         catch (error) {

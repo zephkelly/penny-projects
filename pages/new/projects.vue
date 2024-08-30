@@ -30,10 +30,22 @@
                         <input class="input-text" v-model="mainFields.subtitle.value" id="subtitle" type="text" placeholder="" required />
                     </div>
                 </div>
-                <div class="wrapper">
-                    <div class="field description">
-                        <label for="description">Description</label>
-                        <textarea class="input-text" v-model="mainFields.description.value" id="description" type="text" placeholder="" required />
+                <div class="wrapper author">
+                    <div class="group">
+                        <div class="field avatar">
+                            <label for="subtitle">Author Image</label>
+                            <div class="preview-wrapper">
+                                <DragAndDropImageUpload 
+                                :flexToParent="true"
+                                :imageUrl="authorImage"
+                                @image-selected="handleAuthorImageSelected"
+                                @image-removed="handleAuthorImageRemoved"/>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="author-name">Author Name</label>
+                            <input class="input-text" v-model="mainFields.authorName.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
+                        </div>
                     </div>
                 </div>
                 <div class="wrapper cover-image">
@@ -69,30 +81,12 @@
                         <input class="input-text" v-model="seoFields.metaDescription.value" ref="metaDescriptionInput" id="meta-description" type="text" placeholder="" required />
                     </div>
                 </div>
-                <div class="wrapper author">
-                    <div class="group">
-                        <div class="field avatar">
-                            <label for="subtitle">Author Image</label>
-                            <div class="preview-wrapper">
-                                <DragAndDropImageUpload 
-                                :flexToParent="true"
-                                :imageUrl="authorImage"
-                                @image-selected="handleAuthorImageSelected"
-                                @image-removed="handleAuthorImageRemoved"/>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label for="author-name">Author Name</label>
-                            <input class="input-text" v-model="seoFields.authorName.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
-                        </div>
-                    </div>
-                </div>
             </form>
         </Expander>
     </section>
     <tipTapEditor
         :content="pageContent"
-        :mainSettingsContent="settingsFieldsContent"
+        :pageRelatedSettings="pageRelatedSettings"
         style="justify-content: center;"/>
 </template>
 
@@ -107,16 +101,6 @@ definePageMeta({
 })
 
 const pageContent = ref(`
-  <h1>Welcome to Our Page</h1>
-  <h2>Here is a subheading that you would use for extra context</h2>
-  <h3>Features</h3>
-  <h4>Features</h4>
-  <ul>
-    <li>Headers</li>
-    <li>Paragraphs</li>
-    <li>Lists</li>
-  </ul>
-  <blockquote>And even blockquotes!</blockquote>
   <p></p>
 `);
 
@@ -124,20 +108,11 @@ const pageContent = ref(`
 const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
-    description: { value: '', error: null, maxLength: 500 },
-    coverImage: { value: false, error: null } as ProjectSettingField,
     createdDate: { value: '', error: null } as ProjectSettingField,
+    authorName: { value: '', error: null, maxLength: 50 },
+    authorImage: { value: false, error: null } as ProjectSettingField,
+    coverImage: { value: false, error: null } as ProjectSettingField,
 });
-
-const settingsFieldsContent = computed(() => reactive({
-    title: mainFields.title.value,
-    subtitle: mainFields.subtitle.value,
-    description: mainFields.description.value,
-    coverImage: mainFields.coverImage.value,
-    createdDate: mainFields.createdDate.value,
-    authorImage: seoFields.authorImage.value,
-    authorName: seoFields.authorName.value,
-}));
 
 const mainFieldCount = computed(() => Object.values(mainFields).length);
 
@@ -146,7 +121,7 @@ const validateMainForm = (field: ProjectSettingField) => {
 
     const result = validator.validateField(field.value as string, field.maxLength as number);
 
-    if (field === mainFields.title) {
+    if (field === mainFields.title || field === mainFields.authorName) {
         result.value = validator.sanitiseDoubleSpaces(result.value);
     }
 
@@ -161,6 +136,16 @@ Object.values(mainFields).forEach(field => {
 const completedMainFields = computed(() => {
     return getCompletedFieldsCount(mainFields);
 });
+
+const handleAuthorImageSelected = () => {
+    mainFields.authorImage.value = true;
+    mainFields.authorImage.error = null;
+};
+
+const handleAuthorImageRemoved = () => {
+    mainFields.authorImage.value = false;
+    mainFields.authorImage.error = ValidationError.REQUIRED;
+};
 
 const handleCoverImageSelected = () => {
     mainFields.coverImage.value = true;
@@ -178,8 +163,6 @@ const seoFields = reactive({
     slug: { value: '', error: null, maxLength: 100 },
     seoTitle: { value: '', error: null, maxLength: 60 },
     metaDescription: { value: '', error: null, maxLength: 160 },
-    authorName: { value: '', error: null, maxLength: 50 },
-    authorImage: { value: false, error: null } as ProjectSettingField,
 });
 
 const authorImage: any = await getProfileImage();
@@ -195,7 +178,7 @@ const validateSEOForm = (field: ProjectSettingField) => {
         result.value = validator.slugify(result.value);
     }
 
-    if (field === seoFields.seoTitle || field === seoFields.metaDescription || field === seoFields.authorName) { 
+    if (field === seoFields.seoTitle || field === seoFields.metaDescription) { 
         result.value = validator.sanitiseDoubleSpaces(result.value);
     }
 
@@ -207,16 +190,6 @@ Object.values(seoFields).forEach(field => {
     watch(() => field.value, () => validateSEOForm(field));
 });
 
-const handleAuthorImageSelected = () => {
-    seoFields.authorImage.value = true;
-    seoFields.authorImage.error = null;
-};
-
-const handleAuthorImageRemoved = () => {
-    seoFields.authorImage.value = false;
-    seoFields.authorImage.error = ValidationError.REQUIRED;
-};
-
 const completedSEOFields = computed((field: any) => {
     return getCompletedFieldsCount(seoFields);
 });
@@ -226,6 +199,21 @@ function getCompletedFieldsCount(fields: Object): number {
         return field.error === null && (field.value !== false && field.value !== '');
     }).length;
 }
+
+const defaultValues = {
+    title: 'Your new project',
+    subtitle: 'Write a longer, attention-grabbing subtitle here',
+    createdDate: '',
+    authorName: '',
+};
+
+const pageRelatedSettings = computed(() => reactive({
+    title: mainFields.title.value === '' ? defaultValues.title : mainFields.title.value,
+    subtitle: mainFields.subtitle.value === '' ? defaultValues.subtitle : mainFields.subtitle.value,
+    createdDate: mainFields.createdDate.value,
+    authorName: mainFields.authorName.value,
+    authorImage: authorImage,
+}));
 </script>
 
 <style lang="scss" scoped>

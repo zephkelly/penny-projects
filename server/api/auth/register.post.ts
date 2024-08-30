@@ -1,7 +1,7 @@
 import { type User } from '~/models/user';
 //@ts-ignore
 import bcrypt from 'bcrypt';
-import { connectSupabase } from '~/utils/supabase';
+// import { connectSupabase } from '~/utils/supabase';
 
 export default defineEventHandler(async (event) => {
     return { 

@@ -6,7 +6,7 @@
             <div class="group">
             <h3>Together We Can</h3>
             <p>To realise these transformative projects, we depend on generous donors who share our commitment.</p>
-            <p><em>Your contributions provide necessary resources for successful project implementation, making a lasting impact on lives and creating a ripple effect beyond borders.</em></p>
+            <p><em>Your contributions will fund the life changing resources necessary for us to complete our projects. Make a lasting impact today that will ripple out beyond borders</em></p>
             <!-- <DonationPicker/> -->
             <button class="donation-button" @click="openDonationWindow()">
                 <h4>Make a donation</h4>
