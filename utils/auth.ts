@@ -1,49 +1,56 @@
-// //@ts-expect-error
-// import jwt from 'jsonwebtoken';
-// import { connectSupabase } from './supabase';
-// import { type JWTPayload } from './../types/auth';
+//@ts-expect-error
+import jwt from 'jsonwebtoken';
 
-// export function generateToken(userId: string): string {
-//     return jwt.sign(
-//         { userId },
-//         process.env.JWT_SECRET as string,
-//         { 
-//             expiresIn: '48h',
-//             issuer: 'penny-projects',
-//             audience: 'penny-projects'
-//         }
-//     );
-// }
+import { PostgresUtil } from "~/utils/postgres";
 
-// export async function verifyToken(token: string): Promise<JWTPayload> {
-//     return new Promise((resolve, reject) => {
-//       jwt.verify(
-//             token, 
-//             process.env.JWT_SECRET as string, 
-//             { 
-//                 issuer: 'penny-projects',
-//                 audience: 'penny-projects'
-//             },
-//             (err: any, decoded: any) => {
-//                 if (err) reject(err);
-//                 resolve(decoded as JWTPayload);
-//             }
-//         );
-//     });
-// }
+import { type user } from '~/types/database';
+import { type JWTPayload } from '~/types/auth';
 
-// export async function isUserAdmin(userId: string): Promise<boolean> {
-//     const supabase = await connectSupabase();
-//     const { data, error } = await supabase
-//         .from('USER')
-//         .select('UserType')
-//         .eq('UserId', userId)
-//         .single();
-  
-//     if (error) {
-//         console.error('Error checking user admin status:', error);
-//         return false;
-//     }
-  
-//     return data?.UserType === 1 || data?.UserType === 2;
-// }
+export function generateToken(userId: string): string {
+    return jwt.sign(
+        { userId },
+        process.env.JWT_SECRET as string,
+        { 
+            expiresIn: '48h',
+            issuer: 'penny-projects',
+            audience: 'penny-projects'
+        }
+    );
+}
+
+export async function verifyToken(token: string): Promise<JWTPayload> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(
+            token, 
+            process.env.JWT_SECRET as string, 
+            { 
+                issuer: 'penny-projects',
+                audience: 'penny-projects'
+            },
+            (err: any, decoded: any) => {
+                if (err) reject(err);
+                resolve(decoded as JWTPayload);
+            }
+        );
+    });
+}
+
+interface IAdminUserPayload {
+    user_type: user['user_type'];
+}
+
+export async function isUserAdmin(userId: string): Promise<boolean> { 
+
+    const db = PostgresUtil.getInstance();
+    
+    try {
+        const data = await db.query('SELECT user_type FROM public.user WHERE "user_id" = $1', [userId]);
+        const user: IAdminUserPayload = data[0];
+
+        return user.user_type === 1 || user.user_type === 2;
+    }
+    catch (error) {
+        console.error('Error checking if user is admin:', error);
+        return false;
+    }
+}
