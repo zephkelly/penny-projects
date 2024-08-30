@@ -4,8 +4,8 @@ import bcrypt from 'bcrypt';
 //@ts-expect-error
 import jwt from 'jsonwebtoken';
 
-import { type JWTPayload } from '~/types/auth';
 import { PostgresUtil } from "~/utils/postgres";
+import { type JWTPayload } from '~/types/auth';
 
 // import { connectSupabase } from '~/utils/supabase';
 
