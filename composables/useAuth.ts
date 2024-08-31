@@ -1,20 +1,23 @@
 import type { Status }from '@/types/status'
+import type { User } from '@/types/database'
 
 export const useAuth = () => {
     const isAdmin = useState('isAdmin', () => false);
     const isLoggedIn = useState('isLoggedIn', () => false);
 
-    const getProfileImage = async () => {
+    const getUserInfo = async () => {
         try {
             const headers = useRequestHeaders(['cookie']);
-            const response = await $fetch('/api/auth/profile-image', { headers, credentials: 'include', lazy: true, server: false });
+            const response = await $fetch<User>('/api/auth/user-info', { headers, credentials: 'include' });
 
-            if (response === undefined || response.data === null) return;
+            if (response === undefined || response === null) return;
 
-            return response.data.profileImage;
+            const user: User = response;
+            return user;
         } 
         catch (error) {
-            console.error('Error getting profile image:', error)
+            console.error('Error getting user info:', error)
+            return null;
         }
     }
 
@@ -63,7 +66,7 @@ export const useAuth = () => {
         isLoggedIn,
         isAdmin,
         checkAuthStatus,
-        getProfileImage,
+        getUserInfo,
         logout
     }
 }

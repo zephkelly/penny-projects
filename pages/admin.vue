@@ -32,10 +32,10 @@
 </template>
 
 <script lang="ts" setup>
-import { type user } from '~/types/database';
+import { type User } from '~/types/database';
 const image = ref(null);
 
-const response = await useFetch<user>('/api/auth/user-info');
+const response = await useFetch<User>('/api/auth/user-info');
 console.log(response.data.value?.created_date)
 
 async function handleFileUpload() {
@@ -66,6 +66,8 @@ async function handleFileUpload() {
             method: 'POST',
             body: { image: base64Image }
         });
+
+        console.log(response);
     };
 }
 

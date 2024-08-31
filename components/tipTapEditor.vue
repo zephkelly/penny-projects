@@ -77,8 +77,14 @@
                             <div class="post-information">
                                 <img class="profile-image" :src="pageRelatedSettings.authorImage" />
                                 <div class="text-information">
-                                    <p>{{ pageRelatedSettings.authorName }}</p>
-                                    <p>{{ pageRelatedSettings.date }}</p>
+                                    <div class="wrapper">
+                                        <div class="group">
+                                            <p class="author-name">{{ pageRelatedSettings.authorName }}</p>
+                                        </div>
+                                        <div class="group">
+                                            <p>{{ createdDate }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,19 +108,22 @@ import Link from '@tiptap/extension-link';
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image';
 
+import { formatFromDDMMYYYYToISO } from '~/utils/date';
+
+const { isAdmin } = useAuth();
+
+const emit = defineEmits(['update:content']);
 const props = defineProps<{
     content: string;
     pageRelatedSettings: any;
 }>();
 
-watch(() => props.pageRelatedSettings, (newSettings) => {
-    console.log(newSettings);
-}, { deep: true });
+const createdDate = computed(() => {
+    const isoString = formatFromDDMMYYYYToISO(props.pageRelatedSettings.created_date);
+    const deconstructedDate = getDeconstructedDate(isoString);
 
-
-const { isAdmin } = useAuth();
-
-const emit = defineEmits(['update:content']);
+    return `${deconstructedDate.day_number} ${deconstructedDate.month_string}, ${deconstructedDate.year_number}`;
+});
 
 const editor = useEditor({
     extensions: [
@@ -127,16 +136,6 @@ const editor = useEditor({
     //     emit('update:content', editor.getHTML());
     // }
 });
-
-    // watch(() => props.mainSettingsContent, (newSettings) => {
-    // if (editor.value) {
-    //     editor.value.commands.setContent(`
-    //         <h1>${newSettings.title}</h1>
-    //         <h2>${newSettings.subtitle}</h2>
-    //         <p>${newSettings.description}</p>
-    //     `);
-    // }
-    // }, { deep: true });
 
 function addImage() {
     const url = window.prompt('URL')
@@ -423,6 +422,30 @@ button {
         display: flex;
         align-items: center;
         width: 100%;
+        height: 52px; 
+    }
+
+    .text-information {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        // flex: 1;
+        // height: 100%;
+        margin-left: 1rem;
+
+        .wrapper {
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--black1);
+        }
     }
 }
 
@@ -502,8 +525,6 @@ button {
     p {
         font-size: 1.2rem;
         line-height: 1.5rem;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
 
         strong {
             font-weight: 600;
@@ -535,12 +556,6 @@ button {
     img {
         width: 100%;
         height: auto;
-
-        // @container (min-width: 600px) {
-        //     max-width: 800px;
-        //     margin: 0 auto;
-        //     display: block;
-        // }
     }
 }
 

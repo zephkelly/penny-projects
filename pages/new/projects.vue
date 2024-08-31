@@ -93,8 +93,11 @@
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
 import { type ProjectSettingField } from '~/types/project';
+import type { User } from '~/types/database';
 
-const { getProfileImage } = useAuth();
+import { formatDateDDMMYYY } from '~/utils/date';
+
+const { getUserInfo } = useAuth();
 
 definePageMeta({
     middleware: ['admin']
@@ -104,14 +107,20 @@ const pageContent = ref(`
   <p></p>
 `);
 
-const profileImage = await getProfileImage() ?? '';
+
+const userInfo: User | null | undefined = await getUserInfo();
+const profileImage = userInfo?.profile_image;
+
+const createdDateIso = new Date().toISOString();
+const createdDate = formatDateDDMMYYY(createdDateIso);
+console.log(createdDate);
 
 // Main Settings
 const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
-    createdDate: { value: '', error: null } as ProjectSettingField,
-    authorName: { value: '', error: null, maxLength: 50 },
+    createdDate: { value: createdDate, error: null } as ProjectSettingField,
+    authorName: { value: `${userInfo?.first_name} ${userInfo?.last_name}`, error: null, maxLength: 50 },
     authorImage: { value: profileImage, error: null } as ProjectSettingField,
     coverImage: { value: false, error: null } as ProjectSettingField,
 });
@@ -211,7 +220,7 @@ const defaultValues = {
 const pageRelatedSettings = computed(() => reactive({
     title: mainFields.title.value === '' ? defaultValues.title : mainFields.title.value,
     subtitle: mainFields.subtitle.value === '' ? defaultValues.subtitle : mainFields.subtitle.value,
-    createdDate: mainFields.createdDate.value,
+    created_date: mainFields.createdDate.value,
     authorName: mainFields.authorName.value,
     authorImage: mainFields.authorImage.value,
 }));

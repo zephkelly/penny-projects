@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { PostgresUtil } from "~/utils/postgres";
 
-import { type user } from '~/types/database';
+import { type User } from '~/types/database';
 import { type JWTPayload } from '~/types/auth';
 
 export function generateToken(userId: string): string {
@@ -36,7 +36,7 @@ export async function verifyToken(token: string): Promise<JWTPayload> {
 }
 
 interface IAdminUserPayload {
-    user_type: user['user_type'];
+    user_type: User['user_type'];
 }
 
 export async function isUserAdmin(userId: string): Promise<boolean> { 
