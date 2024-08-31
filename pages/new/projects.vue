@@ -44,7 +44,7 @@
                         </div>
                         <div class="field">
                             <label for="author-name">Author Name</label>
-                            <input class="input-text" v-model="mainFields.authorName.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
+                            <input class="input-text author-name" v-model="mainFields.authorName.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,6 @@ const profileImage = userInfo?.profile_image;
 
 const createdDateIso = new Date().toISOString();
 const createdDate = formatDateDDMMYYY(createdDateIso);
-console.log(createdDate);
 
 // Main Settings
 const mainFields = reactive({
@@ -223,6 +222,8 @@ const pageRelatedSettings = computed(() => reactive({
     created_date: mainFields.createdDate.value,
     authorName: mainFields.authorName.value,
     authorImage: mainFields.authorImage.value,
+    author_facebook: 'https://www.facebook.com/joel.slade.3/',
+    author_instagram: 'https://www.instagram.com/joelslade/',
 }));
 </script>
 
@@ -348,6 +349,10 @@ textarea {
 input:focus,
 textarea:focus {
     outline: 1px solid var(--admin);
+}
+
+input.author-name {
+    max-height: 38px;
 }
 
 .wrapper.cover-image {
