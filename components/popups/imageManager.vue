@@ -9,7 +9,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M363.08-406.15h373.84L612.77-569.23l-95.08 121.54-62.77-77.69-91.84 119.23ZM322.31-260Q292-260 271-281q-21-21-21-51.31v-455.38Q250-818 271-839q21-21 51.31-21h455.38Q808-860 829-839q21 21 21 51.31v455.38Q850-302 829-281q-21 21-51.31 21H322.31Zm0-60h455.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-455.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H322.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v455.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85Zm-140 200Q152-120 131-141q-21-21-21-51.31v-515.38h60v515.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85h515.38v60H182.31ZM310-800v480-480Z"/></svg>
                     <h1>Image Manager</h1>
                 </div>
-                <div class="group">
+                <div class="group upload">
+                    <button class="upload-image">
+                        +  Upload Image
+                    </button>
                     <button class="exit" @click="closeImageManager()">
                         <svg class="exit-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
                     </button>
@@ -31,6 +34,7 @@
                             <div class="other-folders">
                                 <div class="wrapper title">
                                     <h3>Folders</h3>
+                                    <button class="new-folder" @click="createNewFolder()">+ New</button>
                                 </div>
                                 <div class="wrapper folders" ref="foldersWrapper">
                                     <li v-for="(folder, index) in data.folders"
@@ -138,6 +142,8 @@
 </template>
 
 <script setup lang="ts">
+import { type Folder } from '~/types/database';
+
 const { isAdmin } = useAuth();
 
 const data = {
@@ -436,6 +442,22 @@ function drop(event: DragEvent, targetTabId: number) {
   draggedTabId.value = null;
 }
 
+const creatingFolder = ref(false);
+async function createNewFolder() {
+    const folderName = window.prompt('Enter folder name');
+    if (folderName) {
+        creatingFolder.value = true;
+
+        const newFolder = await $fetch<Folder>('/api/create/folder', {
+            method: 'POST',
+            body: { name: folderName }
+        });
+
+        console.log(newFolder);
+        creatingFolder.value = false;
+    }
+}
+
 watch(imageManagerPopupOpen(), (newValue, oldValue) => {
     if (newValue) {
         document.body.style.overflow = 'hidden';
@@ -605,8 +627,11 @@ defineExpose({
             overflow: hidden;
 
             .wrapper.title {
-                padding: 0.8rem 0rem;
-                // padding-top: 1.8rem;
+                display: flex;
+                justify-content: space-between;
+                height: 40px;
+                padding: 0.5rem;
+                padding-left: 0.8rem;
                 border-top: 1px solid var(--grey2);
                 border-bottom: 1px solid var(--grey2);
                 background-color: var(--background-color-secondary);
@@ -617,12 +642,25 @@ defineExpose({
                 font-size: 0.8rem;
                 font-weight: 400;
                 color: var(--black2);
-                padding: 0 0.8rem;
+                align-items: center;
+                display: flex;
+            }
+
+            button {
+                border: none;
+                background-color: transparent;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
             }
 
             .wrapper.folders {
                 flex: 1;
-                overflow-y: scroll;
+                overflow-y: auto;
                 scrollbar-width: thin;
                 max-height: 410px;
 
@@ -977,6 +1015,7 @@ defineExpose({
     display: flex;
     flex-direction: row;
     align-items: center;
+
     justify-content: space-between;
     gap: 0.8rem;
     padding: 1rem;
@@ -984,8 +1023,26 @@ defineExpose({
     .group {
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
         gap: 0.5rem;
+
+        &.upload {
+            gap: 1rem;
+            
+            .upload-image {
+                background-color: rgb(186, 220, 248);
+                border: 1px solid var(--black2);
+                border-radius: 4px;
+                height: 28px;
+                padding: 0rem 1rem;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(160, 203, 238);
+                }
+            }
+        }
     }
 
     svg {
