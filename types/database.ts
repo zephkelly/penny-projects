@@ -8,4 +8,6 @@ export interface User {
     profile_image: string;
     created_date: Date;
     updated_date: Date;
+    social_facebook: string;
+    social_instagram: string;
 }

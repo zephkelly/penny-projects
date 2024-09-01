@@ -20,7 +20,7 @@
                         </div>
                         <div class="field date">
                             <label for="date">Created Date</label>
-                            <input class="input-text" v-model="mainFields.createdDate.value" id="date" type="text" placeholder="dd/mm/yyyy" required />
+                            <input class="input-text" v-model="mainFields.created_date.value" id="date" type="text" placeholder="dd/mm/yyyy" required />
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="field">
                             <label for="author-name">Author Name</label>
-                            <input class="input-text author-name" v-model="mainFields.authorName.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
+                            <input class="input-text author-name" v-model="mainFields.author_name.value" ref="authorNameInput" id="author-name" type="text" placeholder="" required />
                         </div>
                     </div>
                 </div>
@@ -72,13 +72,13 @@
                 <div class="wrapper seo-title">
                     <div class="field">
                         <label for="seo-title">SEO Title</label>
-                        <input class="input-text" v-model="seoFields.seoTitle.value" ref="seoTitleInput" id="seo-title" type="text" placeholder="" required />
+                        <input class="input-text" v-model="seoFields.seo_title.value" ref="seoTitleInput" id="seo-title" type="text" placeholder="" required />
                     </div>
                 </div>
                 <div class="wrapper subtitle">
                     <div class="field">
                         <label for="meta-description">Meta Description</label>
-                        <input class="input-text" v-model="seoFields.metaDescription.value" ref="metaDescriptionInput" id="meta-description" type="text" placeholder="" required />
+                        <input class="input-text" v-model="seoFields.meta_description.value" ref="metaDescriptionInput" id="meta-description" type="text" placeholder="" required />
                     </div>
                 </div>
             </form>
@@ -109,6 +109,7 @@ const pageContent = ref(`
 
 
 const userInfo: User | null | undefined = await getUserInfo();
+
 const profileImage = userInfo?.profile_image;
 
 const createdDateIso = new Date().toISOString();
@@ -118,10 +119,10 @@ const createdDate = formatDateDDMMYYY(createdDateIso);
 const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
-    createdDate: { value: createdDate, error: null } as ProjectSettingField,
-    authorName: { value: `${userInfo?.first_name} ${userInfo?.last_name}`, error: null, maxLength: 50 },
-    authorImage: { value: profileImage, error: null } as ProjectSettingField,
-    coverImage: { value: false, error: null } as ProjectSettingField,
+    created_date: { value: createdDate, error: null } as ProjectSettingField,
+    author_name: { value: `${userInfo?.first_name} ${userInfo?.last_name}`, error: null, maxLength: 50 },
+    author_image: { value: profileImage, error: null } as ProjectSettingField,
+    cover_image: { value: false, error: null } as ProjectSettingField,
 });
 
 
@@ -132,7 +133,7 @@ const validateMainForm = (field: ProjectSettingField) => {
 
     const result = validator.validateField(field.value as string, field.maxLength as number);
 
-    if (field === mainFields.title || field === mainFields.authorName) {
+    if (field === mainFields.title || field === mainFields.author_name) {
         result.value = validator.sanitiseDoubleSpaces(result.value);
     }
 
@@ -149,31 +150,31 @@ const completedMainFields = computed(() => {
 });
 
 const handleAuthorImageSelected = (file: File) => {
-    mainFields.authorImage.value = URL.createObjectURL(file);
-    mainFields.authorImage.error = null;
+    mainFields.author_image.value = URL.createObjectURL(file);
+    mainFields.author_image.error = null;
 };
 
 const handleAuthorImageRemoved = () => {
-    mainFields.authorImage.value = '';
-    mainFields.authorImage.error = ValidationError.REQUIRED;
+    mainFields.author_image.value = '';
+    mainFields.author_image.error = ValidationError.REQUIRED;
 };
 
 const handleCoverImageSelected = () => {
-    mainFields.coverImage.value = true;
-    mainFields.coverImage.error = null;
+    mainFields.cover_image.value = true;
+    mainFields.cover_image.error = null;
 };
 
 const handleCoverImageRemoved = () => {
-    mainFields.coverImage.value = false;
-    mainFields.coverImage.error = ValidationError.REQUIRED;
+    mainFields.cover_image.value = false;
+    mainFields.cover_image.error = ValidationError.REQUIRED;
 };
 
 
 // SEO Settings
 const seoFields = reactive({
     slug: { value: '', error: null, maxLength: 100 },
-    seoTitle: { value: '', error: null, maxLength: 60 },
-    metaDescription: { value: '', error: null, maxLength: 160 },
+    seo_title: { value: '', error: null, maxLength: 60 },
+    meta_description: { value: '', error: null, maxLength: 160 },
 });
 
 const seoFieldCount = computed(() => Object.values(seoFields).length);
@@ -187,7 +188,7 @@ const validateSEOForm = (field: ProjectSettingField) => {
         result.value = validator.slugify(result.value);
     }
 
-    if (field === seoFields.seoTitle || field === seoFields.metaDescription) { 
+    if (field === seoFields.seo_title || field === seoFields.meta_description) { 
         result.value = validator.sanitiseDoubleSpaces(result.value);
     }
 
@@ -219,11 +220,11 @@ const defaultValues = {
 const pageRelatedSettings = computed(() => reactive({
     title: mainFields.title.value === '' ? defaultValues.title : mainFields.title.value,
     subtitle: mainFields.subtitle.value === '' ? defaultValues.subtitle : mainFields.subtitle.value,
-    created_date: mainFields.createdDate.value,
-    authorName: mainFields.authorName.value,
-    authorImage: mainFields.authorImage.value,
-    author_facebook: 'https://www.facebook.com/joel.slade.3/',
-    author_instagram: 'https://www.instagram.com/joelslade/',
+    created_date: mainFields.created_date.value,
+    author_name: mainFields.author_name.value,
+    author_image: mainFields.author_image.value,
+    social_facebook: userInfo?.social_facebook,
+    social_instagram: userInfo?.social_instagram,
 }));
 </script>
 

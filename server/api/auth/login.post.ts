@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const db = PostgresUtil.getInstance();
 
     try {
-        const data = await db.query('SELECT * FROM public.user WHERE "email" = $1', [email]);
+        const data = await db.query('SELECT * FROM public.users WHERE "email" = $1', [email]);
         const user = data[0];
 
         if (!user) {

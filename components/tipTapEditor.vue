@@ -75,17 +75,17 @@
                             <h1>{{ pageRelatedSettings.title }}</h1>
                             <h2>{{ pageRelatedSettings.subtitle }}</h2>
                             <div class="post-information">
-                                <div class="wrapper author-image"><img class="profile-image" :src="pageRelatedSettings.authorImage" /></div>
+                                <div class="wrapper author-image"><img class="profile-image" :src="pageRelatedSettings.author_image" /></div>
                                 <div class="text-information">
                                     <div class="wrapper">
                                         <div class="group author-title">
-                                            <p class="author-name">{{ pageRelatedSettings.authorName }}</p>
+                                            <p class="author-name">{{ pageRelatedSettings.author_name }}</p>
                                             <span class=divider>·</span>
                                             <div class="socials">
-                                                <a v-if="hasInstagramLink" :href="pageRelatedSettings.author_instagram" :title="`${pageRelatedSettings.authorName}'s Instagram`">
+                                                <a v-if="hasInstagramLink" :href="pageRelatedSettings.social_instagram" :title="`${pageRelatedSettings.author_name}'s Instagram`">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                                                 </a>
-                                                <a v-if="hasFacebookLink" :href="pageRelatedSettings.author_facebook" :title="`${pageRelatedSettings.authorName}'s Facebook`">
+                                                <a v-if="hasFacebookLink" :href="pageRelatedSettings.social_facebook" :title="`${pageRelatedSettings.author_name}'s Facebook`">
                                                     <svg class="facebook" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 32 32"><path d="M 7 5 C 5.90625 5 5 5.90625 5 7 L 5 25 C 5 26.09375 5.90625 27 7 27 L 25 27 C 26.09375 27 27 26.09375 27 25 L 27 7 C 27 5.90625 26.09375 5 25 5 Z M 7 7 L 25 7 L 25 25 L 19.8125 25 L 19.8125 18.25 L 22.40625 18.25 L 22.78125 15.25 L 19.8125 15.25 L 19.8125 13.3125 C 19.8125 12.4375 20.027344 11.84375 21.28125 11.84375 L 22.90625 11.84375 L 22.90625 9.125 C 22.628906 9.089844 21.667969 9.03125 20.5625 9.03125 C 18.257813 9.03125 16.6875 10.417969 16.6875 13 L 16.6875 15.25 L 14.0625 15.25 L 14.0625 18.25 L 16.6875 18.25 L 16.6875 25 L 7 25 Z"></path></svg>
                                                 </a>
                                             </div>
@@ -134,12 +134,12 @@ const createdDate = computed(() => {
     return `${deconstructedDate.day_number} ${deconstructedDate.month_string}, ${deconstructedDate.year_number}`;
 });
 
-const hasFacebookLink = computed(() => {
-    return props.pageRelatedSettings.author_facebook !== undefined;
+const hasInstagramLink = computed(() => {
+    return props.pageRelatedSettings.social_instagram !== undefined || props.pageRelatedSettings.social_instagram !== '';
 });
 
-const hasInstagramLink = computed(() => {
-    return props.pageRelatedSettings.author_instagram !== undefined;
+const hasFacebookLink = computed(() => {
+    return props.pageRelatedSettings.social_facebook !== undefined || props.pageRelatedSettings.social_instagram !== '';
 });
 
 const editor = useEditor({

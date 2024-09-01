@@ -44,7 +44,7 @@ export async function isUserAdmin(userId: string): Promise<boolean> {
     const db = PostgresUtil.getInstance();
     
     try {
-        const data = await db.query('SELECT user_type FROM public.user WHERE "user_id" = $1', [userId]);
+        const data = await db.query('SELECT user_type FROM public.users WHERE "user_id" = $1', [userId]);
         const user: IAdminUserPayload = data[0];
 
         return user.user_type === 1 || user.user_type === 2;
