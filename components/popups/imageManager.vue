@@ -37,7 +37,7 @@
                                     <button class="new-folder" @click="createNewFolder()">+ New</button>
                                 </div>
                                 <div class="wrapper folders" ref="foldersWrapper">
-                                    <li v-for="(folder, index) in data.folders"
+                                    <li v-for="(folder, index) in folders"
                                         :key="index"
                                         class="folder" 
                                         :class="{ open: openFolders[index] }">
@@ -142,62 +142,36 @@
 </template>
 
 <script setup lang="ts">
-import { type Folder } from '~/types/database';
+import { type Folder, type PopulatedFolder } from '~/types/database';
 
 const { isAdmin } = useAuth();
 
-const data = {
-    folders: [
-        {
-            name: 'Zambia',
-            images: [
-                {
-                    url: 'https://i.imgur.com/pNS6QhN.jpeg',
-                    delete_hash: '1b2b3c4',
-                    label: 'Zambia',
-                    width: 1920,
-                    height: 1080,
-                    upload_date: '2021-09-01',
-                    file_size: 123456,
-                    color_main: '#000000',
-                    color_contrast: '#ffffff',
-                },
-                {
-                    url: 'https://i.imgur.com/VCmqt80.jpeg',
-                    delete_hash: '1b2b3c4',
-                    label: 'Africa',
-                    width: 1920,
-                    height: 1080,
-                    upload_date: '2021-09-01',
-                    file_size: 123456,
-                    color_main: '#000000',
-                    color_contrast: '#ffffff',
-                },
-                {
-                    url: 'https://i.imgur.com/VCmqt80.jpeg',
-                    delete_hash: '1b2b3c4',
-                    label: 'Yolodolo',
-                    width: 1920,
-                    height: 1080,
-                    upload_date: '2021-09-01',
-                    file_size: 123456,
-                    color_main: '#000000',
-                    color_contrast: '#ffffff',
-                }
-            ]
-        }
-    ]
+interface Tab {
+    id: number;
+    name: string;
+    folderIndex: number | null;
+    type: 'folder' | 'image';
+    image?: any;
 }
+ 
+const folders = ref<PopulatedFolder[]>([]);
+folders.value = await getPopulatedFolders() as PopulatedFolder[];
 
-const isOpen = ref(false);
 const selectedImage = ref(null);
 
 const allImagesOpen = ref(false);
-const openFolders = ref(data.folders.map(() => false));
+const openFolders = ref(folders.value.map(() => false));
 const openTabs:Ref<Tab[]> = ref([]);
 
-function openImageManager() {
-    imageManagerPopupOpen().value = true;
+async function getPopulatedFolders(): Promise<PopulatedFolder[] | null> {
+    try {
+        const { data, status } = await useFetch<PopulatedFolder[]>('/api/folders');
+
+        return data.value as PopulatedFolder[];
+    }
+    catch (error) {
+        return null;
+    }
 }
 
 function closeImageManager() {
@@ -217,15 +191,6 @@ function useSelectedImage() {
     emit('imageSelected', selectedImage.value);
   }
 }
-
-interface Tab {
-    id: number;
-    name: string;
-    folderIndex: number | null;
-    type: 'folder' | 'image';
-    image?: any;
-}
-
 
 function toggleFolder(index: number) {
     openFolders.value[index] = !openFolders.value[index];
@@ -323,7 +288,7 @@ function closeTab(tabId: number) {
 }
 
 const allImages = computed(() => {
-  return data.folders.flatMap(folder => folder.images);
+  return folders.value.flatMap(folder => folder.images);
 });
 
 function getActiveTabName() {
@@ -337,7 +302,7 @@ function getActiveTabImages() {
   if (tab.name === 'All Images') {
     return allImages.value;
   } else if (tab.folderIndex !== null) {
-    return data.folders[tab.folderIndex].images;
+    return folders.value[tab.folderIndex].images;
   }
   return [];
 }
@@ -448,13 +413,30 @@ async function createNewFolder() {
     if (folderName) {
         creatingFolder.value = true;
 
-        const newFolder = await $fetch<Folder>('/api/create/folder', {
-            method: 'POST',
-            body: { name: folderName }
-        });
+        try {
+            const newFolder = await $fetch<Folder>('/api/create/folder', {
+                method: 'POST',
+                body: { name: folderName }
+            });
 
-        console.log(newFolder);
-        creatingFolder.value = false;
+            const newPopulatedFolder: PopulatedFolder = {
+                folder_id: newFolder.folder_id,
+                name: newFolder.name,
+                created_date: newFolder.created_date,
+                updated_date: newFolder.updated_date,
+                images: []
+            };
+
+            folders.value = [...folders.value, newPopulatedFolder];
+
+            folders.value.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        catch (error) {
+            console.error('Error creating new folder:', error);
+        }
+        finally {
+            creatingFolder.value = false;
+        }
     }
 }
 
@@ -469,7 +451,7 @@ watch(imageManagerPopupOpen(), (newValue, oldValue) => {
 });
 
 defineExpose({
-    openImageManager,
+    // openImageManager,
     closeImageManager,
     selectedImage
 });

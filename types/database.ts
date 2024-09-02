@@ -13,7 +13,7 @@ export interface User {
 }
 
 export interface Image {
-    image_id: string;
+    image_id: number;
     url: string;
     label: string;
     delete_hash: string;
@@ -22,6 +22,8 @@ export interface Image {
     file_size: number;
     colour_main: string;
     colour_contrast: string;
+    upload_date: string;
+    parent_folder_id: number; // Foreign key to Folder -> folder_id
 }
 
 export interface Folder {
@@ -29,4 +31,9 @@ export interface Folder {
     name: string;
     created_date: Date;
     updated_date: Date;
+}
+
+
+export interface PopulatedFolder extends Folder {
+    images: Image[];
 }

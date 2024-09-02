@@ -43,9 +43,7 @@ export default defineEventHandler(async (event) => {
 
         const newFolder = result[0];
 
-        return {
-            folder: newFolder
-        };
+        return newFolder;
     } catch (error) {
         console.error('Error in create folder handler:', error);
         throw createError({

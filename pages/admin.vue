@@ -30,7 +30,7 @@
             </div>
             <div>
                 <h1>Select Image Manager</h1>
-                <button @click="openImageSelector()">Select Image</button>
+                <button @click="imageManagerPopupOpen().value = true;">Select Image</button>
                 <ImageManager ref="imageManager" @imageSelected="onImageSelected" />
             </div>
         </div>
@@ -39,19 +39,10 @@
 
 <script lang="ts" setup>
 import ImageManager from './../components/popups/imageManager.vue';
-import { type User } from '@/types/database';
 const image = ref(null);
-
-const response = await useFetch<User>('/api/auth/user-info');
-console.log(response.data.value?.created_date)
 
 const imageManager = ref(null);
 const selectedImage = ref(null);
-
-function openImageSelector() {
-    //@ts-ignore
-  imageManager.value?.openImageManager();
-}
 
 function onImageSelected(image: any) {
   selectedImage.value = image;
