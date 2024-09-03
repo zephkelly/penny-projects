@@ -4,110 +4,112 @@
 
         </div>
         <div class="panel">
-            <div class="heading">
-                <div class="group">
+            <div class="manager-header">
+                <div class="title">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M363.08-406.15h373.84L612.77-569.23l-95.08 121.54-62.77-77.69-91.84 119.23ZM322.31-260Q292-260 271-281q-21-21-21-51.31v-455.38Q250-818 271-839q21-21 51.31-21h455.38Q808-860 829-839q21 21 21 51.31v455.38Q850-302 829-281q-21 21-51.31 21H322.31Zm0-60h455.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-455.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H322.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v455.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85Zm-140 200Q152-120 131-141q-21-21-21-51.31v-515.38h60v515.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85h515.38v60H182.31ZM310-800v480-480Z"/></svg>
                     <h1>Image Manager</h1>
                 </div>
-                <div class="group upload">
+                <div class="header-actions">
                     <button class="upload-image">
                         +  Upload Image
                     </button>
                     <button class="exit" @click="closeImageManager()">
-                        <svg class="exit-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                     </button>
                 </div>
             </div>
-            <div class="main">
-                <div class="folders">
-                    <div class="folder-title">
-                        <h2>EXPLORER</h2>
+            <div class="manager-main">
+                <div class="explorer">
+                    <div class="extra-actions">
+                        <button @click="handleAllImagesClick()">All Images</button>
                     </div>
-                    <div class="folder-content">
+                    <div class="folder-header">
+                        <h2>Folders</h2>
+                        <div class="folder-actions">
+
+                        </div>
+                    </div>
+                    <div class="folders-list">
                         <ul>
-                            <li class="all">
-                                <div class="folder" @click="handleAllImagesClick">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M100-560v-300h300v300H100Zm60-60h180v-180H160v180Zm-60 520v-300h300v300H100Zm60-60h180v-180H160v180Zm400-400v-300h300v300H560Zm60-60h180v-180H620v180Zm-60 520v-300h300v300H560Zm60-60h180v-180H620v180ZM340-620Zm0 280Zm280-280Zm0 280Z"/></svg>
-                                    <p>All Images</p>
+                            <li v-for="(folder, index) in folders"
+                                :key="index"
+                                class="folder"
+                                :class="{ open: openFolders[index] }">
+                                <div class="folder-label">
+                                    <div class="folder-label-main" @click="handleFolderClick(index, folder.name)">
+                                        <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
+                                        <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg> 
+                                        <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
+                                        <p class="folder-title">{{ folder.name }}</p>
+                                    </div>
+                                    <div class="folder-more-actions">
+                                        <button class="more-actions">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="folder-content">
+                                    <ul>
+                                        <li v-for="image in folder.images" @click="openImageTab(image)">
+                                            <div class="image">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
+                                                <p>{{ image.label }}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </li>
-                            <div class="other-folders">
-                                <div class="wrapper title">
-                                    <h3>Folders</h3>
-                                    <button class="new-folder" @click="createNewFolder()">+ New</button>
-                                </div>
-                                <div class="wrapper folders" ref="foldersWrapper">
-                                    <li v-for="(folder, index) in folders"
-                                        :key="index"
-                                        class="folder" 
-                                        :class="{ open: openFolders[index] }">
-                                        <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
-                                        <div class="label" @click="handleFolderClick(index, folder.name)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
-                                            <p>{{ folder.name }}</p>
-                                        </div>
-                                        <div class="content-list">
-                                            <ul>
-                                                <li v-for="image in folder.images" @click="openImageTab(image)">
-                                                    <div class="image">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Zm140-370q20.77 0 35.38-14.62Q390-599.23 390-620q0-20.77-14.62-35.38Q360.77-670 340-670q-20.77 0-35.38 14.62Q290-640.77 290-620q0 20.77 14.62 35.38Q319.23-570 340-570Z"/></svg>
-                                                        <p>{{ image.label }}</p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </div>
-                            </div>
                         </ul>
                     </div>
                 </div>
-                <div class="window-container">
-                    <nav class="window-tabs">
-                        <ul>
-                            <li 
-                                v-for="tab in openTabs" 
-                                :key="tab.id" 
-                                @click="setActiveTab(tab.id)" 
-                                :class="{ active: activeTab === tab.id }"
-                                draggable="true"
-                                @dragstart="dragStart($event, tab.id)"
-                                @dragover.prevent
-                                @dragenter.prevent
-                                @drop="drop($event, tab.id)"
-                            >
-                                <svg v-if="tab.type === 'image'" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Zm140-370q20.77 0 35.38-14.62Q390-599.23 390-620q0-20.77-14.62-35.38Q360.77-670 340-670q-20.77 0-35.38 14.62Q290-640.77 290-620q0 20.77 14.62 35.38Q319.23-570 340-570Z"/></svg>
-                                <svg v-else xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
-                                {{ tab.name }}
-                                <button @click.stop="closeTab(tab.id)">&times;</button>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="window-page">
-                        <div class="page-container" v-if="activeTab !== null" :class="{ image: getActiveTabType() === 'image' }">
-                            <div v-if="getActiveTabType() === 'folder'" class="image-grid">
-                                <div v-for="image in getActiveTabImages()" :key="image.delete_hash" class="image-preview" @click="openImageTab(image)">
-                                    <div class="preview-container">
-                                        <div class="image-container">
-                                            <img :src="image.url" :alt="image.label" />
-                                        </div>
-                                        <p>{{ image.label }}</p>
+                <div class="contents-container">
+                    <div class="tabs-container">
+                        <div class="extra-actions">
+                        </div>
+                        <div class="tabs">
+                            <ul>
+                                <li
+                                    v-for="tab in openTabs" 
+                                    :key="tab.id" 
+                                    @click="setActiveTab(tab.id)" 
+                                    :class="{ active: activeTab === tab.id }"
+                                    draggable="true"
+                                    @dragstart="dragStart($event, tab.id)"
+                                    @dragover.prevent
+                                    @dragenter.prevent
+                                    @drop="drop($event, tab.id)"
+                                >
+                                    <p>{{ tab.name }}</p>
+                                    <button class="exit" @click.stop="closeTab(tab.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content-view">
+                        <div v-if="getActiveTabType() === 'folder'" class="image-grid">
+                            <div v-for="image in getActiveTabImages()" :key="image.delete_hash" class="image-preview" @click="openImageTab(image)">
+                                <div class="preview-container">
+                                    <div class="image-container">
+                                        <img :src="image.url" :alt="image.label" />
                                     </div>
+                                    <p>{{ image.label }}</p>
                                 </div>
                             </div>
-                            <div v-else-if="getActiveTabType() === 'image'" class="image-detail">
-                                <div class="large-image-container">
-                                    <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
+                        </div>
+                        <div v-else-if="getActiveTabType() === 'image'" class="image-detail">
+                            <div class="large-image-container">
+                                <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
+                            </div>
+                            <div class="image-info">
+                                <h2 class="title">{{ getActiveTabImage().label }}</h2>
+                                <div class="group">
+                                    <p>Width: {{ getActiveTabImage().width }}px</p>
+                                    <p>Height: {{ getActiveTabImage().height }}px</p>
+                                    <p>Upload Date: {{ getActiveTabImage().upload_date }}</p>
                                 </div>
-                                <div class="image-info">
-                                    <h2 class="title">{{ getActiveTabImage().label }}</h2>
-                                    <div class="group">
-                                        <p>Width: {{ getActiveTabImage().width }}px</p>
-                                        <p>Height: {{ getActiveTabImage().height }}px</p>
-                                        <p>Upload Date: {{ getActiveTabImage().upload_date }}</p>
-                                    </div>
-                                    <button @click="useSelectedImage" class="use-image-btn">Use Image</button>
-                                </div>
+                                <button @click="useSelectedImage" class="use-image-btn">Use Image</button>
                             </div>
                         </div>
                         <div v-else class="no-tab">
@@ -115,27 +117,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <div>
-                    <h2>Upload Image to Imgur</h2>
-                    <form @submit.prevent="handleFileUpload()">
-                        <div>
-                            <label for="image">Select an image:</label>
-                            <input type="file" ref="image" required>
-                        </div>
-                        <button type="submit" @click.prevent="handleFileUpload()">Upload</button>
-                    </form>
-                </div>
-                <div>
-                    <h2>Delete Image Via Hash</h2>
-                    <form @submit.prevent="handleFileUpload()">
-                        <button type="submit" @click.prevent="deleteImageViaHash()">Delete</button>
-                    </form>
-                </div>
-                <div>
-                    <h2>Close Image Manager</h2>
-                    <button @click="imageManagerPopupOpen().value = !imageManagerPopupOpen().value">close</button>
-                </div> -->
             </div>
         </div>
     </section>
@@ -153,9 +134,62 @@ interface Tab {
     type: 'folder' | 'image';
     image?: any;
 }
+
+const data = [
+    {
+        folder_id: 1,
+        name: 'Zambia',
+        created_date: '2021-09-01',
+        updated_date: '2021-09-01',
+        isNew: false,
+        images: [
+            {
+                image_id: 1,
+                url: 'https://i.imgur.com/pNS6QhN.jpeg',
+                delete_hash: '1b2b3c4',
+                label: 'Zambia',
+                width: 1920,
+                height: 1080,
+                upload_date: '2021-09-01',
+                file_size: 123456,
+                colour_main: '#000000',
+                colour_contrast: '#ffffff',
+                parent_folder_id: 1
+            },
+            {
+                image_id: 2,
+                url: 'https://i.imgur.com/VCmqt80.jpeg',
+                delete_hash: '1b2b3c4',
+                label: 'Africa',
+                width: 1920,
+                height: 1080,
+                upload_date: '2021-09-01',
+                file_size: 123456,
+                colour_main: '#000000',
+                colour_contrast: '#ffffff',
+                parent_folder_id: 1
+            },
+            {
+                image_id: 3,
+                url: 'https://i.imgur.com/VCmqt80.jpeg',
+                delete_hash: '1b2b3c4',
+                label: 'Yolodolo',
+                width: 1920,
+                height: 1080,
+                upload_date: '2021-09-01',
+                file_size: 123456,
+                colour_main: '#000000',
+                colour_contrast: '#ffffff',
+                parent_folder_id: 1
+            }
+        ]
+    }
+]
  
 const folders = ref<PopulatedFolder[]>([]);
 folders.value = await getPopulatedFolders() as PopulatedFolder[];
+//@ts-ignore
+// folders.value.push(...data as PopulatedFolder[]);
 
 const selectedImage = ref(null);
 
@@ -198,14 +232,15 @@ function toggleFolder(index: number) {
 
 function handleAllImagesClick() {
   allImagesOpen.value = !allImagesOpen.value;
-  if (allImagesOpen.value) {
-    openTab('All Images', null);
-  } else {
-    const allImagesTab = openTabs.value.find(tab => tab.name === 'All Images');
-    if (allImagesTab) {
-      closeTab(allImagesTab.id);
+    console.log(allImagesOpen.value);
+    if (allImagesOpen.value) {
+        openTab('All Images', null);
+    } else {
+        // const allImagesTab = openTabs.value.find(tab => tab.name === 'All Images');
+        // if (allImagesTab) {
+        // closeTab(allImagesTab.id);
+        // }
     }
-  }
 }
 
 function handleFolderClick(index: number, folderName: string) {
@@ -257,6 +292,11 @@ function formatFileSize(bytes: number) {
 }
 
 function openTab(name: string, folderIndex: number | null) {
+    //If the active tab is All Images, then set it to false
+    if (allImagesOpen.value) {
+        allImagesOpen.value = false;
+    }
+
     const existingTab: Tab = openTabs.value.find(tab => tab.name === name) as Tab;
     if (existingTab) {
         activeTab.value = existingTab.id;
@@ -279,6 +319,14 @@ function setActiveTab(tabId: number) {
 
 function closeTab(tabId: number) {
     const index = openTabs.value.findIndex(tab => tab.id === tabId);
+    const folderIndex = openTabs.value[index].folderIndex as number;
+
+    toggleFolder(folderIndex);
+
+    if (openTabs.value[index].name === 'All Images') {
+        allImagesOpen.value = false;
+    }
+
     if (index !== -1) {
         openTabs.value.splice(index, 1);
         if (activeTab.value === tabId) {
@@ -424,12 +472,13 @@ async function createNewFolder() {
                 name: newFolder.name,
                 created_date: newFolder.created_date,
                 updated_date: newFolder.updated_date,
+                isNew: true,
                 images: []
             };
 
-            folders.value = [...folders.value, newPopulatedFolder];
+            folders.value = [newPopulatedFolder, ...folders.value];
 
-            folders.value.sort((a, b) => a.name.localeCompare(b.name));
+            // folders.value.sort((a, b) => a.name.localeCompare(b.name));
         }
         catch (error) {
             console.error('Error creating new folder:', error);
@@ -457,6 +506,31 @@ defineExpose({
 });
 </script>
 
+<style scoped>
+.folder-list-enter-active,
+.folder-list-leave-active {
+    transition: all 0.5s ease;
+}
+.folder-list-enter-from,
+.folder-list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.new-folder-highlight {
+    animation: highlight 2s ease-in-out;
+}
+
+@keyframes highlight {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--admin-highlight);
+    }
+}
+</style>
+
 <style scoped lang="scss">
 * {
     box-sizing: border-box;
@@ -475,6 +549,7 @@ defineExpose({
 }
 
 .image-manager {
+    font-family: 'Inter', sans-serif;
     position: fixed;
     top: 0;
     left: 0;
@@ -487,589 +562,469 @@ defineExpose({
     background-color: transparent;
     padding: 1rem;
     height: auto;
+    box-sizing: border-box;
 }
 
 .panel {
-    display: grid;
-    grid-template-rows: 60px 1fr;
+    display: flex;
+    flex-direction: column;
     width: 1000px;
-    height: 100%;
-    max-height: 1000px;
-    height: 620px;
+    height: 600px;
+    max-width: 100%;
+    max-height: 100%;
     background-color: var(--background-color-secondary);
     border-radius: 0.5rem;
     border: 1px solid var(--grey2);
     z-index: 111;
-    pointer-events: all;
-    overflow: hidden;
 }
 
-.main {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    height: 100%;
-    width: 100%;
-    border-top: 1px solid var(--grey2);
+.manager-header {
+    height: 60px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--grey2);
 
-    .folders {
+    .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        svg {
+            margin-right: 0.5rem;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--black2);
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1.5rem;
+
+        button.exit {
+            height: 28px;
+            width: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            border: 1px solid var(--black2);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border 0.2s ease, color 0.2s ease;
+
+            svg {
+                width: 16px;
+                height: 16px;
+                fill: var(--black2);
+                transition: fill 0.2s ease;
+            }
+
+            &:hover {
+                border: 1px solid red;
+                background-color: red;
+
+                svg {
+                    fill: var(--background-color-secondary);
+                }
+            }
+        }
+
+        button.upload-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            font-weight: 400;
+            padding: 0.2rem 1rem;
+            background-color: var(--admin-highlight);
+            color: var(--black2);
+            border: 1px solid var(--black2);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+
+            &:hover {
+                background-color: var(--admin-highlight-hover);
+            }
+        }
+    }
+}
+
+.manager-main {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 60px);
+    width: 100%;
+}
+
+.explorer {
+    width: 200px;
+    height: 100%;
+    border-right: 1px solid var(--grey2);
+    
+    .extra-actions {
+        height: 60px;
+        min-height: 60px;
         display: flex;
         flex-direction: column;
-        width: 200px;
-        height: 100%;
-        border-right: 1px solid var(--grey2);
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem;
+        background-color: var(--white2);
 
-        .folder-title {
-            height: 40px;
-            padding: 0.8rem;
-            border-bottom: 1px solid var(--grey2);
+        button {
+            width: 100%;
+            border: 1px solid var(--black2);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--background-color-secondary);
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--off-white);
+            }
+        }
+    }
+
+    .folder-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        min-height: 40px;
+        padding: 0.5rem 0.8rem;
+        border-top: 1px solid var(--grey2);
+        border-bottom: 1px solid var(--grey2);
+
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--black2);
+        }
+    }
+}
+
+.folders-list {
+    height: calc(100% - 60px - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    background-color: var(--white2);
+    border-bottom-left-radius: 0.5rem;;
+    
+    li.folder {
+        height: 32px;
+
+        .folder-label {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            height: 32px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--off-white);
+            }
+
+            .folder-label-main {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+
+                .folder-indicator {
+                    width: 20px;
+                    height: 20px;
+                    margin-left: 0.5rem;
+                    margin-right: 0.3rem;
+                    fill: var(--black2);
+                    transition: transform 0.2s ease;
+                }
+
+                .folder-icon {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 0.45rem;
+                    fill: var(--black2);
+
+                    &.opened {
+                        display: none;
+                    }
+                }
+
+                .folder-title {
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: var(--black2);
+                    white-space: nowrap;
+                    user-select: none;
+                }
+            }
+
+            .folder-more-actions {
+                width: 26px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                button.more-actions {
+                    position: relative;
+                    width: 16px;
+                    height: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+
+                    svg {
+                        height: 18px;
+                        width: 18px;
+                        position: absolute;
+                        pointer-events: none;
+                        user-select: none;
+                        fill: var(--black2);
+                    }
+                }
+            }
         }
 
         .folder-content {
             display: flex;
-            flex-direction: column;
-            flex: 1;
-
-            ul {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                height: 100%;
-
-                li {
-                    cursor: pointer;
-                    transition: background-color 0.2s ease;
-
-                    &:hover {
-                        background-color: rgb(248, 248, 248);
-                    }
-                }
-            }
-
-            .all {
-                background-color: var(--white2);
-                padding: 0.8rem 0.8rem;
-
-                &:hover {
-                    background-color: var(--white2);
-                }
-
-                .folder {
-                    justify-content: center;
-                    padding: 0.5rem;
-                    height: auto;
-                    border-radius: 8px;
-                    border: 1px solid var(--grey2);
-                    transition: background-color 0.2s ease;
-                    background-color: var(--background-color-secondary);
-                    will-change: background-color;
-
-                    &:hover {
-                        background-color: rgb(248, 248, 248);
-                    }
-
-                    svg {
-                        margin-left: -4px;
-                        width: 24px;
-                        height: 24px;
-                    }
-                }
-            }
-
-            .folder {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5rem;
-                height: auto;
-
-                p {
-                    font-family: 'Inter', sans-serif;
-                    font-size: 12px;
-                    font-weight: 400;
-                    color: var(--black2);
-                }
-
-                svg {
-                    fill: var(--black2);
-                    width: 18px;
-                    height: 18px;
-                }  
-            }
-        }
-
-        .other-folders {
-            display: flex;
-            flex:1;
-            flex-direction: column;
-            grid-template-rows: 50px 1fr; 
-            background-color: var(--white2);
             overflow: hidden;
-
-            .wrapper.title {
-                display: flex;
-                justify-content: space-between;
-                height: 40px;
-                padding: 0.5rem;
-                padding-left: 0.8rem;
-                border-top: 1px solid var(--grey2);
-                border-bottom: 1px solid var(--grey2);
-                background-color: var(--background-color-secondary);
-            }
-
-            h3 {
-                font-family: 'Inter', sans-serif;
-                font-size: 0.8rem;
-                font-weight: 400;
-                color: var(--black2);
-                align-items: center;
-                display: flex;
-            }
-
-            button {
-                border: none;
-                background-color: transparent;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-
-            .wrapper.folders {
-                flex: 1;
-                overflow-y: auto;
-                scrollbar-width: thin;
-                max-height: 410px;
-
-                .folder {
-                    position: relative;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                }
-
-                .folder-indicator {
-                    position: absolute;
-                    top: 6px;
-                    left: 3px;
-                    user-select: none;
-                    pointer-events: none;
-                }
-
-                .label {
-                    display: flex;
-                    flex-direction: row;
-                    width: 100%;
-                    // width: calc(100% - 1.6rem);
-                    align-items: center;
-                    min-height: 32px;
-                    justify-content: flex-start;
-                    gap: 0.5rem;
-                    user-select: none;
-                    margin-bottom: -8px;
-
-                    svg {
-                        margin-left: 1.6rem;
-                    }
-                }
-
-                .folder {
-                    height: 32px;
-
-                    .content-list {
-                        display: flex;
-                        overflow: hidden;
-                        height: 0px;
-                        width: 100%;
-                        transition: height 0.2s ease;
-
-                        li {
-                            display: flex;
-                            height: 32px;
-                            padding: 0.4rem 0.5rem;
-                            padding-left: 2.2rem;
-
-                            .image {
-                                display: flex;
-                                flex-direction: row;
-                                align-items: center;
-                                gap: 0.5rem;
-                                flex: 1;
-
-                                p {
-                                    user-select: none;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .folder.open {
-                    height: auto;
-                    background-color: var(--background-color-secondary);
-
-                    .folder-indicator {
-                        transform: rotate(90deg);
-                    }
-
-                    .content-list {
-                        height: auto;
-                    }
-                }
-            }
-        }
-    }
-
-    .window-container {
-        display: grid;
-        height: 100%;
-        width: 100%;
-        grid-template-rows: 39px 1fr;
-
-        .window-tabs {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            height: 40px;
+            height: 0px;
             width: 100%;
-            flex: 1;
-            background-color: var(--white2);
-            overflow-x: auto;
-            scrollbar-width: thin;
-            
-
-            svg {
-                fill: var(--black2);
-                width: 18px;
-                height: 18px;
-            }
+            transition: height 0.2s ease;
+            // background-color: var(--background-color-secondary);
 
             ul {
-                display: flex;
                 width: 100%;
-                height: 100%;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                
             }
 
             li {
-                user-select: none;
                 display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                gap: 0.4rem;
+                height: 32px;
+                padding: 0.4rem 0.5rem;
+                padding-left: 44px;
                 cursor: pointer;
-                padding: 0.5rem 1rem;
-                transition: background-color 0.2s ease;
-                width: auto;
-                font-family: 'Inter', sans-serif;
-                font-size: 0.8rem;
-                border-right: 1px solid var(--white2);
-                border-left: 1px solid var(--white2);
-
-                &.active {
-                    background-color: var(--background-color-secondary);
-                    position: relative;
-                    border-right: 1px solid var(--grey2);
-                    border-left: 1px solid var(--grey2);
-                    
-                    &:first-child {
-                        border-right: 1px solid var(--grey2);
-                        border-left: 1px solid var(--white2);
-                    }
-
-                    &:last-child {
-                        border-left: 1px solid var(--grey2);
-                        border-right: 1px solid var(--grey2);
-
-                        &:first-child {
-                            border-left: 1px solid var(--white2);
-                        }
-                    }
-                }
 
                 &:hover {
-                    background-color: rgb(248, 248, 248);
+                    background-color: var(--off-white);
                 }
 
-                button {
-                    position: relative;
-                    right: -4px;
-                    background-color: transparent;
-                    border: none;
-                    cursor: pointer;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    // padding: 0.5rem;
-                    transition: background-color 0.2s ease;
-                    height: 20px;
-                    width: 20px;
-                    border-radius: 50%;
-                    
-                    &:hover {
-                        background-color: red;
-                        color: var(--background-color-secondary);
-                    }
-                }
-            }
-        }
-
-        .window-page {
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-            background-color: var(--white2);
-            border-top: 1px solid var(--grey2);
-
-            .page-container {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                padding: 1rem;
-                background-color: var(--background-color-secondary);
-                overflow-y: scroll;
-
-                &.image {
-                    overflow: visible;
-                }
-            }
-
-            .image-grid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 0.8rem;
-                max-height: 400px;
-            }
-
-            .image-preview {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.5rem;
-
-                &:last-child {
-                    padding-bottom: 6rem;
-                }
-
-                .preview-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 1rem 0.5rem;
-                    border-radius: 4px;
-
-                    &:hover {
-                        background-color: var(--white2);
-                    }
-                }
-
-                .image-grid {
-                    flex-direction: row;
-                }
-
-                p {
-                    font-family: 'Inter', sans-serif;
-                    font-size: 0.8rem;
-                    font-weight: 400;
-                    color: var(--black2);
-                }
-            }
-
-            .image-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100px;
-                width: 100px;
-                overflow: hidden;
-
-                img {
-                    max-width: 100%;
-                    max-height: 100%;
-                    object-fit: contain;
-                    border-radius: 4px;
-                }
-            }
-        }
-
-        .page-container.image {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            padding: 0rem;
-
-            .image-detail {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                height: 100%;
-            }
-
-            .large-image-container {
-                display: flex;
-                justify-content: center;
-                height: 400px;
-                width: 100%;
-                padding: 1rem 1rem;
-
-                img {
-                    height: 100%;
-                    width: auto;
-                    object-fit: contain;
-                }
-            }
-
-            .image-info {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                width: 100%;
-                border-top: 1px solid var(--grey2);
-                padding: 1rem;
-
-                h2 {
-                    font-family: 'Inter', sans-serif;
-                    font-size: 1rem;
-                    font-weight: 400;
-                    color: var(--black2);
-                    margin-bottom: 1rem;
-                }
-
-                .group {
+                .image {
                     display: flex;
                     flex-direction: row;
-                    flex-wrap: wrap;
-                    gap: 1rem;
-                    height: 100%;
+                    align-items: center;
+                    gap: 0.45rem;
+                    flex: 1;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
 
                     p {
-                        font-family: 'Inter', sans-serif;
-                        font-size: 0.8rem;
-                        font-weight: 400;
+                        font-size: 12px;
                         color: var(--black2);
-                        margin-bottom: 0.5rem;
+                        user-select: none;
                     }
                 }
-            }
-        }
-
-        .no-tab {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-
-            .empty-text {
-                font-family: 'Inter', sans-serif;
-                font-size: 01.2rem;
-                font-weight: 400;
-                color: var(--grey4);
-                padding: 1rem;
-                text-align: center;
-            }
+            }     
         }
     }
 
-    h2 {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.8rem;
-        font-weight: 400;
-        color: var(--black2);
+    li.folder.open {
+        height: auto;
+
+        .folder-label {
+            // background-color: var(--background-color-secondary);
+
+            &:hover {
+                background-color: var(--off-white);
+            }
+
+            .folder-indicator {
+                transform: rotate(90deg);
+            }
+
+            .folder-icon {
+                &.opened {
+                    display: block;
+                }
+
+                &.closed {
+                    display: none;
+                }
+            }
+        }
+
+        .folder-content {
+            height: auto;
+        }
     }
 }
 
-.heading {
+.contents-container {
+    width: calc(100% - 200px);
+    height: 100%;
+}
+
+.tabs-container {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 60px;
+    min-height: 60px;
+    background-color: var(--white2);
 
-    justify-content: space-between;
-    gap: 0.8rem;
-    padding: 1rem;
+    .extra-actions {
+        height: 32px;
+    }
 
-    .group {
+    .tabs {
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        align-items: center;
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+
+    ul {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding-right: 32px;
+    }
+
+    li {
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
         align-items: center;
         gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        border: 1px solid var(--white2);
+        border-bottom: none;
+        cursor: pointer;
 
-        &.upload {
-            gap: 1rem;
+        p {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--black2);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        &:last-child {
+            border-top-right-radius: 0.5rem;
+        }
+
+        &.active {
+            position: relative;
+            background-color: var(--background-color-secondary);
+            position: relative;
+            border-top: 1px solid var(--grey2);
+            border-right: 1px solid var(--grey2);
+            border-left: 1px solid var(--grey2);
             
-            .upload-image {
-                background-color: rgb(186, 220, 248);
-                border: 1px solid var(--black2);
-                border-radius: 4px;
-                height: 28px;
-                padding: 0rem 1rem;
-                cursor: pointer;
+            &:first-child {
+                border-right: 1px solid var(--grey2);
+                border-left: 1px solid var(--white2);
+            }
 
-                &:hover {
-                    background-color: rgb(160, 203, 238);
+            &:last-child {
+                border-left: 1px solid var(--grey2);
+                border-right: 1px solid var(--grey2);
+
+                &:first-child {
+                    border-left: 1px solid var(--white2);
+                }
+            }
+        }
+
+        &:hover {
+            background-color: var(--background-color-secondary);
+        }
+
+        button.exit {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            svg {
+                position: absolute;
+                width: 12px;
+                height: 12px;
+            }
+
+            &:hover {
+                background-color: var(--error);
+
+                svg {
+                    fill: var(--background-color-secondary);
                 }
             }
         }
     }
+}
 
-    svg {
-        fill: var(--black2);
-        width: 28px;
-        height: 28px;
+.content-view {
+    height: calc(100% - 60px);
+    border-top: 1px solid var(--grey2);
+    overflow-y: auto;
+    border-bottom-right-radius: 0.5rem;
 
-        &.exit-icon {
-            transition: fill 0.2s ease;
-            width: 14px;
-            height: 14px;
-        }
-    }
-
-    h1 {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: var(--black2);
-    }
-
-    .exit {
-        width: 28px;
-        height: 28px;
-        position: relative;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        border-radius: 50%;
-        border: 1px solid var(--black2);
-        padding: auto;
+    .no-tab {
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: background-color 0.2s ease;
+        height: 100%;
+        background-color: var(--white2);
+        color: var(--grey4);
 
-        &:hover {
-            background-color: red;
-            border-color: red;
-
-            svg {
-                fill: var(--background-color-secondary);
-            }
+        p {
+            user-select: none;
         }
     }
 }
+
+svg {
+    fill: var(--black2);
+}
+</style>
+
+<style scoped lang="scss">
 
 </style>

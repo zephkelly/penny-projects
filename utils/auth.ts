@@ -18,22 +18,13 @@ export function generateToken(userId: string): string {
     );
 }
 
-// export async function verifyToken(token: string): Promise<JWTPayload> {
-//     return new Promise((resolve, reject) => {
-//       jwt.verify(
-//             token, 
-//             process.env.JWT_SECRET as string, 
-//             { 
-//                 issuer: 'penny-projects',
-//                 audience: 'penny-projects'
-//             },
-//             (err: any, decoded: any) => {
-//                 if (err) reject(err);
-//                 resolve(decoded as JWTPayload);
-//             }
-//         );
-//     });
-// }
+const verifyToken = (token: string): any => {
+    try {
+        return jwt.verify(token)
+    } catch (error) {
+        return null
+    }
+}
 
 interface IAdminUserPayload {
     user_type: User['user_type'];

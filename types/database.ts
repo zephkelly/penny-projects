@@ -27,7 +27,7 @@ export interface Image {
 }
 
 export interface Folder {
-    folder_id: string;
+    folder_id: number;
     name: string;
     created_date: Date;
     updated_date: Date;
@@ -35,5 +35,6 @@ export interface Folder {
 
 
 export interface PopulatedFolder extends Folder {
+    isNew?: boolean;
     images: Image[];
 }

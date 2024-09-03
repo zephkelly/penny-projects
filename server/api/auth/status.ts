@@ -4,10 +4,8 @@ import jwt from 'jsonwebtoken'
 import { type JWTPayload } from '~/types/auth'
 import { isUserAdmin } from '~/utils/auth';
 
-
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'auth_token')
-
 
     if (!token) {
         return { 

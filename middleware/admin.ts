@@ -12,4 +12,4 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
         return navigateTo('/login?redirect=' + fromPath)
     }
-  })
+})
