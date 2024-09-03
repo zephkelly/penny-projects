@@ -1,29 +1,11 @@
-//@ts-ignore
-import jwt from 'jsonwebtoken';
-import { PostgresUtil } from "~/utils/postgres";
 
-import { isUserAdmin } from '~/utils/auth';
-import { type JWTPayload } from '~/types/auth';
+import protectAdmin from '~/server/protectAdmin';
+import { PostgresUtil } from '~/utils/postgres';
 
 export default defineEventHandler(async (event) => {
-    const token = getCookie(event, 'auth_token');
-    if (!token) {
-        throw createError({
-            statusCode: 401,
-            message: 'Unauthorized'
-        });
-    }
+    await protectAdmin(event);
 
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
-        
-        if (await !isUserAdmin(decodedToken.sub)) {
-            throw createError({
-                statusCode: 403,
-                message: 'Forbidden'
-            });
-        }
-        
         const db = PostgresUtil.getInstance();
         
         const body = await readBody(event);
@@ -44,7 +26,8 @@ export default defineEventHandler(async (event) => {
         const newFolder = result[0];
 
         return newFolder;
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error in create folder handler:', error);
         throw createError({
             statusCode: 500,

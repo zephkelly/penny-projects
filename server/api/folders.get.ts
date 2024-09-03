@@ -1,31 +1,11 @@
-//@ts-ignore
-import jwt from 'jsonwebtoken';
+import protectAdmin from '~/server/protectAdmin';
 import { PostgresUtil } from "~/utils/postgres";
-import { isUserAdmin } from '~/utils/auth';
-
-import { type JWTPayload } from "~/types/auth";
 import { type Image, type Folder, type PopulatedFolder } from '~/types/database'
 
 export default defineEventHandler(async (event) => {
-    const token = getCookie(event, 'auth_token');
-
-    if (!token) {
-        throw createError({
-            statusCode: 401,
-            message: 'Unauthorized'
-        });
-    }
+    
   
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
-        
-        if (await !isUserAdmin(decodedToken.sub)) {
-            throw createError({
-            statusCode: 403,
-            message: 'Forbidden'
-            });
-        }
-        
         const populatedFolders = await getFoldersWithImages();
         return populatedFolders;
     }

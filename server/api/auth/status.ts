@@ -1,8 +1,9 @@
 //@ts-ignore
 import jwt from 'jsonwebtoken'
+import { PostgresUtil } from '~/utils/postgres';
 
 import { type JWTPayload } from '~/types/auth'
-import { isUserAdmin } from '~/utils/auth';
+import { type User } from '~/types/database'
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'auth_token')
@@ -35,3 +36,23 @@ export default defineEventHandler(async (event) => {
         }
     }
 });
+
+interface IAdminUserPayload {
+    user_type: User['user_type'];
+}
+
+export async function isUserAdmin(userId: string): Promise<boolean> { 
+
+    const db = PostgresUtil.getInstance();
+    
+    try {
+        const data = await db.query('SELECT user_type FROM public.users WHERE "user_id" = $1', [userId]);
+        const user: IAdminUserPayload = data[0];
+
+        return user.user_type === 1 || user.user_type === 2;
+    }
+    catch (error) {
+        console.error('Error checking if user is admin:', error);
+        return false;
+    }
+}

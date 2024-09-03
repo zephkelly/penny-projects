@@ -56,6 +56,7 @@ section.hero {
   padding: 0rem 1rem 0rem 1rem;
   background-color: #eae6d7;
   overscroll-behavior: none;
+  overflow: hidden;
 
   @media (max-width: 768px) {
     display: none;

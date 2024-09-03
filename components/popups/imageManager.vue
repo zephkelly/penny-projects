@@ -26,11 +26,26 @@
                     <div class="folder-header">
                         <h2>Folders</h2>
                         <div class="folder-actions">
-
+                            <svg v-if="creatingFolder" class="creating-folder-spinner" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/></svg>
+                            <button v-else class="new-folder"  @click="createNewFolder()">
+                                + New
+                            </button>
                         </div>
                     </div>
                     <div class="folders-list">
                         <ul>
+                            <li class="creating-new-folder" v-if="creatingFolder">
+                                <div class="folder-label">
+                                    <div class="folder-label-main">
+                                        <div class="placeholder-group">
+                                            <span class="indicator-placeholder"></span>
+                                            <span class="icon-placeholder"></span>
+                                            <span class="title-placeholder"></span>
+                                        </div>
+                                        <span class="more-actions-placeholder"></span>
+                                    </div>
+                                </div>
+                            </li>
                             <li v-for="(folder, index) in folders"
                                 :key="index"
                                 class="folder"
@@ -59,6 +74,11 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="create-new-folder-li">
+                                <button class="create-new-folder" @click="createNewFolder()">
+                                    + New Folder
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -77,8 +97,7 @@
                                     @dragstart="dragStart($event, tab.id)"
                                     @dragover.prevent
                                     @dragenter.prevent
-                                    @drop="drop($event, tab.id)"
-                                >
+                                    @drop="drop($event, tab.id)">
                                     <p>{{ tab.name }}</p>
                                     <button class="exit" @click.stop="closeTab(tab.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
@@ -230,9 +249,13 @@ function toggleFolder(index: number) {
     openFolders.value[index] = !openFolders.value[index];
 }
 
+function setFolderOpen(index: number, value: boolean) {
+    openFolders.value[index] = value;
+}
+
 function handleAllImagesClick() {
-  allImagesOpen.value = !allImagesOpen.value;
-    console.log(allImagesOpen.value);
+    allImagesOpen.value = !allImagesOpen.value;
+
     if (allImagesOpen.value) {
         openTab('All Images', null);
     } else {
@@ -321,7 +344,7 @@ function closeTab(tabId: number) {
     const index = openTabs.value.findIndex(tab => tab.id === tabId);
     const folderIndex = openTabs.value[index].folderIndex as number;
 
-    toggleFolder(folderIndex);
+    setFolderOpen(folderIndex, false);
 
     if (openTabs.value[index].name === 'All Images') {
         allImagesOpen.value = false;
@@ -561,6 +584,7 @@ defineExpose({
     align-items: flex-start;
     background-color: transparent;
     padding: 1rem;
+    padding-top: 4rem;
     height: auto;
     box-sizing: border-box;
 }
@@ -614,6 +638,8 @@ defineExpose({
         button.exit {
             height: 28px;
             width: 28px;
+            padding: 0rem;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -624,8 +650,8 @@ defineExpose({
             transition: background-color 0.2s ease, border 0.2s ease, color 0.2s ease;
 
             svg {
-                width: 16px;
-                height: 16px;
+                width: 15px;
+                height: 15px;
                 fill: var(--black2);
                 transition: fill 0.2s ease;
             }
@@ -686,7 +712,7 @@ defineExpose({
 
         button {
             width: 100%;
-            border: 1px solid var(--black2);
+            border: 1px solid var(--grey2);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
             background-color: var(--background-color-secondary);
@@ -715,6 +741,45 @@ defineExpose({
             font-weight: 500;
             color: var(--black2);
         }
+
+        .folder-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            button {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--grey1);
+                transition: color 0.15s ease;
+                will-change: color;
+
+                &:hover {
+                    color: var(--black2);
+                    text-decoration: underline;
+                }
+            }
+
+            svg {
+                width: 14px;
+                height: 14px;
+                fill: var(--black2);
+                animation: spin 1.5s linear infinite;
+
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -725,9 +790,107 @@ defineExpose({
     background-color: var(--white2);
     border-bottom-left-radius: 0.5rem;;
     
-    li.folder {
+    li {
         height: 32px;
+    }
 
+    li.creating-new-folder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--off-white);
+
+        .folder-label-main {
+            justify-content: space-between;
+            padding-left: 12px;
+
+            .placeholder-group {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .folder-label, .folder-label-main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+
+            .indicator-placeholder, .icon-placeholder, .title-placeholder, .more-actions-placeholder {
+                display: flex;
+                background-color: var(--grey6);
+                border-radius: 4px;
+                position: relative;
+                overflow: hidden;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    background: linear-gradient(90deg, var(--grey6), var(--grey5), var(--grey6));
+                    animation: shimmer 1.5s infinite;
+                }
+            }
+
+            .indicator-placeholder {
+                width: 10px;
+                height: 12px;
+                margin-right: 11px;
+
+                &::after {
+                    animation-delay: 0.5s;
+                }
+            }
+
+            .icon-placeholder {
+                width: 14px;
+                height: 12px;
+                margin-right: 8px;
+
+                &::after {
+                    animation-delay: 0.2s;
+                }
+            }
+
+            .title-placeholder {
+                width: 60px;
+                height: 12px;
+
+                &::after {
+                    animation-delay: 0.8s;
+                }
+            }
+
+            .more-actions-placeholder {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 8px;
+                height: 12px;
+                margin-right: 8px;
+
+                &::after {
+                    animation-delay: 1s;
+                }
+            }
+
+            @keyframes shimmer {
+                0% {
+                    transform: translateX(-100%);
+                }
+                100% {
+                    transform: translateX(100%);
+                }
+            }
+        }
+    }
+
+    li.folder {
         .folder-label {
             display: flex;
             flex-direction: row;
@@ -881,6 +1044,14 @@ defineExpose({
             height: auto;
         }
     }
+
+    li.create-new-folder-li {
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
 }
 
 .contents-container {
@@ -927,6 +1098,7 @@ defineExpose({
         align-items: center;
         gap: 0.5rem;
         padding: 0.4rem 0.8rem;
+        padding-right: 0.55rem;
         border: 1px solid var(--white2);
         border-bottom: none;
         cursor: pointer;
@@ -944,9 +1116,7 @@ defineExpose({
         }
 
         &.active {
-            position: relative;
             background-color: var(--background-color-secondary);
-            position: relative;
             border-top: 1px solid var(--grey2);
             border-right: 1px solid var(--grey2);
             border-left: 1px solid var(--grey2);
@@ -971,9 +1141,10 @@ defineExpose({
         }
 
         button.exit {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             position: relative;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
