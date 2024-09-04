@@ -39,6 +39,7 @@
     import { ref } from 'vue';
 
     const props = defineProps({
+        
         flexToParent: {
             type: Boolean,
             default: false

@@ -19,122 +19,134 @@
                 </div>
             </div>
             <div class="manager-main">
-                <div class="explorer">
-                    <div class="extra-actions">
-                        <button @click="handleAllImagesClick()">All Images</button>
-                    </div>
-                    <div class="folder-header">
-                        <h2>Folders</h2>
-                        <div class="folder-actions">
-                            <svg v-if="creatingFolder" class="creating-folder-spinner" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/></svg>
-                            <button v-else class="new-folder"  @click="createNewFolder()">
-                                + New
-                            </button>
+                <div class="wrapper absolute">
+                    <div class="explorer">
+                        <div class="extra-actions">
+                            <button @click="handleAllImagesClick()">All Images</button>
                         </div>
-                    </div>
-                    <div class="folders-list">
-                        <ul>
-                            <li class="creating-new-folder" v-if="creatingFolder">
-                                <div class="folder-label">
-                                    <div class="folder-label-main">
-                                        <div class="placeholder-group">
-                                            <span class="indicator-placeholder"></span>
-                                            <span class="icon-placeholder"></span>
-                                            <span class="title-placeholder"></span>
-                                        </div>
-                                        <span class="more-actions-placeholder"></span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li v-for="(folder, index) in folders"
-                                :key="index"
-                                class="folder"
-                                :class="{ open: openFolders[index], renaming: folder.is_renaming, deleting: folder.is_deleting }">
-                                <div class="folder-label">
-                                    <div class="folder-label-main" @click="handleFolderClick(index, folder.name)">
-                                        <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
-                                        <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg> 
-                                        <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
-                                        <span class="placeholder-title" v-if="folder.is_renaming"></span>
-                                        <p class="folder-title" v-else>{{ folder.name }}</p>
-                                    </div>
-                                    <div class="folder-more-actions">
-                                        <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, folder)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="folder-content">
-                                    <ul>
-                                        <li v-for="image in folder.images" @click="openImageTab(image)">
-                                            <div class="image">
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
-                                                <p>{{ image.label }}</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <div class="create-new-folder-wrapper">
-                                <button class="create-new-folder" @click="createNewFolder()">
-                                    + New Folder
+                        <div class="folder-header">
+                            <h2>Folders</h2>
+                            <div class="folder-actions">
+                                <svg v-if="creatingFolder" class="creating-folder-spinner" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/></svg>
+                                <button v-else class="new-folder"  @click="createNewFolder()">
+                                    + New
                                 </button>
                             </div>
-                        </ul>
-                    </div>
-                </div>
-                <div class="contents-container">
-                    <div class="tabs-container">
-                        <div class="extra-actions">
                         </div>
-                        <div class="tabs">
+                        <div class="folders-list">
                             <ul>
-                                <li
-                                    v-for="tab in openTabs" 
-                                    :key="tab.id" 
-                                    @click="setActiveTab(tab.id)" 
-                                    :class="{ active: activeTab === tab.id }"
-                                    draggable="true"
-                                    @dragstart="dragStart($event, tab.id)"
-                                    @dragover.prevent
-                                    @dragenter.prevent
-                                    @drop="drop($event, tab.id)">
-                                    <p>{{ tab.name }}</p>
-                                    <button class="exit" @click.stop="closeTab(tab.id)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
-                                    </button>
+                                <li class="creating-new-folder" v-if="creatingFolder">
+                                    <div class="folder-label">
+                                        <div class="folder-label-main">
+                                            <div class="placeholder-group">
+                                                <span class="indicator-placeholder"></span>
+                                                <span class="icon-placeholder"></span>
+                                                <span class="title-placeholder"></span>
+                                            </div>
+                                            <span class="more-actions-placeholder"></span>
+                                        </div>
+                                    </div>
                                 </li>
+                                <li v-for="(folder, index) in folders"
+                                    :key="index"
+                                    class="folder"
+                                    :class="{ open: openFolders[index], renaming: folder.is_renaming, deleting: folder.is_deleting }">
+                                    <div class="folder-label">
+                                        <div class="folder-label-main" @click="handleFolderClick(index, folder.name)">
+                                            <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
+                                            <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
+                                            <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
+                                            <span class="placeholder-title" v-if="folder.is_renaming"></span>
+                                            <p class="folder-title" v-else>{{ folder.name }}</p>
+                                        </div>
+                                        <div class="folder-more-actions">
+                                            <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, folder)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="folder-content">
+                                        <ul>
+                                            <li v-for="image in folder.images" @click="openImageTab(image)">
+                                                <div class="image">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
+                                                    <p>{{ image.label }}</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <div class="create-new-folder-wrapper">
+                                    <button class="create-new-folder" @click="createNewFolder()">
+                                        + New Folder
+                                    </button>
+                                </div>
                             </ul>
                         </div>
                     </div>
-                    <div class="content-view">
-                        <div v-if="getActiveTabType() === 'folder'" class="image-grid">
-                            <div v-for="image in getActiveTabImages()" :key="image.delete_hash" class="image-preview" @click="openImageTab(image)">
-                                <div class="preview-container">
-                                    <div class="image-container">
-                                        <img :src="image.url" :alt="image.label" />
+                    <div class="contents-container">
+                        <div class="tabs-container">
+                            <div class="extra-actions">
+                            </div>
+                            <div class="tabs">
+                                <ul>
+                                    <li
+                                        v-for="tab in openTabs"
+                                        :key="tab.id"
+                                        @click="setActiveTab(tab.id)"
+                                        :class="{ active: activeTab === tab.id }"
+                                        draggable="true"
+                                        @dragstart="dragStart($event, tab.id)"
+                                        @dragover.prevent
+                                        @dragenter.prevent
+                                        @drop="drop($event, tab.id)">
+                                        <p>{{ tab.name }}</p>
+                                        <button class="exit" @click.stop="closeTab(tab.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-view">
+                            <div v-if="getActiveTabType() === 'folder'" class="image-grid">
+                                <div v-for="image in getActiveTabImages()" :key="image.delete_hash" class="image-preview" @click="openImageTab(image)">
+                                    <div class="preview-container">
+                                        <div class="image-container">
+                                            <img :src="image.url" :alt="image.label" />
+                                        </div>
+                                        <p>{{ image.label }}</p>
                                     </div>
-                                    <p>{{ image.label }}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div v-else-if="getActiveTabType() === 'image'" class="image-detail">
-                            <div class="large-image-container">
-                                <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
-                            </div>
-                            <div class="image-info">
-                                <h2 class="title">{{ getActiveTabImage().label }}</h2>
-                                <div class="group">
-                                    <p>Width: {{ getActiveTabImage().width }}px</p>
-                                    <p>Height: {{ getActiveTabImage().height }}px</p>
-                                    <p>Upload Date: {{ getActiveTabImage().upload_date }}</p>
+                            <div v-else-if="getActiveTabType() === 'image'" class="image-detail">
+                                <div class="large-image-container">
+                                    <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
                                 </div>
-                                <button @click="useSelectedImage" class="use-image-btn">Use Image</button>
+                                <div class="image-info">
+                                    <h2 class="title">{{ getActiveTabImage().label }}</h2>
+                                    <div class="group">
+                                        <p>Width: {{ getActiveTabImage().width }}px</p>
+                                        <p>Height: {{ getActiveTabImage().height }}px</p>
+                                        <p>Upload Date: {{ getActiveTabImage().upload_date }}</p>
+                                    </div>
+                                    <button @click="useSelectedImage" class="use-image-btn">Use Image</button>
+                                </div>
+                            </div>
+                            <div v-else class="no-tab">
+                                <p class="empty-text">Select a folder or "All Images" to view contents.</p>
                             </div>
                         </div>
-                        <div v-else class="no-tab">
-                            <p class="empty-text">Select a folder or "All Images" to view contents.</p>
-                        </div>
+                    </div>
+                </div>
+
+                <div class="wrapper absolute">
+                    <div class="upload-image-container">
+                        <input type="file" ref="image" @change="handleFileUpload" accept="image/*" />
+                        <button class="upload-image-btn" >Upload Image</button>
+                    </div>
+                    <div class="delete-image-container">
+                        <button class="delete-image-btn" @click="deleteImageViaHash()">Delete Image</button>
                     </div>
                 </div>
             </div>
@@ -864,10 +876,22 @@ defineExpose({
 }
 
 .manager-main {
+    position: relative;
     display: flex;
     flex-direction: row;
     height: calc(100% - 60px);
     width: 100%;
+
+    .wrapper.absolute {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        width: 100%;
+    }
 }
 
 .explorer {
@@ -1016,6 +1040,7 @@ defineExpose({
                 width: 10px;
                 height: 12px;
                 margin-right: 11px;
+                opacity: 0;
 
                 &::after {
                     animation-delay: 0.5s;
@@ -1288,7 +1313,7 @@ defineExpose({
             font-size: 11px;
             font-weight: 300;
             padding: 0.2rem 1rem;
-            padding-left: 0.8rem;
+            padding-left: 23px;
             color: var(--grey2);
             background-color: var(--white2);
             border: none;

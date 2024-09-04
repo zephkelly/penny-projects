@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import ImageManager from './../components/popups/imageManager.vue';
+import ImageManager from '~/components/popups/manager/image.vue';
 const image = ref(null);
 
 const imageManager = ref(null);
