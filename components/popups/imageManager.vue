@@ -927,9 +927,9 @@ defineExpose({
                 border: none;
                 cursor: pointer;
                 font-family: 'Inter', sans-serif;
-                font-size: 12px;
-                font-weight: 400;
-                color: var(--grey1);
+                font-size: 11px;
+                font-weight: 300;
+                color: var(--grey2);
                 transition: color 0.15s ease;
                 will-change: color;
 
@@ -1071,7 +1071,7 @@ defineExpose({
 
             .folder-label-main {
                 height: 100%;
-                width: 100%;
+                width: calc(100% - 26px);
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-start;
@@ -1080,6 +1080,7 @@ defineExpose({
                 .folder-indicator {
                     width: 20px;
                     height: 20px;
+                    min-width: 20px;
                     margin-left: 0.5rem;
                     margin-right: 0.3rem;
                     fill: var(--black2);
@@ -1088,6 +1089,7 @@ defineExpose({
 
                 .folder-icon {
                     width: 16px;
+                    min-width: 16px;
                     height: 16px;
                     margin-right: 0.45rem;
                     fill: var(--black2);
@@ -1103,12 +1105,16 @@ defineExpose({
                     color: var(--black2);
                     white-space: nowrap;
                     user-select: none;
+                    width: 100%;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
                 }
             }
 
             .folder-more-actions {
                 width: 26px;
                 height: 100%;
+                min-width: 26px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -1269,6 +1275,32 @@ defineExpose({
         justify-content: center;
         align-items: center;
         cursor: pointer;
+
+
+        button {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            padding: 0.2rem 1rem;
+            padding-left: 0.8rem;
+            color: var(--grey2);
+            background-color: var(--white2);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+
+            &:hover {
+                text-decoration: underline;
+                background-color: var(--off-white);
+                color: var(--black2);
+            }
+        }
     }
 
     @keyframes pulse-error {
