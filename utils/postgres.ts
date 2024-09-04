@@ -36,9 +36,16 @@ export class PostgresUtil {
         const client = await this.getClient();
 
         try {
+            await client.query('Begin');
             const result = await client.query(text, params);
+            await client.query('COMMIT');
             return result.rows as T[];
-        } finally {
+        }
+        catch (e) {
+            await client.query('ROLLBACK');
+            throw e;
+        }
+        finally {
             client.release();
         }
     }

@@ -33,8 +33,15 @@ export interface Folder {
     updated_date: Date;
 }
 
-
-export interface PopulatedFolder extends Folder {
-    isNew?: boolean;
+export interface FrontendFolder extends Folder {
+    is_new?: boolean;
+    is_renaming?: boolean;
+    is_deleting?: boolean;
     images: Image[];
 }
+
+export type FrontendPayload<T> = {
+    status: number;
+    message: string;
+    data?: T;
+};

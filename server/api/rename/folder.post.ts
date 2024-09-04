@@ -1,4 +1,3 @@
-
 import protectAdmin from '~/server/protectAdmin';
 import { PostgresUtil } from '~/utils/postgres';
 import { type Folder } from '~/types/database';
@@ -6,32 +5,45 @@ import { type Folder } from '~/types/database';
 export default defineEventHandler(async (event) => {
     await protectAdmin(event);
 
-    const db = PostgresUtil.getInstance();
-
     try {
+        const db = PostgresUtil.getInstance();
         
         const body = await readBody(event);
-        const { name } = body;
+        const { name, folder_id } = body;
 
-        if (!name) {
+        if (!name || !folder_id) {
             event.node.res.statusCode = 400;
             return {
                 status: 400,
-                message: 'Missing required fields: name'
+                message: 'Missing required fields: name, folder_id'
             }
         }
 
         const result = await db.query<Folder>(
-            'INSERT INTO public.folders (name) VALUES ($1) RETURNING *',
-            [name]
+            'UPDATE public.folders SET name = $1, updated_date = CURRENT_TIMESTAMP WHERE folder_id = $2 RETURNING name, updated_date',
+            [name, folder_id]
         );
 
-        const newFolder: Folder = result[0] as Folder;
+        if (result.length === 0) {
+            event.node.res.statusCode = 404;
+            return {
+                status: 404,
+                message: 'Folder not found'
+            }
+        }
+
+        const updatedFolder: Folder = result[0] as Folder;
+
+        const new_name: string = updatedFolder.name;
+        const new_updated_date: Date = updatedFolder.updated_date;
 
         return {
             status: 200,
-            message: 'Folder created successfully',
-            data: newFolder
+            message: 'Folder updated successfully',
+            data: {
+                name: new_name,
+                updated_date: new_updated_date
+            }
         };
     } 
     catch (error: any) {

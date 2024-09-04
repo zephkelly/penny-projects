@@ -1,9 +1,9 @@
 import protectAdmin from '~/server/protectAdmin';
 import { PostgresUtil } from "~/utils/postgres";
-import { type Image, type Folder, type PopulatedFolder } from '~/types/database'
+import { type Image, type Folder, type FrontendFolder } from '~/types/database'
 
 export default defineEventHandler(async (event) => {
-    
+    await protectAdmin(event);
   
     try {
         const populatedFolders = await getFoldersWithImages();
@@ -18,25 +18,23 @@ export default defineEventHandler(async (event) => {
     }
 });
 
-async function getFoldersWithImages(): Promise<PopulatedFolder[]> {
+async function getFoldersWithImages(): Promise<FrontendFolder[]> {
     const db = PostgresUtil.getInstance();
   
-    // Fetch all folders
-    const foldersResult = await db.query<Folder>('SELECT * FROM public.folders ORDER BY name');
+    const foldersResult: Folder[] = await db.query<Folder>('SELECT * FROM public.folders ORDER BY name');
     
-    // Populate each folder with its images
-    const populatedFolders: PopulatedFolder[] = await Promise.all(
-      foldersResult.map(async (folder): Promise<PopulatedFolder> => {
-        const imagesResult = await db.query<Image>(
-          'SELECT * FROM public.images WHERE parent_folder_id = $1 ORDER BY label',
-          [folder.folder_id]
-        );
-  
-        return {
-          ...folder,
-          images: imagesResult
-        };
-      })
+    const populatedFolders: FrontendFolder[] = await Promise.all(
+        foldersResult.map(async (folder): Promise<FrontendFolder> => {
+            const imagesResult = await db.query<Image>(
+                'SELECT * FROM public.images WHERE parent_folder_id = $1 ORDER BY label',
+                [folder.folder_id]
+            );
+    
+            return {
+                ...folder,
+                images: imagesResult
+            };
+        })
     );
   
     return populatedFolders;

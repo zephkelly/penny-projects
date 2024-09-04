@@ -49,16 +49,17 @@
                             <li v-for="(folder, index) in folders"
                                 :key="index"
                                 class="folder"
-                                :class="{ open: openFolders[index] }">
+                                :class="{ open: openFolders[index], renaming: folder.is_renaming, deleting: folder.is_deleting }">
                                 <div class="folder-label">
                                     <div class="folder-label-main" @click="handleFolderClick(index, folder.name)">
                                         <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
                                         <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg> 
                                         <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
-                                        <p class="folder-title">{{ folder.name }}</p>
+                                        <span class="placeholder-title" v-if="folder.is_renaming"></span>
+                                        <p class="folder-title" v-else>{{ folder.name }}</p>
                                     </div>
                                     <div class="folder-more-actions">
-                                        <button class="more-actions">
+                                        <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, folder)">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
                                         </button>
                                     </div>
@@ -74,11 +75,11 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="create-new-folder-li">
+                            <div class="create-new-folder-wrapper">
                                 <button class="create-new-folder" @click="createNewFolder()">
                                     + New Folder
                                 </button>
-                            </li>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -138,13 +139,169 @@
                 </div>
             </div>
         </div>
+        <div v-if="showFloatingMenu" 
+            class="floating-menu" 
+            :style="{ top: floatingMenuPosition.top + 'px', left: floatingMenuPosition.left + 'px' }">
+            <ul>
+                <li @click="renameFolder()">Rename</li>
+                <li @click="deleteFolder()">Delete</li>
+            </ul>
+        </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { type Folder, type PopulatedFolder } from '~/types/database';
+import { type Folder, type FrontendFolder, type FrontendPayload } from '~/types/database';
 
 const { isAdmin } = useAuth();
+ 
+function closeImageManager() {
+    imageManagerPopupOpen().value = false;
+}
+
+// #region Floating Menu Functionality ----------------------------------
+const showFloatingMenu = ref(false);
+const floatingMenuPosition = ref({ top: 0, left: 0 });
+const selectedFolder: Ref<Folder | null> = ref<Folder | null>(null);
+
+function openFloatingMenu(event: MouseEvent, folder: any) {
+    event.stopPropagation();
+    selectedFolder.value = folder;
+    
+    const { clientX, clientY } = event;
+    const menuWidth = 150;
+    const menuHeight = 100;
+    
+    let left = clientX;
+    let top = clientY;
+    
+    if (left + menuWidth > window.innerWidth) {
+        left = window.innerWidth - menuWidth;
+    }
+    
+    if (top + menuHeight > window.innerHeight) {
+        top = window.innerHeight - menuHeight;
+    }
+    
+    floatingMenuPosition.value = { top, left };
+    showFloatingMenu.value = true;
+    
+    setTimeout(() => {
+        document.addEventListener('click', closeFloatingMenu);
+    }, 0);
+}
+
+function closeFloatingMenu() {
+    showFloatingMenu.value = false;
+    document.removeEventListener('click', closeFloatingMenu);
+}
+// #endregion
+
+// #region Image Functionality ------------------------------------------
+const selectedImage = ref(null);
+
+const getAllFolderImages = computed(() => {
+  return folders.value.flatMap(folder => folder.images);
+});
+
+function useSelectedImage() {
+    const activeImage = getActiveTabImage();
+    if (activeImage) {
+        selectedImage.value = activeImage;
+        closeImageManager();
+        emit('imageSelected', selectedImage.value);
+    }
+}
+
+async function handleFileUpload() {
+    //@ts-ignore
+    const imageFile: any = image.value.files[0];
+    
+    if (imageFile.length === 0) {
+        console.log('No file selected');
+        return;
+    }
+    
+    if (!imageFile.type.startsWith('image/')) {
+        console.error('File is not an image');
+        return;
+    }
+
+    const imageSize = await checkImageSize(imageFile)
+    console.log(imageSize)
+
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    reader.onload = async () => {
+        // @ts-ignore
+        const base64Image = reader.result.split(',')[1];
+
+        // @ts-ignore
+        const response = await useFetch('/api/upload/image', {
+            method: 'POST',
+            body: { image: base64Image }
+        });
+    };
+}
+
+async function deleteImageViaHash() {
+    const hash = window.prompt('Insert Image Hash');
+
+    if (!hash) {
+        console.error('No hash provided');
+        return;
+    }
+
+    const response = await useFetch('/api/delete/image', {
+        method: 'POST',
+        body: { deleteHash: hash }
+    });
+}
+
+function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+    
+        reader.onload = function(e: ProgressEvent<FileReader>) {
+        const img = new Image();
+        
+        img.onload = (event: Event) => {
+            const loadedImg = event.target as HTMLImageElement;
+            const size = {
+                width: loadedImg.width,
+                height: loadedImg.height,
+                fileSize: file.size
+            };
+            resolve(size);
+        };
+        
+        img.onerror = function() {
+            reject(new Error('Failed to load image'));
+        };
+        
+        img.src = e.target?.result as string;
+        };
+    
+        reader.onerror = function() {
+            reject(new Error('Failed to read file'));
+        };
+    
+        reader.readAsDataURL(file);
+    });
+}
+
+function formatFileSize(bytes: number) {
+    if (bytes < 1024) return bytes + ' bytes';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(1) + ' MB';
+}
+// #endregion
+
+// #region Tab Functionality --------------------------------------------
+const allImagesOpen = ref(false);
+const openTabs:Ref<Tab[]> = ref([]);
+const activeTab: Ref<null | number> = ref(null);
+const draggedTabId: Ref<null | number> = ref<number | null>(null);
 
 interface Tab {
     id: number;
@@ -154,176 +311,17 @@ interface Tab {
     image?: any;
 }
 
-const data = [
-    {
-        folder_id: 1,
-        name: 'Zambia',
-        created_date: '2021-09-01',
-        updated_date: '2021-09-01',
-        isNew: false,
-        images: [
-            {
-                image_id: 1,
-                url: 'https://i.imgur.com/pNS6QhN.jpeg',
-                delete_hash: '1b2b3c4',
-                label: 'Zambia',
-                width: 1920,
-                height: 1080,
-                upload_date: '2021-09-01',
-                file_size: 123456,
-                colour_main: '#000000',
-                colour_contrast: '#ffffff',
-                parent_folder_id: 1
-            },
-            {
-                image_id: 2,
-                url: 'https://i.imgur.com/VCmqt80.jpeg',
-                delete_hash: '1b2b3c4',
-                label: 'Africa',
-                width: 1920,
-                height: 1080,
-                upload_date: '2021-09-01',
-                file_size: 123456,
-                colour_main: '#000000',
-                colour_contrast: '#ffffff',
-                parent_folder_id: 1
-            },
-            {
-                image_id: 3,
-                url: 'https://i.imgur.com/VCmqt80.jpeg',
-                delete_hash: '1b2b3c4',
-                label: 'Yolodolo',
-                width: 1920,
-                height: 1080,
-                upload_date: '2021-09-01',
-                file_size: 123456,
-                colour_main: '#000000',
-                colour_contrast: '#ffffff',
-                parent_folder_id: 1
-            }
-        ]
-    }
-]
- 
-const folders = ref<PopulatedFolder[]>([]);
-folders.value = await getPopulatedFolders() as PopulatedFolder[];
-//@ts-ignore
-// folders.value.push(...data as PopulatedFolder[]);
-
-const selectedImage = ref(null);
-
-const allImagesOpen = ref(false);
-const openFolders = ref(folders.value.map(() => false));
-const openTabs:Ref<Tab[]> = ref([]);
-
-async function getPopulatedFolders(): Promise<PopulatedFolder[] | null> {
-    try {
-        const { data, status } = await useFetch<PopulatedFolder[]>('/api/folders');
-
-        return data.value as PopulatedFolder[];
-    }
-    catch (error) {
-        return null;
-    }
-}
-
-function closeImageManager() {
-    imageManagerPopupOpen().value = false;
-}
-
-const emit = defineEmits<{
-  (e: 'imageSelected', image: any): void
-}>();
-
-function useSelectedImage() {
-  const activeImage = getActiveTabImage();
-  if (activeImage) {
-    selectedImage.value = activeImage;
-    closeImageManager();
-    // Emit an event or call a callback function to notify the parent component
-    emit('imageSelected', selectedImage.value);
-  }
-}
-
-function toggleFolder(index: number) {
-    openFolders.value[index] = !openFolders.value[index];
-}
-
-function setFolderOpen(index: number, value: boolean) {
-    openFolders.value[index] = value;
-}
-
-function handleAllImagesClick() {
-    allImagesOpen.value = !allImagesOpen.value;
-
-    if (allImagesOpen.value) {
-        openTab('All Images', null);
-    } else {
-        // const allImagesTab = openTabs.value.find(tab => tab.name === 'All Images');
-        // if (allImagesTab) {
-        // closeTab(allImagesTab.id);
-        // }
-    }
-}
-
-function handleFolderClick(index: number, folderName: string) {
-  if (openFolders.value[index]) {
-    // If the folder is already open, just close it
-    toggleFolder(index);
-  } else {
-    // If the folder is closed, open it and set it as active
-    toggleFolder(index);
-    openTab(folderName, index);
-  }
-}
-
-function openImageTab(image: any) {
-    // Check if the image is already opened in a tab
-    const existingTab = openTabs.value.find(tab => tab.type === 'image' && tab.image && tab.image.url === image.url);
-    
-    if (existingTab) {
-        // If the image is already opened, set it as the active tab
-        activeTab.value = existingTab.id;
-    } else {
-        // If the image is not opened, create a new tab
-        const newTab: Tab = {
-            id: Date.now(),
-            name: image.label,
-            folderIndex: null,
-            type: 'image',
-            image: image
-        };
-        openTabs.value.push(newTab);
-        activeTab.value = newTab.id;
-    }
-}
-
-function getActiveTabType() {
-  const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-  return tab ? tab.type : null;
-}
-
-function getActiveTabImage() {
-  const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-  return tab && tab.type === 'image' ? tab.image : null;
-}
-
-function formatFileSize(bytes: number) {
-  if (bytes < 1024) return bytes + ' bytes';
-  else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-  else return (bytes / 1048576).toFixed(1) + ' MB';
-}
-
 function openTab(name: string, folderIndex: number | null) {
-    //If the active tab is All Images, then set it to false
     if (allImagesOpen.value) {
         allImagesOpen.value = false;
     }
 
     const existingTab: Tab = openTabs.value.find(tab => tab.name === name) as Tab;
+
     if (existingTab) {
         activeTab.value = existingTab.id;
-    } else {
+    }
+    else {
         const newTab = {
             id: Date.now(),
             name: name,
@@ -336,8 +334,23 @@ function openTab(name: string, folderIndex: number | null) {
     }
 }
 
-function setActiveTab(tabId: number) {
-    activeTab.value = tabId;
+function openImageTab(image: any) {
+    const existingTab = openTabs.value.find(tab => tab.type === 'image' && tab.image && tab.image.url === image.url);
+    
+    if (existingTab) {
+        activeTab.value = existingTab.id;
+    }
+    else {
+        const newTab: Tab = {
+            id: Date.now(),
+            name: image.label,
+            folderIndex: null,
+            type: 'image',
+            image: image
+        };
+        openTabs.value.push(newTab);
+        activeTab.value = newTab.id;
+    }
 }
 
 function closeTab(tabId: number) {
@@ -358,9 +371,19 @@ function closeTab(tabId: number) {
     }
 }
 
-const allImages = computed(() => {
-  return folders.value.flatMap(folder => folder.images);
-});
+function setActiveTab(tabId: number) {
+    activeTab.value = tabId;
+}
+
+function getActiveTabType() {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    return tab ? tab.type : null;
+}
+
+function getActiveTabImage() {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    return tab && tab.type === 'image' ? tab.image : null;
+}
 
 function getActiveTabName() {
     const tab = openTabs.value.find(tab => tab.id === activeTab.value);
@@ -368,149 +391,298 @@ function getActiveTabName() {
 }
 
 function getActiveTabImages() {
-  const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-  if (!tab) return [];
-  if (tab.name === 'All Images') {
-    return allImages.value;
-  } else if (tab.folderIndex !== null) {
-    return folders.value[tab.folderIndex].images;
-  }
-  return [];
-}
-
-async function handleFileUpload() {
-    //@ts-ignore
-    const imageFile = image.value.files[0];
-    
-    if (imageFile.length === 0) {
-        console.log('No file selected');
-        return;
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    if (!tab) return [];
+    if (tab.name === 'All Images') {
+        return getAllFolderImages.value;
+    } else if (tab.folderIndex !== null) {
+        return folders.value[tab.folderIndex].images;
     }
-    
-    if (!imageFile.type.startsWith('image/')) {
-        console.error('File is not an image');
-        return;
-    }
-
-    const imageSize = await checkImageSize(imageFile)
-    console.log(imageSize)
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-    reader.onload = async () => {
-        // @ts-ignore
-        const base64Image = reader.result.split(',')[1]; // Remove the data:image/jpeg;base64, part
-
-        // @ts-ignore
-        const response = await useFetch('/api/upload/image', {
-            method: 'POST',
-            body: { image: base64Image }
-        });
-
-        console.log(response);
-    };
+    return [];
 }
-
-function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-   
-    reader.onload = function(e: ProgressEvent<FileReader>) {
-      const img = new Image();
-     
-      img.onload = (event: Event) => {
-        const loadedImg = event.target as HTMLImageElement;
-        const size = {
-          width: loadedImg.width,
-          height: loadedImg.height,
-          fileSize: file.size
-        };
-        resolve(size);
-      };
-     
-      img.onerror = function() {
-        reject(new Error('Failed to load image'));
-      };
-     
-      img.src = e.target?.result as string;
-    };
-   
-    reader.onerror = function() {
-      reject(new Error('Failed to read file'));
-    };
-   
-    reader.readAsDataURL(file);
-  });
-}
-
-async function deleteImageViaHash() {
-    const hash = window.prompt('Insert Image Hash');
-
-    if (!hash) {
-        console.error('No hash provided');
-        return;
-    }
-
-    const response = await useFetch('/api/delete/image', {
-        method: 'POST',
-        body: { deleteHash: hash }
-    });
-}
-
-const activeTab: Ref<null | number> = ref(null);
-const draggedTabId: Ref<null | number> = ref<number | null>(null);
 
 function dragStart(event: DragEvent, tabId: number) {
-  draggedTabId.value = tabId;
+    draggedTabId.value = tabId;
 }
 
 function drop(event: DragEvent, targetTabId: number) {
-  event.preventDefault();
-  if (draggedTabId.value !== null && draggedTabId.value !== targetTabId) {
-    const draggedIndex = openTabs.value.findIndex(tab => tab.id === draggedTabId.value);
-    const targetIndex = openTabs.value.findIndex(tab => tab.id === targetTabId);
+    event.preventDefault();
     
-    if (draggedIndex !== -1 && targetIndex !== -1) {
-      const [draggedTab] = openTabs.value.splice(draggedIndex, 1);
-      openTabs.value.splice(targetIndex, 0, draggedTab);
+    if (draggedTabId.value !== null && draggedTabId.value !== targetTabId) {
+        const draggedIndex = openTabs.value.findIndex(tab => tab.id === draggedTabId.value);
+        const targetIndex = openTabs.value.findIndex(tab => tab.id === targetTabId);
+        
+        if (draggedIndex !== -1 && targetIndex !== -1) {
+            const [draggedTab] = openTabs.value.splice(draggedIndex, 1);
+            openTabs.value.splice(targetIndex, 0, draggedTab);
+        }
     }
-  }
-  draggedTabId.value = null;
+
+    draggedTabId.value = null;
+}
+// #endregion
+
+// #region Folder Functionality -----------------------------------------
+type FolderPayload = FrontendPayload<Folder>;
+
+const folders = ref<FrontendFolder[]>([]);
+folders.value = await getPopulatedFolders() as FrontendFolder[];
+
+// const data = [
+//     {
+//         folder_id: 1,
+//         name: 'Zambia',
+//         created_date: '2021-09-01',
+//         updated_date: '2021-09-01',
+//         is_new: false,
+//         images: [
+//             {
+//                 image_id: 1,
+//                 url: 'https://i.imgur.com/pNS6QhN.jpeg',
+//                 delete_hash: '1b2b3c4',
+//                 label: 'Zambia',
+//                 width: 1920,
+//                 height: 1080,
+//                 upload_date: '2021-09-01',
+//                 file_size: 123456,
+//                 colour_main: '#000000',
+//                 colour_contrast: '#ffffff',
+//                 parent_folder_id: 1
+//             },
+//             {
+//                 image_id: 2,
+//                 url: 'https://i.imgur.com/VCmqt80.jpeg',
+//                 delete_hash: '1b2b3c4',
+//                 label: 'Africa',
+//                 width: 1920,
+//                 height: 1080,
+//                 upload_date: '2021-09-01',
+//                 file_size: 123456,
+//                 colour_main: '#000000',
+//                 colour_contrast: '#ffffff',
+//                 parent_folder_id: 1
+//             },
+//             {
+//                 image_id: 3,
+//                 url: 'https://i.imgur.com/VCmqt80.jpeg',
+//                 delete_hash: '1b2b3c4',
+//                 label: 'Yolodolo',
+//                 width: 1920,
+//                 height: 1080,
+//                 upload_date: '2021-09-01',
+//                 file_size: 123456,
+//                 colour_main: '#000000',
+//                 colour_contrast: '#ffffff',
+//                 parent_folder_id: 1
+//             }
+//         ]
+//     }
+// ]
+//@ts-ignore
+// folders.value.push(...data as PopulatedFolder[]);
+
+const openFolders = ref(folders.value.map(() => false));
+
+async function getPopulatedFolders(): Promise<FrontendFolder[] | null> {
+    try {
+        const { data, status } = await useFetch<FrontendFolder[]>('/api/folders');
+
+        return data.value as FrontendFolder[];
+    }
+    catch (error) {
+        return null;
+    }
 }
 
 const creatingFolder = ref(false);
 async function createNewFolder() {
-    const folderName = window.prompt('Enter folder name');
-    if (folderName) {
-        creatingFolder.value = true;
+    const folderName = await window.prompt('Enter folder name');
 
-        try {
-            const newFolder = await $fetch<Folder>('/api/create/folder', {
-                method: 'POST',
-                body: { name: folderName }
-            });
+    if (!folderName) {
+        window.alert('No folder name provided!');
+        return;
+    }
 
-            const newPopulatedFolder: PopulatedFolder = {
-                folder_id: newFolder.folder_id,
-                name: newFolder.name,
-                created_date: newFolder.created_date,
-                updated_date: newFolder.updated_date,
-                isNew: true,
-                images: []
-            };
+    creatingFolder.value = true;
 
-            folders.value = [newPopulatedFolder, ...folders.value];
+    try {
+        const response = await $fetch<FolderPayload>('/api/create/folder', {
+            method: 'POST',
+            body: { name: folderName }
+        });
 
-            // folders.value.sort((a, b) => a.name.localeCompare(b.name));
-        }
-        catch (error) {
-            console.error('Error creating new folder:', error);
-        }
-        finally {
+        if (response.status !== 200) {
             creatingFolder.value = false;
+            window.alert('Error creating folder: ' + response.message);
+            return;
+        }
+
+        if (!response.data) {
+            creatingFolder.value = false;
+            window.alert('No folder data returned');
+            return;
+        }
+        
+        const newFolder: FrontendFolder = {
+            folder_id: response.data.folder_id,
+            name: response.data.name,
+            created_date: response.data.created_date,
+            updated_date: response.data.updated_date,
+            is_new: true,
+            images: []
+        };
+
+        folders.value = [newFolder, ...folders.value];
+    }
+    catch (error: any) {
+        if (error.status === 409) {
+            creatingFolder.value = false;
+            window.alert('Folder name already exists! Please choose a different name.');
+        }
+        else {
+            creatingFolder.value = false;
+            window.alert('Error creating folder: ' + error.message);
         }
     }
+    finally {
+        creatingFolder.value = false;
+    }
 }
+
+async function renameFolder() {
+    const folderDOMIndex = folders.value.findIndex((folder: FrontendFolder) => folder.folder_id === selectedFolder.value?.folder_id);
+    
+    if (folderDOMIndex === -1) {
+        console.error('Cannot find folder in DOM');
+        return;
+    }
+    
+    const newName: string | null = await window.prompt('Enter new folder name:');
+
+    if (folders.value[folderDOMIndex].name === newName) {
+        console.log('New name is the same as the old name');
+        return;
+    }
+    
+    if (!newName) {
+        window.alert('No name provided');
+        return;
+    }
+    
+    if (!selectedFolder.value) {
+        window.alert('No folder selected');
+        return;
+    }
+    
+    folders.value[folderDOMIndex].is_renaming = true;
+
+    let response: FolderPayload;
+
+    try {
+        response = await $fetch<FolderPayload>('/api/rename/folder', {
+            method: 'POST',
+            body: {
+                name: newName,
+                folder_id: selectedFolder.value.folder_id
+            }
+        });
+    }
+    catch (error: any) {
+        if (error.status === 409)
+        {
+            folders.value[folderDOMIndex].is_renaming = false;
+            window.alert('Folder name already exists! Please choose a different name.');
+            return;
+        }
+
+        folders.value[folderDOMIndex].is_renaming = false;
+        return;
+    }
+
+    if (response.status !== 200) {
+        folders.value[folderDOMIndex].is_renaming = false;
+        window.alert('Error renaming folder: ' + response.message);
+        return;
+    }
+
+    folders.value[folderDOMIndex].name = newName;
+    folders.value[folderDOMIndex].is_renaming = false;
+
+    closeFloatingMenu();
+}
+
+async function deleteFolder() {
+    const folder_id = selectedFolder.value?.folder_id;
+
+    if (!folder_id) {
+        window.alert('No folder selected');
+        return;
+    }
+
+    const confirmDelete = window.confirm('Are you sure you want to delete this folder?');
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    const folderDOMIndex = folders.value.findIndex((folder: FrontendFolder) => folder.folder_id === folder_id);
+
+    if (folderDOMIndex === -1) {
+        console.error('Cannot find folder in DOM');
+        return;
+    }
+
+    folders.value[folderDOMIndex].is_deleting = true;
+
+    try {
+        const response = await $fetch('/api/delete/folder', {
+            method: 'POST',
+            body: { folder_id }
+        });
+
+        if (response.status !== 200) {
+            folders.value[folderDOMIndex].is_deleting = false;
+            window.alert('Error deleting folder: ' + response.message);
+            return;
+        }
+    }
+    catch (error: any) {
+        folders.value[folderDOMIndex].is_deleting = false;
+        window.alert('Error deleting folder: ' + error.message);
+        return;
+    }
+    finally {
+        folders.value.splice(folderDOMIndex, 1);
+        closeFloatingMenu();
+    }
+}
+
+function handleFolderClick(index: number, folderName: string) {
+    if (openFolders.value[index]) {
+        toggleFolderOpen(index);
+    }
+    else {
+        toggleFolderOpen(index);
+        openTab(folderName, index);
+    }
+}
+
+function handleAllImagesClick() {
+    allImagesOpen.value = !allImagesOpen.value;
+
+    if (allImagesOpen.value) {
+        openTab('All Images', null);
+    }
+}
+
+function toggleFolderOpen(index: number) {
+    openFolders.value[index] = !openFolders.value[index];
+}
+
+function setFolderOpen(index: number, value: boolean) {
+    openFolders.value[index] = value;
+}
+//#endregion
 
 watch(imageManagerPopupOpen(), (newValue, oldValue) => {
     if (newValue) {
@@ -522,14 +694,17 @@ watch(imageManagerPopupOpen(), (newValue, oldValue) => {
     }
 });
 
+const emit = defineEmits<{
+    (e: 'imageSelected', image: any): void
+}>();
+
 defineExpose({
-    // openImageManager,
     closeImageManager,
     selectedImage
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .folder-list-enter-active,
 .folder-list-leave-active {
     transition: all 0.5s ease;
@@ -565,8 +740,8 @@ defineExpose({
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.2);
+    // backdrop-filter: blur(4px);
     z-index: 109;
     cursor: pointer;
 }
@@ -584,7 +759,7 @@ defineExpose({
     align-items: flex-start;
     background-color: transparent;
     padding: 1rem;
-    padding-top: 4rem;
+    // padding-top: 4rem;
     height: auto;
     box-sizing: border-box;
 }
@@ -753,7 +928,7 @@ defineExpose({
                 cursor: pointer;
                 font-family: 'Inter', sans-serif;
                 font-size: 12px;
-                font-weight: 500;
+                font-weight: 400;
                 color: var(--grey1);
                 transition: color 0.15s ease;
                 will-change: color;
@@ -878,15 +1053,6 @@ defineExpose({
                     animation-delay: 1s;
                 }
             }
-
-            @keyframes shimmer {
-                0% {
-                    transform: translateX(-100%);
-                }
-                100% {
-                    transform: translateX(100%);
-                }
-            }
         }
     }
 
@@ -976,7 +1142,6 @@ defineExpose({
             height: 0px;
             width: 100%;
             transition: height 0.2s ease;
-            // background-color: var(--background-color-secondary);
 
             ul {
                 width: 100%;
@@ -1045,16 +1210,96 @@ defineExpose({
         }
     }
 
-    li.create-new-folder-li {
+    li.folder.renaming {
+        .placeholder-title {
+            position: relative;
+            height: 12px;
+            width: 70px;
+            background-color: var(--grey6);
+            border-radius: 4px;
+            overflow: hidden;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: linear-gradient(90deg, var(--grey6), var(--grey5), var(--grey6));
+                animation: shimmer 1.5s infinite;
+            }
+        }
+    }
+
+    li.folder.deleting {
+        opacity: 0.8;
+        animation: pulse-error 2s infinite;
+        transition: opacity 0.2s ease, background-color 0.2s ease;
+        will-change: opacity, background-color;
+
+        .folder-label {
+            button.more-actions {
+                user-select: none;
+                pointer-events: none;
+                svg {
+                    fill: var(--error);
+                }
+            }
+        }
+
+        .folder-label-main {
+            position: relative;
+
+            .folder-icon, .folder-indicator {
+                fill: var(--error);
+                color: var(--error);
+            }
+
+            .folder-title {
+                position: relative;
+                color: var(--error);
+            }
+        }
+    }
+
+    .create-new-folder-wrapper {
         height: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
     }
+
+    @keyframes pulse-error {
+        0% {
+            background-color: rgb(255, 226, 226);
+            opacity: 0.5;
+        }
+        50% {
+            background-color: var(--white2);
+            opacity: 0.8;
+        }
+        100% {
+            background-color: rgb(255, 226, 226);
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
 }
 
 .contents-container {
+    display: flex;
+    flex-direction: column;
+
     width: calc(100% - 200px);
     height: 100%;
 }
@@ -1084,10 +1329,12 @@ defineExpose({
 
     ul {
         height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         list-style: none;
         padding-right: 32px;
+        position: relative;
     }
 
     li {
@@ -1102,6 +1349,7 @@ defineExpose({
         border: 1px solid var(--white2);
         border-bottom: none;
         cursor: pointer;
+        user-select: none;
 
         p {
             font-size: 12px;
@@ -1189,13 +1437,83 @@ defineExpose({
             user-select: none;
         }
     }
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+
+            p {
+                font-size: 12px;
+                color: var(--grey2);
+                user-select: none;
+            }
+        }
+        
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 120px;
+            height: 120px;
+            padding: 0.8rem;
+            border-radius: 4px;
+            background-color: var(--off-white);
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 0.5rem;
+                object-fit: contain;
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+.floating-menu {
+    position: fixed;
+    background-color: var(--background-color-secondary);
+    border: 1px solid var(--grey3);
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    overflow: hidden;
+    
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li {
+            padding: 8px 18px;
+            cursor: pointer;
+            font-size: 11px;
+            text-rendering: optimizeLegibility;
+            color: var(--black2);
+            border-bottom: 1px solid var(--grey5);
+        
+            &:hover {
+                background-color: var(--off-white);
+                border-radius: 4px;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
 }
 
 svg {
     fill: var(--black2);
 }
-</style>
-
-<style scoped lang="scss">
-
 </style>
