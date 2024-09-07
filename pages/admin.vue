@@ -1,5 +1,4 @@
 <template>
-    <PopupsImageManager />
     <section id="adminHero" class="component" v-if="isAdmin">
         <div class="container">
             <h1 class="header">Admin Panel</h1>

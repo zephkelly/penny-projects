@@ -1,5 +1,5 @@
 <template>
-    <div class="image-upload-container" :class="{ 'flex-to-parent': isFlexToParent }">
+    <div class="image-upload-container" :class="{ 'flex-to-parent': flexToParent, 'hidden': hidden && !isDragging }">
         <div v-if="!imagePreview" 
             class="drag-drop-zone"
             @drag.prevent
@@ -9,13 +9,13 @@
             @dragenter.prevent="isDragging = true"
             @dragleave.prevent="isDragging = false"
             @drop.prevent="handleDrop"
-            :class="{ 'drag-over': isDragging, 'showing-preview': imagePreview, 'flex-to-parent': isFlexToParent }"
+            :class="{ 'drag-over': isDragging, 'showing-preview': imagePreview, 'flex-to-parent': flexToParent }"
             @click="debounceTriggerFileInput"
             >
                 
             <div class="placeholder">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
-                <p v-if="!isFlexToParent">Drag and drop your cover image here or click to select</p>
+                <p v-if="!flexToParent">Drag and drop your cover image here or click to select</p>
             </div>
         </div>
         <input v-if="!imagePreview"
@@ -25,41 +25,46 @@
             accept="image/*"
             class="file-input"
         >
-        <div v-else class="image-preview-container" :class="{ 'flex-to-parent': isFlexToParent }">
+        <div v-else class="image-preview-container" :class="{ 'flex-to-parent': flexToParent }">
             <div class="wrapper" >
                 <img :src="imagePreview" alt="Cover image preview" class="preview-image">
-                <button v-if="!isFlexToParent" @click="removeImage" class="remove-button">Remove Image</button>
+                <button v-if="!flexToParent" @click="removeImage" class="remove-button">Remove Image</button>
                 <button v-else @click="removeImage" class="remove-button cross">X</button>
             </div>
         </div>
     </div>
 </template>
   
-<script setup>
-    import { ref } from 'vue';
+<script setup lang="ts">
+    import { ref, type PropType } from 'vue';
 
     const props = defineProps({
-        
-        flexToParent: {
-            type: Boolean,
-            default: false
-        },
+        flexToParent: Boolean,
+        hidden: Boolean,
         imageUrl: {
-            type: String,
+            type: String as PropType<string | null>,
             default: null
         }
     });
 
-    const emit = defineEmits(['image-selected', 'image-removed']);
+    const emit = defineEmits(['image-selected', 'image-removed', 'is-dragging', 'dropped-image']);
     
     const isDragging = ref(false);
-    const imagePreview = ref(null);
-    const fileInput = ref(null);
-    const isFlexToParent = ref(props.flexToParent);
+    const imagePreview = ref<string | null>(null);
+    const fileInput = ref<string | null>(null);
 
     watch(() => props.imageUrl, (newValue) => {
         if (newValue) {
             imagePreview.value = newValue;
+        }
+    });
+
+    //watch value that emits event when dragging and image, and emits event when finished draggin, and emits a different event if it uploaded an image
+    watch(() => isDragging.value, (newValue) => {
+        if (newValue) {
+            emit('is-dragging', true);
+        } else {
+            emit('is-dragging', false);
         }
     });
 
@@ -69,32 +74,34 @@
         }
     });
     
-    const handleDrop = (e) => {
+    const handleDrop = (e: any) => {
         isDragging.value = false;
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
             handleFile(file);
+            emit('dropped-image', file);
         }
     };
     
-    const handleFileInput = (e) => {
+    const handleFileInput = (e: any) => {
         const file = e.target.files[0];
         if (file) {
             handleFile(file);
         }
     };
     
-    const handleFile = (file) => {
+    const handleFile = (file: File) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            imagePreview.value = e.target.result;
+            imagePreview.value = e.target?.result as string;
             emit('image-selected', file);
         };
         reader.readAsDataURL(file);
     };
 
     const triggerFileInput = () => {
-        console.log('triggering file input');
+        if (props.hidden) return;
+        //@ts-ignore
         fileInput.value.click();
     };
 
@@ -103,7 +110,7 @@
     const removeImage = () => {
         imagePreview.value = null;
         if (fileInput.value) {
-            fileInput.value.value = '';
+            fileInput.value = '';
         }
         emit('image-removed');
     };
@@ -119,11 +126,20 @@
         display: flex;
         flex: 1;
         height: 100%;
+        max-height: 100%;
     }
     
     * {
         box-sizing: border-box;
         font-family: 'Poppins', sans-serif;
+    }
+}
+
+.image-upload-container.hidden {
+
+    .drag-drop-zone {
+        cursor: auto;
+        opacity: 0;
     }
 }
 
@@ -199,6 +215,8 @@
     font-weight: 500;
     color: var(--admin-transparent);
     padding: 0rem 1rem;
+    user-select: none;
+    pointer-events: none;
 }
 
 .placeholder svg {

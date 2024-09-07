@@ -36,10 +36,11 @@
                             <label for="subtitle">Author Image</label>
                             <div class="preview-wrapper">
                                 <DragAndDropImageUpload 
-                                :flexToParent="true"
-                                :imageUrl="profileImage"
-                                @image-selected="handleAuthorImageSelected"
-                                @image-removed="handleAuthorImageRemoved"/>
+                                    :flexToParent="true"
+                                    :imageUrl="profileImage"
+                                    @image-selected="handleAuthorImageSelected"
+                                    @image-removed="handleAuthorImageRemoved"
+                                />
                             </div>
                         </div>
                         <div class="field">

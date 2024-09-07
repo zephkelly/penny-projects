@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="manager-main">
-                <transition-group name="fade" mode="out-in">
+                <transition-group name="fade">
                     <div class="wrapper absolute" v-if="uploadingImage">
                         <div class="upload-image-container">
                             <input type="file" ref="image" @change="handleFileUpload" accept="image/*" />
@@ -28,6 +28,9 @@
                         <div class="delete-image-container">
                             <button class="delete-image-btn" @click="deleteImageViaHash()">Delete Image</button>
                         </div>
+                        <DragAndDropImageUpload
+                            :imageUrl="currentUploadedImageBlogUrl"
+                            class="absolute"/>
                     </div>
                     <div class="wrapper absolute" v-else>
                         <div class="explorer">
@@ -144,6 +147,11 @@
                                     </div>
                                 </div>
                                 <div v-else class="no-tab">
+                                    <DragAndDropImageUpload
+                                        flexToParent
+                                        hidden
+                                        @image-selected="handleDraggedFolderImage"
+                                        class="absolute"/>
                                     <p class="empty-text">Select a folder or "All Images" to view contents.</p>
                                 </div>
                             </div>
@@ -164,9 +172,11 @@
 </template>
 
 <script setup lang="ts">
+import DragAndDropImageUpload from '~/components/dragAndDropImageUpload.vue';
 import { type Folder, type FrontendFolder, type FrontendPayload } from '~/types/database';
 
 const { isAdmin } = useAuth();
+const { setCurrentUploadedImage, currentUploadedImageBlogUrl, currentUploadedImage } = useImageManager();
  
 function closeImageManager() {
     imageManagerPopupOpen().value = false;
@@ -212,7 +222,7 @@ function closeFloatingMenu() {
 
 // #region Image Functionality ------------------------------------------
 const uploadingImage = ref(false);
-const selectedImage = ref(null);
+const selectedImage = ref<File | null>(null);
 
 function toggleIsUploadImage() {
     uploadingImage.value = !uploadingImage.value;
@@ -229,6 +239,13 @@ function useSelectedImage() {
         closeImageManager();
         emit('imageSelected', selectedImage.value);
     }
+}
+
+function handleDraggedFolderImage(image: File) {
+    selectedImage.value = image;
+    uploadingImage.value = true;
+
+    setCurrentUploadedImage(image);
 }
 
 async function handleFileUpload() {
@@ -933,6 +950,10 @@ defineExpose({
         height: 100%;
         width: 100%;
     }
+
+    .wrapper.drag-and-drop {
+        z-index: 112;
+    }
 }
 
 .explorer {
@@ -1524,6 +1545,7 @@ defineExpose({
     border-bottom-right-radius: 0.5rem;
 
     .no-tab {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1533,6 +1555,11 @@ defineExpose({
 
         p {
             user-select: none;
+        }
+
+        .absolute {
+            padding: 1rem;
+            position: absolute;
         }
     }
 
