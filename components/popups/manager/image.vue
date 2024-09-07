@@ -20,17 +20,17 @@
             </div>
             <div class="manager-main">
                 <transition-group name="fade">
-                    <div class="wrapper absolute" v-if="uploadingImage">
-                        <div class="upload-image-container">
-                            <input type="file" ref="image" @change="handleFileUpload" accept="image/*" />
-                            <button class="upload-image-btn" >Upload Image</button>
+                    <div class="wrapper absolute image-upload-window" v-if="false">
+                        <div class="upload-form">
+
                         </div>
-                        <div class="delete-image-container">
-                            <button class="delete-image-btn" @click="deleteImageViaHash()">Delete Image</button>
+                        <div class="drop-zone">
+                            <DragAndDropImageUpload
+                                flexToParent
+                                containPreview
+                                :imageUrl="currentUploadedImageBlogUrl"
+                                />
                         </div>
-                        <DragAndDropImageUpload
-                            :imageUrl="currentUploadedImageBlogUrl"
-                            class="absolute"/>
                     </div>
                     <div class="wrapper absolute" v-else>
                         <div class="explorer">
@@ -149,8 +149,10 @@
                                 <div v-else class="no-tab">
                                     <DragAndDropImageUpload
                                         flexToParent
+                                        previewFlexToParent
+                                        containPreview
                                         hidden
-                                        @image-selected="handleDraggedFolderImage"
+                                        @image-selected="handleFileUpload"
                                         class="absolute"/>
                                     <p class="empty-text">Select a folder or "All Images" to view contents.</p>
                                 </div>
@@ -173,7 +175,7 @@
 
 <script setup lang="ts">
 import DragAndDropImageUpload from '~/components/dragAndDropImageUpload.vue';
-import { type Folder, type FrontendFolder, type FrontendPayload } from '~/types/database';
+import { type Folder, type FrontendFolder, type FrontendPayload, type Image } from '~/types/database';
 
 const { isAdmin } = useAuth();
 const { setCurrentUploadedImage, currentUploadedImageBlogUrl, currentUploadedImage } = useImageManager();
@@ -224,6 +226,12 @@ function closeFloatingMenu() {
 const uploadingImage = ref(false);
 const selectedImage = ref<File | null>(null);
 
+const allImages = ref<Image[]>([]);
+
+const { data, error: fetchError } = await useFetch<Image[]>('/api/images');
+allImages.value = data.value as Image[];
+
+
 function toggleIsUploadImage() {
     uploadingImage.value = !uploadingImage.value;
 }
@@ -242,40 +250,33 @@ function useSelectedImage() {
 }
 
 function handleDraggedFolderImage(image: File) {
-    selectedImage.value = image;
+    // selectedImage.value = image;
     uploadingImage.value = true;
 
     setCurrentUploadedImage(image);
 }
 
-async function handleFileUpload() {
-    //@ts-ignore
-    const imageFile: any = image.value.files[0];
-    
-    if (imageFile.length === 0) {
-        console.log('No file selected');
-        return;
-    }
-    
-    if (!imageFile.type.startsWith('image/')) {
+async function handleFileUpload(image: File) {
+    if (!image.type.startsWith('image/')) {
         console.error('File is not an image');
         return;
     }
 
-    const imageSize = await checkImageSize(imageFile)
-    console.log(imageSize)
+    const imageSize = await checkImageSize(image)
 
     const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
+    reader.readAsDataURL(image);
     reader.onload = async () => {
-        // @ts-ignore
-        const base64Image = reader.result.split(',')[1];
+        //@ts-expect-error
+        const base64Image = reader?.result?.split(',')[1];
 
-        // @ts-ignore
-        const response = await useFetch('/api/upload/image', {
+        const response = await $fetch('/api/upload/image', {
             method: 'POST',
-            body: { image: base64Image }
+            body: { image: base64Image, width: imageSize.width, height: imageSize.height, fileSize: imageSize.fileSize }
         });
+
+        const uploadedImage = response as Image;
+        allImages.value.push(uploadedImage);
     };
 }
 
@@ -425,11 +426,11 @@ function getActiveTabName() {
     return tab ? tab.name : '';
 }
 
-function getActiveTabImages() {
+function getActiveTabImages(): Image[] | null {
     const tab = openTabs.value.find(tab => tab.id === activeTab.value);
     if (!tab) return [];
     if (tab.name === 'All Images') {
-        return getAllFolderImages.value;
+        return allImages.value;
     } else if (tab.folderIndex !== null) {
         return folders.value[tab.folderIndex].images;
     }
@@ -1635,6 +1636,21 @@ defineExpose({
                 border-bottom: none;
             }
         }
+    }
+}
+
+.image-upload-window {
+    display: flex;
+    flex-direction: column;
+
+    .upload-form {
+        width: 200px;
+    }
+
+    .drop-zone {
+        display: flex;
+        width: 100%;
+        height: 100%;
     }
 }
 

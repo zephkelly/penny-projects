@@ -1,5 +1,7 @@
 import formidable from 'formidable'
-import { defineEventHandler } from 'h3'
+import protectAdmin from '~/server/protectAdmin';
+import { PostgresUtil } from '~/utils/postgres';
+import { type Image } from '~/types/database';
 import type { ImgurUploadMinimalResponse } from '@/types/imgur'
 
 type ColorExtractionResponse = {
@@ -10,6 +12,10 @@ type ColorExtractionResponse = {
   }
 
 export default defineEventHandler(async (event) => {
+    await protectAdmin(event);
+
+    const db = PostgresUtil.getInstance();
+
     try {
         const imgurClient = event.context.imgur;
         const form = formidable({
@@ -24,6 +30,9 @@ export default defineEventHandler(async (event) => {
         }
 
         const base64Image = fields.image;
+        const width = fields.width;
+        const height = fields.height;
+        const fileSize = fields.fileSize;
 
         const response = await $fetch<ImgurUploadMinimalResponse>('https://api.imgur.com/3/image', {
             method: 'POST',
@@ -45,13 +54,14 @@ export default defineEventHandler(async (event) => {
                 })
             });
 
-            return {
-                success: true,
-                link: response.data.link,
-                deleteHash: response.data.deletehash,
-                dominantColor: colorResponse.success ? colorResponse.color : null,
-                legibleTextColor: colorResponse.success ? colorResponse.textColor : null
-            }
+            const result = await db.query<Image>(
+                'INSERT INTO public.images (url,  delete_hash, colour_main, colour_contrast, width, height, file_size) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                [response.data.link, response.data.deletehash, colorResponse.success ? colorResponse.color : null, colorResponse.success ? colorResponse.textColor : null, width, height, fileSize]
+            );
+
+            const newImage: Image = result[0] as Image;
+
+            return newImage;
         } 
         else {
             throw new Error('Imgur upload failed')

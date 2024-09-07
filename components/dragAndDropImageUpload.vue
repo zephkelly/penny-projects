@@ -1,5 +1,5 @@
 <template>
-    <div class="image-upload-container" :class="{ 'flex-to-parent': flexToParent, 'hidden': hidden && !isDragging }">
+    <div class="image-upload-container" :class="{ 'flex-to-parent': flexToParent, 'hidden': hidden && !isDragging, 'preview-flex-to-parent': previewFlexToParent }">
         <div v-if="!imagePreview" 
             class="drag-drop-zone"
             @drag.prevent
@@ -15,7 +15,7 @@
                 
             <div class="placeholder">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
-                <p v-if="!flexToParent">Drag and drop your cover image here or click to select</p>
+                <p v-if="!flexToParent">Drag and drop your image here or click to select</p>
             </div>
         </div>
         <input v-if="!imagePreview"
@@ -25,10 +25,10 @@
             accept="image/*"
             class="file-input"
         >
-        <div v-else class="image-preview-container" :class="{ 'flex-to-parent': flexToParent }">
+        <div v-else class="image-preview-container" :class="{ 'flex-to-parent': flexToParent, 'preview-flex-to-parent': previewFlexToParent, 'contain-preview': containPreview }">
             <div class="wrapper" >
                 <img :src="imagePreview" alt="Cover image preview" class="preview-image">
-                <button v-if="!flexToParent" @click="removeImage" class="remove-button">Remove Image</button>
+                <button v-if="!previewFlexToParent" @click="removeImage" class="remove-button">Remove Image</button>
                 <button v-else @click="removeImage" class="remove-button cross">X</button>
             </div>
         </div>
@@ -40,6 +40,8 @@
 
     const props = defineProps({
         flexToParent: Boolean,
+        previewFlexToParent: Boolean,
+        containPreview: Boolean,
         hidden: Boolean,
         imageUrl: {
             type: String as PropType<string | null>,
@@ -152,7 +154,10 @@
 
     &.flex-to-parent {
         height: 100%;
+        max-height: 100%;
+    }
 
+    &.preview-flex-to-parent {
         .wrapper {
             padding: 0rem;
             height: 100%;
@@ -168,6 +173,18 @@
             opacity: 0;
             left: 50%;
             transform: translateX(-50%);
+        }
+    }
+
+    &.contain-preview {
+        .wrapper {
+            height: 100%;
+
+            .preview-image {
+                height: 100%;
+                width: auto;
+                object-fit: contain;
+            }
         }
     }
 
