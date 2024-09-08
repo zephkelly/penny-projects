@@ -20,15 +20,69 @@
             </div>
             <div class="manager-main">
                 <transition-group name="fade">
-                    <div class="wrapper absolute image-upload-window" v-if="false">
+                    <div class="wrapper absolute image-upload-window" v-if="uploadingImage">
                         <div class="upload-form">
-
+                            <div class="upload-header">
+                                <div class="button-container">
+                                    <button class="return-main-screen" @click="handleReturnToExplorer();">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m294.92-450 227.85 227.85L480-180 180-480l300-300 42.77 42.15L294.92-510H780v60H294.92Z"/></svg>
+                                        <p class="return-browse">Back</p>
+                                    </button>
+                                </div>
+                                <h2>Upload Image</h2>
+                            </div>
+                            <form @submit.prevent="" class="input-form">
+                                <div class="input-group main">
+                                    <div class="options-wrapper">
+                                        <div class="option-group">
+                                            <label for="image-label">Name</label>
+                                            <input @input="setCurrentImageLabel();" v-model="imageLabel" type="text" placeholder="image1" />
+                                        </div>
+                                    </div>
+                                    <div class="selection-wrapper">
+                                        <div class="folder-selection">
+                                            <label for="folder-select">Current Folder<span v-if="selectedParentFolderName !== ''">:</span> <strong>{{ selectedParentFolderName }}</strong></label>
+                                        </div>
+                                        <div class="folders-list folder-selection-list">
+                                            <ul>
+                                                <li v-for="(folder, index) in folders"
+                                                    :key="index"
+                                                    class="folder selection-folder"
+                                                    :class="{ 
+                                                        renaming: folder.is_renaming,
+                                                        deleting: folder.is_deleting,
+                                                        selected: index === selectedParentFolderIndex,
+                                                    }">
+                                                    <div class="folder-label">
+                                                        <div class="folder-label-main" @click="handleFolderSetParentClick(index, folder.name)">
+                                                            <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
+                                                            <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
+                                                            <span class="placeholder-title" v-if="folder.is_renaming"></span>
+                                                            <p class="folder-title" v-else>{{ folder.name }}</p>
+                                                            <div class="folder-more-actions">
+                                                                <button class="more-actions" v-if="!folder.is_renaming">
+                                                                
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group submit">
+                                    <button type="submit" class="upload-btn" :class="{ enabled: canUploadImage }" @click="uploadImage">Upload</button>
+                                </div>
+                            </form>
                         </div>
                         <div class="drop-zone">
                             <DragAndDropImageUpload
                                 flexToParent
                                 containPreview
                                 :imageUrl="currentUploadedImageBlogUrl"
+                                @image-selected="handleDraggedFolderImage"
+                                @image-removed="clearCurrentUploadedImage"
                                 />
                         </div>
                     </div>
@@ -152,7 +206,7 @@
                                         previewFlexToParent
                                         containPreview
                                         hidden
-                                        @image-selected="handleFileUpload"
+                                        @image-selected="handleDraggedFolderImage"
                                         class="absolute"/>
                                     <p class="empty-text">Select a folder or "All Images" to view contents.</p>
                                 </div>
@@ -178,7 +232,15 @@ import DragAndDropImageUpload from '~/components/dragAndDropImageUpload.vue';
 import { type Folder, type FrontendFolder, type FrontendPayload, type Image } from '~/types/database';
 
 const { isAdmin } = useAuth();
-const { setCurrentUploadedImage, currentUploadedImageBlogUrl, currentUploadedImage } = useImageManager();
+const { 
+    currentImageLabel,
+    setCurrentUploadedImage,
+    currentUploadedImageBlogUrl,
+    selectedParentFolderName,
+    selectedParentFolderIndex,
+    clearCurrentUploadedImage,
+    canUploadImage
+} = useImageManager();
  
 function closeImageManager() {
     imageManagerPopupOpen().value = false;
@@ -256,29 +318,32 @@ function handleDraggedFolderImage(image: File) {
     setCurrentUploadedImage(image);
 }
 
-async function handleFileUpload(image: File) {
-    if (!image.type.startsWith('image/')) {
-        console.error('File is not an image');
-        return;
-    }
+// async function handleFileUpload(image: File) {
+//     uploadingImage.value = true;
 
-    const imageSize = await checkImageSize(image)
+//     if (!image.type.startsWith('image/')) {
+//         console.error('File is not an image');
+//         return;
+//     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = async () => {
-        //@ts-expect-error
-        const base64Image = reader?.result?.split(',')[1];
+//     const imageSize = await checkImageSize(image)
 
-        const response = await $fetch('/api/upload/image', {
-            method: 'POST',
-            body: { image: base64Image, width: imageSize.width, height: imageSize.height, fileSize: imageSize.fileSize }
-        });
+//     const reader = new FileReader();
+//     reader.readAsDataURL(image);
+//     reader.onload = async () => {
+//         //@ts-expect-error
+//         const base64Image = reader?.result?.split(',')[1];
 
-        const uploadedImage = response as Image;
-        allImages.value.push(uploadedImage);
-    };
-}
+//         const response = await $fetch('/api/upload/image', {
+//             method: 'POST',
+//             body: { image: base64Image, width: imageSize.width, height: imageSize.height, fileSize: imageSize.fileSize }
+//         });
+
+//         const uploadedImage = response as Image;
+//         allImages.value.push(uploadedImage);
+//     };
+
+// }
 
 async function deleteImageViaHash() {
     const hash = window.prompt('Insert Image Hash');
@@ -717,6 +782,37 @@ function toggleFolderOpen(index: number) {
 
 function setFolderOpen(index: number, value: boolean) {
     openFolders.value[index] = value;
+}
+
+const imageLabel = ref('');
+function setCurrentImageLabel() {
+    if (imageLabel.value === '') {
+        currentImageLabel.value = null;
+    }
+    else {
+        currentImageLabel.value = imageLabel.value;
+    }
+}
+
+function handleFolderSetParentClick(index: number, folderName: string) {
+    if (index === selectedParentFolderIndex.value) {
+        selectedParentFolderName.value = null;
+        selectedParentFolderIndex.value = null;
+    }
+    else {
+        selectedParentFolderName.value = folderName;
+        selectedParentFolderIndex.value = index;
+    }
+}
+
+function handleReturnToExplorer() {
+    imageLabel.value = '';
+    toggleIsUploadImage();
+    clearCurrentUploadedImage();
+}
+
+function uploadImage() {
+    console.log(canUploadImage.value);
 }
 //#endregion
 
@@ -1644,13 +1740,230 @@ defineExpose({
     flex-direction: column;
 
     .upload-form {
-        width: 200px;
+        display: flex;
+        flex-direction: column;
+        // padding: 1rem;
+        width: 250px;
+        min-width: 200px;
+        height: 100%;
+        border-right: 1px solid var(--grey2);
+
+        .upload-header {
+            height: auto;
+
+            h2 {
+                display: flex;
+                align-items: center;
+                height: 40px;
+                min-height: 40px;
+                font-size: 12px;
+                font-weight: 500;
+                padding: 0.5rem 0.8rem;
+                border-top: 1px solid var(--grey2);
+                border-bottom: 1px solid var(--grey2);
+                box-shadow: 0 0px 10px rgba(0, 0, 0, 0.05);
+            }
+
+            .button-container {
+                height: 60px;
+                padding: 0.8rem;
+                background-color: var(--white2);
+            }
+
+            .return-main-screen {
+                width: 100%;
+                height: 34px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 0.4rem 0.6rem;
+                padding-right: 0.8rem;
+                gap: 0.5rem;
+                cursor: pointer;
+                background-color: var(--background-color-secondary);
+                border: 1px solid var(--grey2);
+                border-radius: 0.5rem;
+
+                &:hover {
+                    background-color: var(--off-white);
+                }
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    fill: var(--black2);
+                }
+
+                p {
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: var(--black2);
+                }
+            }
+        }
     }
 
     .drop-zone {
         display: flex;
         width: 100%;
         height: 100%;
+        padding: 1rem;
+    }
+
+    .input-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        overflow-y: auto;
+        scrollbar-width: thin;
+
+        .input-group.main {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+
+            .options-wrapper {
+                display: flex;
+                flex-direction: column;
+                // padding: 0.8rem;
+
+                .option-group {
+                    padding: 0.8rem;
+                    // padding-top: 1.4rem;
+                }
+
+                input {
+                    font-family: 'Inter', sans-serif;
+                    width: 100%;
+                    padding: 0.4rem 0.8rem;
+                    border: 1px solid var(--grey2);
+                    border-radius: 0.5rem;
+                    font-size: 14px;
+
+                    &:focus {
+                        outline: none;
+                        border: 1px solid var(--admin);
+                    }
+                }
+
+            }
+
+            .selection-wrapper {
+                padding: 0.8rem;
+                padding-bottom: 2.2rem;
+                height: 100%;
+
+                .folders-list.folder-selection-list {
+                    border-radius: 0.5rem;
+                    border: 1px solid var(--grey2);
+                    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+                    height: auto;
+                    padding-bottom: 32px;
+
+                    li.folder.selection-folder {
+                        position: relative;
+                        background-color: var(--background-color-secondary);
+                        z-index: 111;
+                        height: 32px;
+
+                        &.selected {
+                            .folder-more-actions {
+                                .more-actions {
+                                    background-color: var(--admin);
+                                    border: 1px solid var(--admin);
+                                }
+                            }
+                        }
+                        
+                        &:last-of-type {
+                            z-index: 110;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }
+                        
+                        .folder-label {
+                            border-bottom: 1px solid var(--grey2);
+                            height: 100%;
+
+                            &:hover {
+                                border-bottom: 1px solid var(--grey2);
+                            }
+
+                            .folder-label-main {
+                                padding-left: 0.8rem;
+                                min-height: 32px;
+                                width: 100%;
+                            }
+                        }
+
+                        .folder-more-actions {
+                            width: auto;
+                            min-width: auto;
+                            padding: 0rem 0.4rem;
+                            padding-right: 0.8rem;
+
+                            .more-actions {
+                                height: 14px;
+                                width: 14px;
+                                border: 1px solid var(--grey2);
+                                background-color: var(--white2);
+                                border-radius: 50%;
+                                transition: border-color 0.2s ease, background-color 0.2s ease;
+                            }
+                        }
+                    }
+                }
+            }
+
+            label {
+                width: 100%;
+                display: flex;
+                font-size: 12px;
+                font-weight: 500;
+                margin-bottom: 0.4rem;
+                white-space: nowrap;
+                align-items: flex-end;
+
+                strong {
+                    margin-left: 0.6rem;
+                    font-weight: 400;
+                    width: 100%;
+                    white-space: wrap;
+                }
+            }
+        }
+
+        .input-group.submit {
+            height: 60px;
+            min-height: 60px;
+            padding: 0.8rem 0.8rem;
+            border-top: 1px solid var(--grey2);
+
+            button {
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+                width: 100%;
+                height: 100%;
+                border-radius: 0.5rem;
+                border: none;
+                background-color: var(--grey2);
+                color: var(--background-color-secondary);
+                box-shadow: 0 0px 10px rgba(0, 0, 0, 0.05);
+                transition: background-color 0.2s ease, color 0.2s ease;
+
+                &.enabled {
+                    background-color: var(--admin);
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: var(--admin-dark);
+                    }
+                }
+            }
+        }
     }
 }
 
