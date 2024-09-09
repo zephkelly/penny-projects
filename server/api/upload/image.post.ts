@@ -30,9 +30,11 @@ export default defineEventHandler(async (event) => {
         }
 
         const base64Image = fields.image;
+        const label = fields.label;
+        const parent_folder_id = fields.parent_folder_id;
         const width = fields.width;
         const height = fields.height;
-        const fileSize = fields.fileSize;
+        const file_size = fields.file_size;
 
         const response = await $fetch<ImgurUploadMinimalResponse>('https://api.imgur.com/3/image', {
             method: 'POST',
@@ -54,9 +56,11 @@ export default defineEventHandler(async (event) => {
                 })
             });
 
+            console.log('Parent folder ID:', parent_folder_id);
+
             const result = await db.query<Image>(
-                'INSERT INTO public.images (url,  delete_hash, colour_main, colour_contrast, width, height, file_size) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [response.data.link, response.data.deletehash, colorResponse.success ? colorResponse.color : null, colorResponse.success ? colorResponse.textColor : null, width, height, fileSize]
+                'INSERT INTO public.images (url, label, parent_folder_id, delete_hash, colour_main, colour_contrast, width, height, file_size) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+                [response.data.link, label, parent_folder_id, response.data.deletehash, colorResponse.success ? colorResponse.color : null, colorResponse.success ? colorResponse.textColor : null, width, height, file_size]
             );
 
             const newImage: Image = result[0] as Image;

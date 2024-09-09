@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="folders-list folder-selection-list">
                                             <ul>
-                                                <li v-for="(folder, index) in folders"
+                                                <li v-for="(folder, index) in folders.filter(f => Number(f.folder_id) !== 0)"
                                                     :key="index"
                                                     class="folder selection-folder"
                                                     :class="{ 
@@ -54,14 +54,13 @@
                                                         selected: index === selectedParentFolderIndex,
                                                     }">
                                                     <div class="folder-label">
-                                                        <div class="folder-label-main" @click="handleFolderSetParentClick(index, folder.name)">
+                                                        <div class="folder-label-main" @click="handleFolderSetParentClick(index, folder.folder_id, folder.name)">
                                                             <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
                                                             <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
                                                             <span class="placeholder-title" v-if="folder.is_renaming"></span>
                                                             <p class="folder-title" v-else>{{ folder.name }}</p>
                                                             <div class="folder-more-actions">
                                                                 <button class="more-actions" v-if="!folder.is_renaming">
-                                                                
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -72,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="input-group submit">
-                                    <button type="submit" class="upload-btn" :class="{ enabled: canUploadImage }" @click="uploadImage">Upload</button>
+                                    <button type="submit" class="upload-btn" :class="{ enabled: canUploadImage }" @click="handleImageUpload">Upload</button>
                                 </div>
                             </form>
                         </div>
@@ -114,7 +113,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li v-for="(folder, index) in folders"
+                                    <li v-for="(folder, index) in folders.filter(f => Number(f.folder_id) !== 0)"
                                         :key="index"
                                         class="folder"
                                         :class="{ open: openFolders[index], renaming: folder.is_renaming, deleting: folder.is_deleting }">
@@ -134,13 +133,26 @@
                                         </div>
                                         <div class="folder-content">
                                             <ul>
-                                                <li v-for="image in folder.images" @click="openImageTab(image)">
+                                                <li v-for="image in folder.images" @click="openImageTab(image)" class="image-list-element">
                                                     <div class="image">
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
-                                                        <p>{{ image.label }}</p>
+                                                        <div class="wrapper main">
+                                                            <p>{{ image.label }}</p>
+                                                            <div class="image-more-actions">
+                                                                <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, folder)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             </ul>
+                                        </div>
+                                    </li>
+                                    <li v-for="image in rootImages" @click="openImageTab(image)" class="image-list-element root">
+                                        <div class="image">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
+                                            <p>{{ image.label }}</p>
                                         </div>
                                     </li>
                                     <div class="create-new-folder-wrapper">
@@ -158,17 +170,21 @@
                                 <div class="tabs">
                                     <ul>
                                         <li
-                                            v-for="tab in openTabs"
+                                            v-for="tab in allOpenTabs"
                                             :key="tab.id"
                                             @click="setActiveTab(tab.id)"
-                                            :class="{ active: activeTab === tab.id }"
+                                            :class="{ active: activeTab === tab.id, all: tab.type === 'all' }"
                                             draggable="true"
                                             @dragstart="dragStart($event, tab.id)"
                                             @dragover.prevent
                                             @dragenter.prevent
-                                            @drop="drop($event, tab.id)">
-                                            <p>{{ tab.name }}</p>
-                                            <button class="exit" @click.stop="closeTab(tab.id)">
+                                            @drop="drop($event, tab.id)"
+                                        >
+                                            <svg v-if="tab.type === 'folder'" class="tab-icons" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M180-200q-25.31 0-42.65-17.35Q120-234.69 120-260v-435.38q0-25.31 19.65-44.97Q159.31-760 184.62-760h199.23l80 80h311.53q20.7 0 36.12 11.19 15.42 11.19 21.58 28.81H447.77l-80-80H184.62q-10.77 0-17.7 6.92-6.92 6.93-6.92 17.7v430.76q0 8.47 4.23 13.85 4.23 5.39 11.15 9.23L266-544.62h648.62l-90.7 302.24q-5.69 19.07-21.8 30.73Q786-200 766.15-200H180Zm37.08-40h564.46l78.92-264.62H296L217.08-240Zm0 0L296-504.62 217.08-240ZM160-640v-80 80Z"/></svg>
+                                            <svg v-if="tab.type === 'image'" class="tab-icons" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M224.62-160q-27.62 0-46.12-18.5Q160-197 160-224.62v-510.76q0-27.62 18.5-46.12Q197-800 224.62-800h510.76q27.62 0 46.12 18.5Q800-763 800-735.38v510.76q0 27.62-18.5 46.12Q763-160 735.38-160H224.62Zm0-40h510.76q9.24 0 16.93-7.69 7.69-7.69 7.69-16.93v-510.76q0-9.24-7.69-16.93-7.69-7.69-16.93-7.69H224.62q-9.24 0-16.93 7.69-7.69 7.69-7.69 16.93v510.76q0 9.24 7.69 16.93 7.69 7.69 16.93 7.69ZM300-300h366.15L553.08-450.77 448.46-318.46l-70-84.62L300-300ZM200-200v-560 560Z"/></svg>
+                                            <p v-if="tab.type !== 'all'">{{ tab.name }}</p>
+                                            <svg v-if="tab.type === 'all'" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M100-560v-300h300v300H100Zm60-60h180v-180H160v180Zm-60 520v-300h300v300H100Zm60-60h180v-180H160v180Zm400-400v-300h300v300H560Zm60-60h180v-180H620v180Zm-60 520v-300h300v300H560Zm60-60h180v-180H620v180ZM340-620Zm0 280Zm280-280Zm0 280Z"/></svg>
+                                            <button class="exit" @click.stop="closeTab(tab.id)" v-if="tab.type !== 'all'">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-181.91 181.91-256l224-224-224-224L256-778.09l224 224 224-224L778.09-704l-224 224 224 224L704-181.91l-224-224-224 224Z"/></svg>
                                             </button>
                                         </li>
@@ -176,7 +192,7 @@
                                 </div>
                             </div>
                             <div class="content-view">
-                                <div v-if="getActiveTabType() === 'folder'" class="image-grid">
+                                <div v-if="getActiveTabType() === 'folder' || getActiveTabType() === 'all'" class="image-grid">
                                     <div v-for="image in getActiveTabImages()" :key="image.delete_hash" class="image-preview" @click="openImageTab(image)">
                                         <div class="preview-container">
                                             <div class="image-container">
@@ -186,29 +202,24 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else-if="getActiveTabType() === 'image'" class="image-detail">
+                                <div v-else-if="getActiveTabType() === 'image'" class="image-detailed">
                                     <div class="large-image-container">
                                         <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
                                     </div>
                                     <div class="image-info">
                                         <h2 class="title">{{ getActiveTabImage().label }}</h2>
                                         <div class="group">
-                                            <p>Width: {{ getActiveTabImage().width }}px</p>
-                                            <p>Height: {{ getActiveTabImage().height }}px</p>
-                                            <p>Upload Date: {{ getActiveTabImage().upload_date }}</p>
+                                            <div class="text">
+                                                <p>Width: <span>{{ getActiveTabImage().width }}px</span></p>
+                                                <p>Height: <span>{{ getActiveTabImage().height }}px</span></p>
+                                                <p>Upload Date: <span>{{ getActiveTabImage().upload_date }}</span></p>
+                                            </div>
+                                            <button @click="useSelectedImage" class="use-image-button">Use Image</button>
                                         </div>
-                                        <button @click="useSelectedImage" class="use-image-btn">Use Image</button>
                                     </div>
                                 </div>
                                 <div v-else class="no-tab">
-                                    <DragAndDropImageUpload
-                                        flexToParent
-                                        previewFlexToParent
-                                        containPreview
-                                        hidden
-                                        @image-selected="handleDraggedFolderImage"
-                                        class="absolute"/>
-                                    <p class="empty-text">Select a folder or "All Images" to view contents.</p>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -237,10 +248,12 @@ const {
     setCurrentUploadedImage,
     currentUploadedImageBlogUrl,
     selectedParentFolderName,
+    selectedParentFolderId,
     selectedParentFolderIndex,
     clearCurrentUploadedImage,
-    canUploadImage
-} = useImageManager();
+    canUploadImage,
+    uploadImage
+} = await useImageManager();
  
 function closeImageManager() {
     imageManagerPopupOpen().value = false;
@@ -289,6 +302,7 @@ const uploadingImage = ref(false);
 const selectedImage = ref<File | null>(null);
 
 const allImages = ref<Image[]>([]);
+const rootImages = computed(() => folders.value.filter(folder => Number(folder.folder_id) === 0)[0].images);
 
 const { data, error: fetchError } = await useFetch<Image[]>('/api/images');
 allImages.value = data.value as Image[];
@@ -307,7 +321,7 @@ function useSelectedImage() {
     if (activeImage) {
         selectedImage.value = activeImage;
         closeImageManager();
-        emit('imageSelected', selectedImage.value);
+        emit('image-selected', selectedImage.value);
     }
 }
 
@@ -318,32 +332,29 @@ function handleDraggedFolderImage(image: File) {
     setCurrentUploadedImage(image);
 }
 
-// async function handleFileUpload(image: File) {
-//     uploadingImage.value = true;
+async function handleImageUpload() {
+    try {
+        const result = await uploadImage();
+        if (result.status === 'success') {
+            console.log('Image uploaded successfully');
 
-//     if (!image.type.startsWith('image/')) {
-//         console.error('File is not an image');
-//         return;
-//     }
+            if (result.parent_folder_frontend_index == undefined) {
+                rootImages.value.push(result.image as Image);
+                return
+            }
 
-//     const imageSize = await checkImageSize(image)
-
-//     const reader = new FileReader();
-//     reader.readAsDataURL(image);
-//     reader.onload = async () => {
-//         //@ts-expect-error
-//         const base64Image = reader?.result?.split(',')[1];
-
-//         const response = await $fetch('/api/upload/image', {
-//             method: 'POST',
-//             body: { image: base64Image, width: imageSize.width, height: imageSize.height, fileSize: imageSize.fileSize }
-//         });
-
-//         const uploadedImage = response as Image;
-//         allImages.value.push(uploadedImage);
-//     };
-
-// }
+            const newImage = result.image as Image;
+            const folder_frontend_index: number = result.parent_folder_frontend_index;
+            folders.value[folder_frontend_index].images.push(newImage);
+        }
+        else {
+            console.error('Error uploading image:', result.error);
+        }
+    }
+    catch (error) {
+        console.error('Unexpected error:', error);
+    }
+}
 
 async function deleteImageViaHash() {
     const hash = window.prompt('Insert Image Hash');
@@ -359,38 +370,6 @@ async function deleteImageViaHash() {
     });
 }
 
-function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-    
-        reader.onload = function(e: ProgressEvent<FileReader>) {
-        const img = new Image();
-        
-        img.onload = (event: Event) => {
-            const loadedImg = event.target as HTMLImageElement;
-            const size = {
-                width: loadedImg.width,
-                height: loadedImg.height,
-                fileSize: file.size
-            };
-            resolve(size);
-        };
-        
-        img.onerror = function() {
-            reject(new Error('Failed to load image'));
-        };
-        
-        img.src = e.target?.result as string;
-        };
-    
-        reader.onerror = function() {
-            reject(new Error('Failed to read file'));
-        };
-    
-        reader.readAsDataURL(file);
-    });
-}
-
 function formatFileSize(bytes: number) {
     if (bytes < 1024) return bytes + ' bytes';
     else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
@@ -401,14 +380,28 @@ function formatFileSize(bytes: number) {
 // #region Tab Functionality --------------------------------------------
 const allImagesOpen = ref(false);
 const openTabs:Ref<Tab[]> = ref([]);
+
+const newAllImagesTab = {
+    id: -1,
+    name: 'All Images',
+    folderIndex: null,
+    type: 'all' as const
+};
+
+const allOpenTabs = computed(() => {
+    openTabs.value.push(newAllImagesTab);
+    return openTabs.value;
+});
 const activeTab: Ref<null | number> = ref(null);
+activeTab.value = newAllImagesTab.id;
+
 const draggedTabId: Ref<null | number> = ref<number | null>(null);
 
 interface Tab {
     id: number;
     name: string;
     folderIndex: number | null;
-    type: 'folder' | 'image';
+    type: 'folder' | 'image' | 'all';
     image?: any;
 }
 
@@ -503,6 +496,7 @@ function getActiveTabImages(): Image[] | null {
 }
 
 function dragStart(event: DragEvent, tabId: number) {
+    if (tabId === -1) return;
     draggedTabId.value = tabId;
 }
 
@@ -528,59 +522,6 @@ type FolderPayload = FrontendPayload<Folder>;
 
 const folders = ref<FrontendFolder[]>([]);
 folders.value = await getPopulatedFolders() as FrontendFolder[];
-
-// const data = [
-//     {
-//         folder_id: 1,
-//         name: 'Zambia',
-//         created_date: '2021-09-01',
-//         updated_date: '2021-09-01',
-//         is_new: false,
-//         images: [
-//             {
-//                 image_id: 1,
-//                 url: 'https://i.imgur.com/pNS6QhN.jpeg',
-//                 delete_hash: '1b2b3c4',
-//                 label: 'Zambia',
-//                 width: 1920,
-//                 height: 1080,
-//                 upload_date: '2021-09-01',
-//                 file_size: 123456,
-//                 colour_main: '#000000',
-//                 colour_contrast: '#ffffff',
-//                 parent_folder_id: 1
-//             },
-//             {
-//                 image_id: 2,
-//                 url: 'https://i.imgur.com/VCmqt80.jpeg',
-//                 delete_hash: '1b2b3c4',
-//                 label: 'Africa',
-//                 width: 1920,
-//                 height: 1080,
-//                 upload_date: '2021-09-01',
-//                 file_size: 123456,
-//                 colour_main: '#000000',
-//                 colour_contrast: '#ffffff',
-//                 parent_folder_id: 1
-//             },
-//             {
-//                 image_id: 3,
-//                 url: 'https://i.imgur.com/VCmqt80.jpeg',
-//                 delete_hash: '1b2b3c4',
-//                 label: 'Yolodolo',
-//                 width: 1920,
-//                 height: 1080,
-//                 upload_date: '2021-09-01',
-//                 file_size: 123456,
-//                 colour_main: '#000000',
-//                 colour_contrast: '#ffffff',
-//                 parent_folder_id: 1
-//             }
-//         ]
-//     }
-// ]
-//@ts-ignore
-// folders.value.push(...data as PopulatedFolder[]);
 
 const openFolders = ref(folders.value.map(() => false));
 
@@ -794,14 +735,16 @@ function setCurrentImageLabel() {
     }
 }
 
-function handleFolderSetParentClick(index: number, folderName: string) {
-    if (index === selectedParentFolderIndex.value) {
+function handleFolderSetParentClick(folderIndex: number, folder_id: number, folderName: string) {
+    if (folder_id === selectedParentFolderIndex.value) {
         selectedParentFolderName.value = null;
+        selectedParentFolderId.value = null;
         selectedParentFolderIndex.value = null;
     }
     else {
         selectedParentFolderName.value = folderName;
-        selectedParentFolderIndex.value = index;
+        selectedParentFolderId.value = folder_id;
+        selectedParentFolderIndex.value = folderIndex;
     }
 }
 
@@ -809,10 +752,6 @@ function handleReturnToExplorer() {
     imageLabel.value = '';
     toggleIsUploadImage();
     clearCurrentUploadedImage();
-}
-
-function uploadImage() {
-    console.log(canUploadImage.value);
 }
 //#endregion
 
@@ -827,7 +766,7 @@ watch(imageManagerPopupOpen(), (newValue, oldValue) => {
 });
 
 const emit = defineEmits<{
-    (e: 'imageSelected', image: any): void
+    (e: 'image-selected', image: any): void
 }>();
 
 defineExpose({
@@ -1284,6 +1223,7 @@ defineExpose({
                 }
 
                 .folder-title {
+                    line-height: 16px;
                     font-size: 12px;
                     font-weight: 400;
                     color: var(--black2);
@@ -1336,37 +1276,6 @@ defineExpose({
             ul {
                 width: 100%;
             }
-
-            li {
-                display: flex;
-                height: 32px;
-                padding: 0.4rem 0.5rem;
-                padding-left: 44px;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: var(--off-white);
-                }
-
-                .image {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 0.45rem;
-                    flex: 1;
-
-                    svg {
-                        width: 16px;
-                        height: 16px;
-                    }
-
-                    p {
-                        font-size: 12px;
-                        color: var(--black2);
-                        user-select: none;
-                    }
-                }
-            }     
         }
     }
 
@@ -1453,6 +1362,90 @@ defineExpose({
         }
     }
 
+    .image-list-element {
+        display: flex;
+        height: 32px;
+        padding-left: 44px;
+        padding-right: 0;
+        cursor: pointer;
+
+        &.root {
+            padding-left: 32px;
+
+            .image {
+                gap: 0.4rem;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        &:hover {
+            background-color: var(--off-white);
+        }
+
+        .image {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.45rem;
+            flex: 1;
+
+            svg {
+                width: 17px;
+                height: 17px;
+            }
+
+            p {
+                font-size: 12px;
+                color: var(--black2);
+                user-select: none;
+            }
+        }
+
+        .wrapper.main {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex: 1;
+
+            .image-more-actions {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 26px;
+
+                button {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 16px;
+                    height: 20px;
+                    padding: 0rem;
+                    border: none;
+                    background-color: transparent;
+                    cursor: pointer;
+
+                    svg {
+                        position: absolute;
+                        pointer-events: none;
+                        user-select: none;
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                }
+            }
+        }
+    }     
+
     .create-new-folder-wrapper {
         height: 32px;
         display: flex;
@@ -1518,6 +1511,95 @@ defineExpose({
 
     width: calc(100% - 200px);
     height: 100%;
+
+    .content-view {
+        .image-detailed {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+
+            .large-image-container {
+                overflow: hidden;
+                min-height: 300px;
+                background-color: var(--black2);
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    padding: 2rem 1rem;
+                    object-fit: contain;
+                }
+            }
+
+            .image-info {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                min-height: 100px;
+                padding: 0.8rem;
+                border-top: 1px solid var(--grey2);
+
+                .title {
+                    font-weight: 500;
+                    line-height: 16px;
+                    height: 16px;
+                    margin-bottom: 12px;
+                }
+
+                .group {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    height: 100%;
+                    // max-height: 50px;
+
+                    .text {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        padding-right: 0.8rem;
+
+                        p {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: var(--black2);
+                            user-select: none;
+                            height: auto;
+
+                            span {
+                                font-weight: 600;
+                            }
+                        }
+                    }
+
+                    .use-image-button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: var(--admin);
+                        color: var(--background-color-secondary);
+                        font-size: 16px;
+                        border: none;
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        height: 50px;
+                        margin: 0;
+                        width: 160px;
+                        min-width: 160px;
+                        transition: background-color 0.2s ease, color 0.2s ease;
+
+                        &:hover {
+                            background-color: var(--admin-dark);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .tabs-container {
@@ -1529,11 +1611,12 @@ defineExpose({
     background-color: var(--white2);
 
     .extra-actions {
-        height: 32px;
+        height: 100%;
     }
 
     .tabs {
-        height: 100%;
+        height: 40px;
+        min-height: 40px;
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -1541,6 +1624,11 @@ defineExpose({
         justify-content: flex-start;
         overflow-x: auto;
         scrollbar-width: thin;
+    }
+
+    .tab-icons {
+        color: var(--black2);
+
     }
 
     ul {
@@ -1562,7 +1650,7 @@ defineExpose({
         gap: 0.5rem;
         padding: 0.4rem 0.8rem;
         padding-right: 0.55rem;
-        border: 1px solid var(--white2);
+        border: 1px solid var(--grey5);
         border-bottom: none;
         cursor: pointer;
         user-select: none;
@@ -1573,6 +1661,10 @@ defineExpose({
             color: var(--black2);
             white-space: nowrap;
             user-select: none;
+        }
+
+        &:nth-child(2) {
+            border-top-left-radius: 0.5rem;
         }
 
         &:last-child {
@@ -1633,12 +1725,36 @@ defineExpose({
             }
         }
     }
+
+    li.all {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid var(--grey2);
+        border-right: 1px solid var(--grey2);
+        border-top-right-radius: 0.5rem;
+        width: 50px;
+        padding: 0rem;
+        margin-right: 20px;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--black2);
+        }
+
+        &:last-child {
+            border-right: 1px solid var(--grey2);
+        }
+    }
 }
 
 .content-view {
     height: calc(100% - 60px);
     border-top: 1px solid var(--grey2);
     overflow-y: auto;
+    scrollbar-width: thin;
     border-bottom-right-radius: 0.5rem;
 
     .no-tab {
@@ -1662,21 +1778,32 @@ defineExpose({
 
     .image-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 1rem;
-        padding: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(166px, 1fr));
+        gap: 1rem 0rem;
+        padding: 1.5rem 1rem;
+        padding-bottom: 6rem;
 
         .preview-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            border: 1px solid var(--background-color-secondary);
+            cursor: pointer;
             gap: 0.5rem;
-
+            padding: 0.5rem 0rem;
+            transition: background-color 0.2s ease, border 0.2s ease;
+            will-change: background-color, border;
+            
             p {
                 font-size: 12px;
                 color: var(--grey2);
                 user-select: none;
+            }
+            
+            &:hover {
+                border: 1px solid var(--white2);
+                background-color: var(--off-white);
             }
         }
         
@@ -1684,11 +1811,14 @@ defineExpose({
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 120px;
-            height: 120px;
+            width: 148px;
+            height: 148px;
             padding: 0.8rem;
             border-radius: 4px;
             background-color: var(--off-white);
+            border: 1px solid var(--grey5);
+            transition: background-color 0.2s ease, border 0.2s ease;
+            will-change: background-color, border;
 
             img {
                 width: 100%;
@@ -1953,10 +2083,12 @@ defineExpose({
                 color: var(--background-color-secondary);
                 box-shadow: 0 0px 10px rgba(0, 0, 0, 0.05);
                 transition: background-color 0.2s ease, color 0.2s ease;
+                pointer-events: none;
 
                 &.enabled {
                     background-color: var(--admin);
                     cursor: pointer;
+                    pointer-events: auto;
 
                     &:hover {
                         background-color: var(--admin-dark);

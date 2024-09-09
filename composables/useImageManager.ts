@@ -1,4 +1,6 @@
-export const useImageManager = () => {
+import { type Image } from '~/types/database';
+
+export const useImageManager = async () => {
     const currentImageLabel = ref<string | null>(null);
 
     const currentUploadedImage = ref<File | null>(null);
@@ -6,7 +8,7 @@ export const useImageManager = () => {
 
     const selectedParentFolderName = ref<string | null>(null);
     const selectedParentFolderIndex = ref<number | null>(null);
-
+    const selectedParentFolderId = ref<number | null>(null);
 
     const setCurrentUploadedImage = (image: File) => {
         currentUploadedImage.value = image;
@@ -31,14 +33,102 @@ export const useImageManager = () => {
                 currentImageLabel.value !== null;
     });
 
+    async function uploadImage(): Promise<{ status: 'success' | 'error', error?: string, image?: Image, parent_folder_frontend_index?: number }> {
+        if (canUploadImage.value !== true) {
+            return {
+                status: 'error',
+                error: 'No image selected'
+            };
+        }
+
+        try {
+            if (currentUploadedImage.value !== null && !currentUploadedImage.value.type.startsWith('image/')) {
+                throw new Error('No image selected');
+            }
+        
+            const imageSize = await checkImageSize(currentUploadedImage.value as File);
+
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(currentUploadedImage.value as File);
+                reader.onload = async () => {
+                    try {
+                    //@ts-expect-error
+                        const base64Image = reader?.result?.split(',')[1];
+
+                        const parentId: number = selectedParentFolderId.value || 0;
+                
+                        const response: Image = await $fetch('/api/upload/image', {
+                            method: 'POST',
+                            body: { 
+                                image: base64Image,
+                                label: currentImageLabel.value,
+                                parent_folder_id: parentId,
+                                width: imageSize.width,
+                                height: imageSize.height,
+                                file_size: imageSize.fileSize }
+                        });
+
+                        resolve({ status: 'success', image: response, parent_folder_frontend_index: selectedParentFolderIndex.value as number });
+                    }
+                    catch (error) {
+                        reject(error);
+                    }
+                };
+
+                reader.onerror = (error) => reject(error);
+            });
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                error: error instanceof Error ? error.message : 'Unknown error occurred'
+            };
+        }
+    }
+
+    function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+        
+            reader.onload = function(e: ProgressEvent<FileReader>) {
+            const img = new Image();
+            
+            img.onload = (event: Event) => {
+                const loadedImg = event.target as HTMLImageElement;
+                const size = {
+                    width: loadedImg.width,
+                    height: loadedImg.height,
+                    fileSize: file.size
+                };
+                resolve(size);
+            };
+            
+            img.onerror = function() {
+                reject(new Error('Failed to load image'));
+            };
+            
+            img.src = e.target?.result as string;
+            };
+        
+            reader.onerror = function() {
+                reject(new Error('Failed to read file'));
+            };
+        
+            reader.readAsDataURL(file);
+        });
+    }
+
     return {
         currentImageLabel,
         currentUploadedImage,
         currentUploadedImageBlogUrl,
         selectedParentFolderName,
+        selectedParentFolderId,
         selectedParentFolderIndex,
         setCurrentUploadedImage,
         clearCurrentUploadedImage,
-        canUploadImage
+        canUploadImage,
+        uploadImage
     }
 }

@@ -30,7 +30,8 @@
             <div>
                 <h1>Select Image Manager</h1>
                 <button @click="imageManagerPopupOpen().value = true;">Select Image</button>
-                <ImageManager ref="imageManager" @imageSelected="onImageSelected" />
+                <ImageManager ref="imageManager" @image-selected="onImageSelected" />
+                <img :src="selectedImage?.url" alt="Selected Image" />
             </div>
         </div>
     </section>
@@ -38,10 +39,12 @@
 
 <script lang="ts" setup>
 import ImageManager from '~/components/popups/manager/image.vue';
+import { type Image } from '~/types/database';
+
 const image = ref(null);
 
 const imageManager = ref(null);
-const selectedImage = ref(null);
+const selectedImage = ref<Image | null>(null);
 
 function onImageSelected(image: any) {
   selectedImage.value = image;
