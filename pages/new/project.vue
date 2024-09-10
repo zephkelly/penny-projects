@@ -30,6 +30,31 @@
                         <input class="input-text" v-model="mainFields.subtitle.value" id="subtitle" type="text" placeholder="" required />
                     </div>
                 </div>
+                <div class="wrapper status">
+                    <div class="field status">
+                        <label for="status">Status</label>
+                        <div class="status-list">
+                            <button 
+                                v-for="status in projectStatuses" 
+                                :key="status.name"
+                                @click="selectStatus(status.name)"
+                                :class="{ 'selected': mainFields.status.value === status.name }"
+                                type="button"
+                            >
+                                {{ formatStatusName(status.name) }}
+                            </button>
+                            <button 
+                                @click="removeStatus()"
+                                class="remove-status"
+                                :class="{ 'selected': mainFields.status.value === '' }"
+                                type="button"
+                            >
+                                x
+                            </button>
+                        </div>
+                        <!-- <input class="input-text" v-model="mainFields.status.value" id="status" type="text" placeholder="" /> -->
+                    </div>
+                </div>
                 <div class="wrapper author">
                     <div class="group">
                         <div class="field avatar">
@@ -94,7 +119,7 @@
 
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
-import { type ProjectSettingField } from '~/types/project';
+import { type ProjectSettingField, projectStatuses } from '~/types/project';
 import type { User } from '~/types/database';
 
 import { formatDateDDMMYYY } from '~/utils/date';
@@ -122,11 +147,11 @@ const mainFields = reactive({
     title: { value: '', error: null, maxLength: 100 },
     subtitle: { value: '', error: null, maxLength: 100 },
     created_date: { value: createdDate, error: null } as ProjectSettingField,
+    status: { value: 'draft', error: null } as ProjectSettingField,
     author_name: { value: `${userInfo?.first_name} ${userInfo?.last_name}`, error: null, maxLength: 50 },
     author_image: { value: profileImage, error: null } as ProjectSettingField,
     cover_image: { value: false, error: null } as ProjectSettingField,
 });
-
 
 const mainFieldCount = computed(() => Object.values(mainFields).length);
 
@@ -150,6 +175,18 @@ Object.values(mainFields).forEach(field => {
 const completedMainFields = computed(() => {
     return getCompletedFieldsCount(mainFields);
 });
+
+const selectStatus = (status: string) => {
+    mainFields.status.value = status;
+};
+
+const removeStatus = () => {
+    mainFields.status.value = '';
+};
+
+const formatStatusName = (status: string) => {
+    return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
 
 const handleAuthorImageSelected = (file: File) => {
     mainFields.author_image.value = URL.createObjectURL(file);
@@ -309,6 +346,18 @@ form.container {
 
     .date {
         width: auto;
+    }
+}
+
+.wrapper.status {
+    .remove-status {
+        margin-left: 1rem;
+    }
+
+    .selected {
+        border: 1px solid var(--admin);
+        background-color: var(--admin);
+        color: var(--background-color-secondary);
     }
 }
 
