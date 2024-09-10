@@ -9,35 +9,30 @@
                                 <h6>Elements</h6>
                                 <div class="wrapper">
                                     <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
-                                    <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">Heading</button>
-                                    <button @click="addImage">Image</button>
+                                    <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H1</button>
+                                    <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H2</button>
+                                    <button @click="imageManagerPopupOpen().value = true;">Image</button>
                                 </div>
                             </div>
                             <div class="styles">
                                 <h6>Styling</h6>
                                 <div class="wrapper">
                                     <div class="group">
-                                        <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
-                                        <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
-                                        <!-- <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button> -->
-                                        <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">Bullet List</button>
-                                        <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">Ordered List</button>
-                                        <!-- <button @click="editor?.chain().focus().toggleUnderline().run()" :class="{ active: editor.isActive('underline') }">Underline</button> -->
-                                        <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">Blockquote</button>
-                                        <!-- <button @click="editor?.chain().focus().setTextAlign('left').run()" :class="{ active: editor.isActive({ textAlign: 'left' }) }"> -->
-                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                        </button> -->
-                                        <!-- <button @click="editor?.chain().focus().setTextAlign('center').run()" :class="{ active: editor.isActive({ textAlign: 'center' }) }">
-                                            <svg class="center" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm144-145v-52h344v52H308ZM164-454v-52h632v52H164Zm144-145v-52h344v52H308ZM164-744v-52h632v52H164Z"/></svg>
+                                        <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M272-200v-560h221q65 0 120 40t55 111q0 51-23 78.5T602-491q25 11 55.5 41t30.5 90q0 89-65 124.5T501-200H272Zm121-112h104q48 0 58.5-24.5T566-372q0-11-10.5-35.5T494-432H393v120Zm0-228h93q33 0 48-17t15-38q0-24-17-39t-44-15h-95v109Z"/></svg>
                                         </button>
-                                        <button @click="editor?.chain().focus().setTextAlign('right').run()" :class="{ active: editor.isActive({ textAlign: 'right' }) }">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M140-140v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Zm0-155v-60h440v60H140Zm0-155v-60h680v60H140Z"/></svg>
-                                        </button> -->
-                                        <!-- <button @click="editor?.chain().focus().setTextAlign('justify').run()" :class="{ active: editor.isActive({ textAlign: 'justify' }) }">
-                                            <svg class="justify" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M164-164v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Zm0-145v-52h632v52H164Z"/></svg>
-                                        </button> -->
-                                        <button @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
-                                        <button @click="editor?.chain().focus().toggleLink({ href: 'https://example.com' }).run()" :class="{ active: editor.isActive('link') }">Link</button>
+                                        <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M215.77-215v-72.31h152.69l129.62-385.38H345.39V-745h366.15v72.31H571.15L441.54-287.31h140.38V-215H215.77Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().toggleBulletList().run()" :class="{ active: editor.isActive('bulletList') }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M372.31-210v-60H820v60H372.31Zm0-240v-60H820v60H372.31Zm0-240v-60H820v60H372.31ZM206.54-173.46q-27.45 0-46.99-19.55Q140-212.55 140-240q0-27.45 19.55-46.99 19.54-19.55 46.99-19.55 27.45 0 46.99 19.55 19.55 19.54 19.55 46.99 0 27.45-19.55 46.99-19.54 19.55-46.99 19.55Zm0-240q-27.45 0-46.99-19.55Q140-452.55 140-480q0-27.45 19.55-46.99 19.54-19.55 46.99-19.55 27.45 0 46.99 19.55 19.55 19.54 19.55 46.99 0 27.45-19.55 46.99-19.54 19.55-46.99 19.55Zm0-240q-27.45 0-46.99-19.55Q140-692.55 140-720q0-27.45 19.55-46.99 19.54-19.55 46.99-19.55 27.45 0 46.99 19.55 19.55 19.54 19.55 46.99 0 27.45-19.55 46.99-19.54 19.55-46.99 19.55Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().toggleOrderedList().run()" :class="{ active: editor.isActive('orderedList') }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M140-100v-47.69h100V-190h-60v-47.69h60V-280H140v-47.69h113.85q14.38 0 24.11 9.73 9.73 9.73 9.73 24.11v47.7q0 14.38-9.73 24.11-9.73 9.73-24.11 9.73 14.38 0 24.11 9.73 9.73 9.73 9.73 24.12v44.61q0 14.39-9.73 24.12T253.85-100H140Zm0-266.15V-470q0-14.38 9.73-24.12 9.73-9.73 24.12-9.73H240v-42.3H140v-47.7h113.85q14.38 0 24.11 9.73 9.73 9.74 9.73 24.12v70q0 14.38-9.73 24.12-9.73 9.73-24.11 9.73h-66.16v42.3h100v47.7H140Zm60-266.16v-180h-60V-860h107.69v227.69H200ZM372.31-210v-60H820v60H372.31Zm0-240v-60H820v60H372.31Zm0-240v-60H820v60H372.31Z"/></svg>
+                                        </button>
+                                        <button @click="editor?.chain().focus().toggleBlockquote().run()" :class="{ active: editor.isActive('blockquote') }">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m245.69-253.85 93.93-163.46q-3.46 1.92-8.08 2.69t-9.23.77q-61 0-103.58-42.96-42.57-42.96-42.57-103.19 0-61 42.57-103.58 42.58-42.57 103.58-42.57 60.23 0 103.19 42.57Q468.46-621 468.46-560q0 21.08-5.11 39.23-5.12 18.15-14.97 34.62l-133.77 232.3h-68.92Zm355.39 0L695-417.31q-3.46 1.92-8.08 2.69-4.61.77-9.23.77-61 0-103.57-42.96-42.58-42.96-42.58-103.19 0-61.38 42.58-103.77 42.57-42.38 103.57-42.38 60.23 0 103.19 42.57Q823.84-621 823.84-560q0 21.08-5.11 39.23-5.12 18.15-14.96 34.62L670-253.85h-68.92Z"/></svg>
+                                        </button>
                                     </div>
                                     <div class="group">
                                     </div>
@@ -48,22 +43,75 @@
                             <div class="actions">
                                 <h6>Actions</h6>
                                 <div class="wrapper">
-                                    <button @click="editor?.chain().focus().undo().run()">Undo</button>
-                                    <button @click="editor?.chain().focus().redo().run()">Redo</button>
+                                    <button @click="editor?.chain().focus().undo().run()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M288.08-220v-60h287.07q62.62 0 107.77-41.35 45.16-41.34 45.16-102.11 0-60.77-45.16-101.93-45.15-41.15-107.77-41.15H294.31l111.3 111.31-42.15 42.15L180-596.54 363.46-780l42.15 42.15-111.3 111.31h280.84q87.77 0 150.35 58.58t62.58 144.5q0 85.92-62.58 144.69Q662.92-220 575.15-220H288.08Z"/></svg>
+                                    </button>
+                                    <button @click="editor?.chain().focus().redo().run()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M384.85-220q-87.77 0-150.35-58.77t-62.58-144.69q0-85.92 62.58-144.5t150.35-58.58h280.84l-111.3-111.31L596.54-780 780-596.54 596.54-413.08l-42.15-42.15 111.3-111.31H384.85q-62.62 0-107.77 41.15-45.16 41.16-45.16 101.93 0 60.77 45.16 102.11Q322.23-280 384.85-280h287.07v60H384.85Z"/></svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <floating-menu :editor="editor" :tippy-options="{ duration: 100 }">
+                <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-show="!imageManagerPopupOpen().value">
                     <div class="floating-menu">
-                        <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">P</button>
-                        <button @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ active: editor.isActive('heading', { level: 1 }) }">H1</button>
-                        <button @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ active: editor.isActive('heading', { level: 2 }) }">H2</button>
+                        <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
+                        <button @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H1</button>
+                        <button @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H2</button>
+                        <button @click="imageManagerPopupOpen().value = true;">Image</button>
                     </div>
                 </floating-menu>
                 <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
-                    <div class="bubble-menu">
+                    <div v-if="editor?.isActive('customImage')" class="bubble-menu image">
+                        <div class="group">
+                            <p>Image Fit:</p>
+                            <div class="wrapper">
+                                <button @click="setImageObjectFit('contain')" :class="{ active: imageObjectFit === 'contain' }">Contain</button>
+                                <button @click="setImageObjectFit('cover')" :class="{ active: imageObjectFit === 'cover' }">Fill</button>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <p>Height:</p>
+                            <div class="height-input wrapper">
+                                <button @click="adjustImageHeight('down')" class="height-button">-</button>
+                                <span class="height-display">{{ imageHeight }}px</span>
+                                <button @click="adjustImageHeight('up')" class="height-button">+</button>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <p>Subtitle:</p>
+                            <div class="subtitle-input wrapper">
+                                <button v-if="!imageHasSubtitle" @click="addImageSubtitle" >
+                                    Add Subtitle
+                                </button>
+                                <button v-else @click="removeImageSubtitle" >
+                                    Remove Subtitle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="editor?.isActive('paragraph')" class="bubble-menu paragraph">
+                        <div class="group">
+                            <p>Styling:</p>
+                            <div class="wrapper">
+                                <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
+                                <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
+                                <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <p>Link:</p>
+                            <div class="link-input wrapper">
+                                <button v-if="editor?.isActive('paragraph') && !editor?.isActive('link')" @click="openLinkPopup()" :class="{ active: editor.isActive('link') }">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M424.62-316.92H283.08q-67.68 0-115.38-47.69Q120-412.3 120-479.96t47.7-115.39q47.7-47.73 115.38-47.73h141.54v40H283.08q-50.77 0-86.93 36.16Q160-530.77 160-480t36.15 86.92q36.16 36.16 86.93 36.16h141.54v40ZM340-460v-40h280v40H340Zm195.38 143.08v-40h141.54q50.77 0 86.93-36.16Q800-429.23 800-480t-36.15-86.92q-36.16-36.16-86.93-36.16H535.38v-40h141.54q67.68 0 115.38 47.69Q840-547.7 840-480.04t-47.7 115.39q-47.7 47.73-115.38 47.73H535.38Z"/></svg>
+                                    Link
+                                </button>
+                                <button v-if="editor?.isActive('paragraph') && editor?.isActive('link')" @click="editor?.chain().focus().unsetLink().run()" :class="{ active: editor.isActive('link') }">Unlink</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="bubble-menu">
                         <button @click="editor?.chain().focus().toggleBold().run()" :class="{ active: editor.isActive('bold') }">Bold</button>
                         <button @click="editor?.chain().focus().toggleItalic().run()" :class="{ active: editor.isActive('italic') }">Italic</button>
                         <button @click="editor?.chain().focus().toggleStrike().run()" :class="{ active: editor.isActive('strike') }">Strike</button>
@@ -107,17 +155,20 @@
                 </div>
             </div>
         </div>
+        <ImageManager @image-selected="onImageSelected" />
     </section>
 </template>
 
 <script setup lang="ts">
+import { type Image } from '~/types/database';
 import { useAuth } from '../composables/useAuth';
 import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/vue-3';
 import Link from '@tiptap/extension-link';
 import StarterKit from '@tiptap/starter-kit'
-import Image from '@tiptap/extension-image';
+import CustomImage from '~/tiptap/extensions/CustomImage'
 
 import { formatFromDDMMYYYYToISO } from '~/utils/date';
+import ImageManager from './popups/manager/image.vue';
 
 const { isAdmin } = useAuth();
 
@@ -146,19 +197,68 @@ const editor = useEditor({
     extensions: [
         StarterKit,
         Link,
-        Image,
+        CustomImage,
     ],
     content: props.content,
-    // onUpdate({ editor }) {
-    //     emit('update:content', editor.getHTML());
-    // }
 });
 
-function addImage() {
-    const url = window.prompt('URL')
+const imageObjectFit = computed(() => {
+    return editor.value?.getAttributes('customImage').objectFit || 'contain'
+})
 
-    if (url && editor.value) {
-        editor.value.chain().focus().setImage({ src: url }).run()
+function setImageObjectFit(objectFit: 'cover' | 'contain') {
+    editor.value?.chain().focus().updateImageObjectFit(objectFit).run()
+}
+
+function onImageSelected(image: Image) {
+    if (image) {
+    editor.value?.chain()
+      .focus()
+      .setCustomImage({ src: image.url })
+      .insertContentAt(editor.value.state.selection.$anchor.after() - 1, { type: 'paragraph' })
+      .run();
+  } else {
+    console.log('No image selected');
+    window.alert('No image selected');
+  }
+}
+
+const imageHeight = ref(300);
+
+function adjustImageHeight(direction: 'up' | 'down') {
+  const adjustment = direction === 'up' ? 50 : -50;
+  const newHeight = Math.max(50, imageHeight.value + adjustment); // Ensure height doesn't go below 50px
+  imageHeight.value = newHeight;
+  editor.value?.chain().focus().updateImageHeight(`${newHeight}px`).run();
+}
+
+const imageHasSubtitle = computed(() => {
+  if (editor.value?.isActive('customImage')) {
+    const { state } = editor.value;
+    const { selection } = state;
+    const node = selection.$anchor.node();
+    //@ts-expect-error
+    return node.content.content[0].attrs.subtitle != null && node.content.content[0].attrs.subtitle !== '';
+  }
+  return false;
+});
+
+function addImageSubtitle() {
+  const subtitle = window.prompt('Enter image subtitle:');
+  if (subtitle) {
+    editor.value?.chain().focus().addImageSubtitle(subtitle).run();
+  }
+}
+
+function removeImageSubtitle() {
+  editor.value?.chain().focus().removeImageSubtitle().run();
+}
+
+
+function openLinkPopup() {
+  const link = window.prompt('Enter the URL');
+    if (link) {
+        editor.value?.chain().focus().setLink({ href: link }).run();
     }
 }
 </script>
@@ -247,11 +347,13 @@ function addImage() {
 }
 
 .floating-menu {
+    position: relative;
     display: flex;
     background-color: var(--gray-3);
     padding: 0.1rem;
     border-radius: 0.5rem;
     gap: 0.25rem;
+    z-index: 100;
 }
 
 .bubble-menu {
@@ -260,8 +362,56 @@ function addImage() {
     border-radius: 0.7rem;
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.25);
     display: flex;
-    padding: 0.2rem;
-    gap: 0.25rem;
+    padding: 0.3rem;
+}
+
+.bubble-menu.image, .bubble-menu.paragraph {
+    .group {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0.25rem; 
+        border-right: 1px solid var(--grey4);
+        padding: 0rem 0.3rem;
+        margin-top: auto;
+
+        &:first-child {
+            padding-left: 0rem;
+        }
+
+        &:last-child {
+            border-right: none;
+            padding-right: 0rem;
+        }
+
+        .wrapper {
+            display: flex;
+            gap: 0.25rem;
+        }
+    }
+
+    p {
+        padding: 0.2rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--grey2);
+    }
+
+    .height-input {
+        display: flex;
+        align-items: center;
+
+        span {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            margin: 0rem 0.5rem;
+        }
+    }
+}
+
+.bubble-menu.image {
+    width: 391px;
 }
 
 .fixed-menu-wrapper {
@@ -285,7 +435,7 @@ function addImage() {
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.02);
     gap: 1rem;
     width: 100%;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
     border-bottom: 1px solid var(--grey5);
     background: var(--background-color-secondary);
     border-radius: 0.5rem;
@@ -303,6 +453,7 @@ function addImage() {
         flex-direction: row;
         justify-content: flex-start;
         gap: 1rem;
+        max-width: 1000px;
 
         @media (max-width: 610px) {
             display: grid;
@@ -403,7 +554,7 @@ button {
         position: relative;
         width: 20px;
         height: 20px;
-        fill: black;
+        fill: var(--black2);
 
         &.center, &.justify {
             width: 21.56px;
@@ -427,11 +578,11 @@ button {
     border-top: 1px solid var(--grey5);
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
-    padding: 1rem;
+    padding: 0rem 1rem;
     padding-top: 4rem;
 
     .container {
-        max-width: 1000px;
+        max-width: 800px;
         margin: auto;
     }
 
@@ -439,7 +590,10 @@ button {
         display: flex;
         align-items: center;
         width: 100%;
-        height: 52px;
+        height: 75px;
+        // padding: 0.75rem 0rem;
+        // border-bottom: 1px solid var(--grey5);
+        // border-top: 1px solid var(--grey5);
  
         .wrapper.author-image {
             display: flex;
@@ -525,17 +679,19 @@ button {
             flex-direction: column;
         }
 
-        .author-name {
+        .author-name, .created-date {
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            margin-top: 0rem;
             font-weight: 400;
+        }
+
+        .author-name {
+            font-size: 1rem;
             color: var(--black1);
         }
 
         .created-date {
-            font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
-            font-weight: 400;
             color: var(--grey2);
         }
     }
@@ -552,11 +708,61 @@ button {
     margin: auto;
     min-height: 1000px;
     padding: 1rem;
+    padding-top: 0rem;
+    padding-bottom: 6rem;
     background-color: var(--white1);
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
 
+// Positional Overrides
+.page-main-content {
+    .tiptap {
+        > h3:first-child {
+            margin-top: 2.15rem;
+        }
+
+        > h4:first-child {
+            margin-top: 2.15rem;
+        }
+
+        > h3 + p:first-of-type {
+            margin-top: 1.2rem;
+        }
+
+        > h4 + p:first-of-type {    
+            margin-top: 1rem;
+        }
+
+        > p:first-of-type {    
+            margin-top: 2.15rem;
+        }
+
+        > .image-component:first-of-type {
+            margin-top: 2.15rem;
+        }
+
+        .image-component + p {
+            margin-top: 0rem;
+        }
+
+        .image-component + p {
+            .image-component {
+                margin-bottom: 0rem;
+            }
+        }
+
+        h3 + p {
+            margin-top: 1.2rem;
+        }
+
+        h4 + p {
+            margin-top: 1rem;
+        }
+    }
+}
+
+// Main styles
 .tiptap, .page-heading-content {
     width: 100%;
 
@@ -570,7 +776,7 @@ button {
         width: 100%;
     }
 
-    h1, h2, h3, h4, p, ul {
+    h1, h2, h3, h4, p, ul, ol {
         font-family: 'Inter', sans-serif;
         color: var(--black2);
         font-weight: 500;
@@ -580,7 +786,7 @@ button {
         }
 
         em {
-            font-style: oblique 4deg;
+            font-style: oblique 6deg;
         }
     }
 
@@ -601,46 +807,105 @@ button {
     }
 
     h3 {
-        font-family: 'Inter', sans-serif;
-        font-size: 2.6rem;
-        font-weight: 800; 
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-size: 2.2rem;
+        font-weight: 600; 
+        margin-top: 4rem;
     }
 
     h4 {
         font-size: 1.4rem;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-weight: 600;
+        margin-top: 3rem;
+    }
+
+    blockquote {
+        position: relative;
+        margin: 0rem 5%;
+
+        p {
+            font-style: oblique 6deg;
+            color: var(--grey2);
+        }
+
+        p:nth-child(2n) {
+            margin-top: 0rem;
+            text-align: right;
+        }
     }
 
     p {
-        font-size: 1.2rem;
+        font-size: 18px;
         line-height: 1.5rem;
+        font-weight: 400;
+        margin-top: 1.85rem;
+        line-height: 32px;
 
         strong {
             font-weight: 600;
         }
+
+        a {
+            color: var(--text-color-main);
+            text-decoration: underline;
+            font-weight: 500;
+            cursor: pointer;
+        }
     }
 
-    ul {
-        padding: 0 1rem;
-        margin: 1.25rem 1rem 1.25rem 0.4rem;
+    ul, ol {
+        padding: 0 1.4rem;
+        margin: 0rem 1.2rem;
+        margin-top: 1.15rem;
+        margin-bottom: 1.85rem;
         box-sizing: border-box;
-        list-style-type: disc;
 
         li {
             p {
                 margin-top: 0rem;
                 margin-bottom: .25rem;
+
             }
+        }
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol {
+        list-style-type: decimal;
+        margin-left: 2.3rem;
+        padding-left: 0.5rem;
+    }
+
+    .image-component {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 500px;
+        margin: 2rem 0rem;
+
+        .image-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-style: oblique 6deg;
+            color: var(--grey2);
+            margin-top: 0.5rem;
+        }
+
+        img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     }
 }
 
 .tiptap {
-    max-width: 1000px;
+    max-width: 800px;
+    margin: 0rem auto;
 }
-// Add global tip tap styles
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <section class="image-manager" v-show="isAdmin && imageManagerPopupOpen().value">
+    <section class="image-manager" v-show="isAdmin && imageManagerPopupOpen().value || isSelectingImage">
         <div class="overlay" @click="closeImageManager()" title="Exit Image Manager">
 
         </div>
@@ -204,15 +204,15 @@
                                 </div>
                                 <div v-else-if="getActiveTabType() === 'image'" class="image-detailed">
                                     <div class="large-image-container">
-                                        <img :src="getActiveTabImage().url" :alt="getActiveTabImage().label" />
+                                        <img :src="getActiveTabImage()?.url" :alt="getActiveTabImage()?.label" />
                                     </div>
                                     <div class="image-info">
-                                        <h2 class="title">{{ getActiveTabImage().label }}</h2>
+                                        <h2 class="title">{{ getActiveTabImage()?.label }}</h2>
                                         <div class="group">
                                             <div class="text">
-                                                <p>Width: <span>{{ getActiveTabImage().width }}px</span></p>
-                                                <p>Height: <span>{{ getActiveTabImage().height }}px</span></p>
-                                                <p>Upload Date: <span>{{ getActiveTabImage().upload_date }}</span></p>
+                                                <p>Width: <span>{{ getActiveTabImage()?.width }}px</span></p>
+                                                <p>Height: <span>{{ getActiveTabImage()?.height }}px</span></p>
+                                                <p>Upload Date: <span>{{ getActiveTabImage()?.upload_date }}</span></p>
                                             </div>
                                             <button @click="useSelectedImage" class="use-image-button">Use Image</button>
                                         </div>
@@ -252,11 +252,15 @@ const {
     selectedParentFolderIndex,
     clearCurrentUploadedImage,
     canUploadImage,
-    uploadImage
+    uploadImage,
+    isSelectingImage,
+    setSelectedImage,
+    selectImage,
 } = await useImageManager();
  
 function closeImageManager() {
     imageManagerPopupOpen().value = false;
+    isSelectingImage.value = false;
 }
 
 // #region Floating Menu Functionality ----------------------------------
@@ -299,7 +303,7 @@ function closeFloatingMenu() {
 
 // #region Image Functionality ------------------------------------------
 const uploadingImage = ref(false);
-const selectedImage = ref<File | null>(null);
+const selectedImage = ref<Image | null>(null);
 
 const allImages = ref<Image[]>([]);
 const rootImages = computed(() => folders.value.filter(folder => Number(folder.folder_id) === 0)[0].images);
@@ -322,6 +326,7 @@ function useSelectedImage() {
         selectedImage.value = activeImage;
         closeImageManager();
         emit('image-selected', selectedImage.value);
+        setSelectedImage(selectedImage?.value);
     }
 }
 
@@ -474,7 +479,7 @@ function getActiveTabType() {
     return tab ? tab.type : null;
 }
 
-function getActiveTabImage() {
+function getActiveTabImage(): Image | null {
     const tab = openTabs.value.find(tab => tab.id === activeTab.value);
     return tab && tab.type === 'image' ? tab.image : null;
 }
@@ -771,7 +776,8 @@ const emit = defineEmits<{
 
 defineExpose({
     closeImageManager,
-    selectedImage
+    selectedImage,
+    selectImage
 });
 </script>
 
@@ -1754,7 +1760,7 @@ defineExpose({
     height: calc(100% - 60px);
     border-top: 1px solid var(--grey2);
     overflow-y: auto;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     border-bottom-right-radius: 0.5rem;
 
     .no-tab {

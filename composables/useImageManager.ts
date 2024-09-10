@@ -119,6 +119,26 @@ export const useImageManager = async () => {
         });
     }
 
+    const isSelectingImage = ref(false);
+    const selectedImage = ref<Image | null>(null);
+
+    const selectImage = () => {
+        return new Promise<Image | null>((resolve) => {
+            isSelectingImage.value = true
+            const unwatch = watch(selectedImage, (newValue) => {
+                if (newValue) {
+                    isSelectingImage.value = false
+                    unwatch()
+                    resolve(newValue)
+                }
+            })
+        })
+    }
+
+    const setSelectedImage = (image: Image) => {
+        selectedImage.value = image
+    }
+
     return {
         currentImageLabel,
         currentUploadedImage,
@@ -129,6 +149,9 @@ export const useImageManager = async () => {
         setCurrentUploadedImage,
         clearCurrentUploadedImage,
         canUploadImage,
-        uploadImage
+        uploadImage,
+        isSelectingImage,
+        selectImage,
+        setSelectedImage
     }
 }

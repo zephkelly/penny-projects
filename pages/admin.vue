@@ -3,35 +3,10 @@
         <div class="container">
             <h1 class="header">Admin Panel</h1>
             <div>
-                <h1>Upload Image to Imgur</h1>
-                <form @submit.prevent="handleFileUpload()">
-                    <div>
-                        <label for="image">Select an image:</label>
-                        <input type="file" ref="image" required>
-                    </div>
-                    <button type="submit" @click.prevent="handleFileUpload()">Upload</button>
-                </form>
-            <!-- <div v-if="uploadedImage">
-            <h2>Uploaded Image</h2>
-            <img :src="uploadedImage.data.link" alt="Uploaded Image" />
-            </div> -->
-            </div>
-
-            <div>
                 <h1>Delete Image Via Hash</h1>
-                <form @submit.prevent="handleFileUpload()">
+                <form>
                     <button type="submit" @click.prevent="deleteImageViaHash()">Delete</button>
                 </form>
-            <!-- <div v-if="uploadedImage">
-            <h2>Uploaded Image</h2>
-            <img :src="uploadedImage.data.link" alt="Uploaded Image" />
-            </div> -->
-            </div>
-            <div>
-                <h1>Select Image Manager</h1>
-                <button @click="imageManagerPopupOpen().value = true;">Select Image</button>
-                <ImageManager ref="imageManager" @image-selected="onImageSelected" />
-                <img :src="selectedImage?.url" alt="Selected Image" />
             </div>
         </div>
     </section>
@@ -46,75 +21,10 @@ const image = ref(null);
 const imageManager = ref(null);
 const selectedImage = ref<Image | null>(null);
 
-function onImageSelected(image: any) {
-  selectedImage.value = image;
-  console.log('Selected image:', image);
-}
-
-async function handleFileUpload() {
-    //@ts-ignore
-    const imageFile = image.value.files[0];
-    
-    if (imageFile.length === 0) {
-        console.log('No file selected');
-        return;
-    }
-    
-    if (!imageFile.type.startsWith('image/')) {
-        console.error('File is not an image');
-        return;
-    }
-
-    const imageSize = await checkImageSize(imageFile)
-    console.log(imageSize)
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-    reader.onload = async () => {
-        // @ts-ignore
-        const base64Image = reader.result.split(',')[1]; // Remove the data:image/jpeg;base64, part
-
-        // @ts-ignore
-        const response = await useFetch('/api/upload/image', {
-            method: 'POST',
-            body: { image: base64Image }
-        });
-
-        console.log(response);
-    };
-}
-
-function checkImageSize(file: File): Promise<{ width: number; height: number; fileSize: number }> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-   
-    reader.onload = function(e: ProgressEvent<FileReader>) {
-      const img = new Image();
-     
-      img.onload = (event: Event) => {
-        const loadedImg = event.target as HTMLImageElement;
-        const size = {
-          width: loadedImg.width,
-          height: loadedImg.height,
-          fileSize: file.size
-        };
-        resolve(size);
-      };
-     
-      img.onerror = function() {
-        reject(new Error('Failed to load image'));
-      };
-     
-      img.src = e.target?.result as string;
-    };
-   
-    reader.onerror = function() {
-      reject(new Error('Failed to read file'));
-    };
-   
-    reader.readAsDataURL(file);
-  });
-}
+// function onImageSelected(image: any) {
+//   selectedImage.value = image;
+//   console.log('Selected image:', image);
+// }
 
 async function deleteImageViaHash() {
     const hash = window.prompt('Insert Image Hash');
