@@ -36,7 +36,7 @@
                                     <div class="options-wrapper">
                                         <div class="option-group">
                                             <label for="image-label">Name</label>
-                                            <input @input="setCurrentImageLabel();" v-model="imageLabel" type="text" placeholder="image1" />
+                                            <input  v-model="currentImageLabel" type="text" placeholder="image1" />
                                         </div>
                                     </div>
                                     <div class="selection-wrapper">
@@ -154,6 +154,11 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-535.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H212.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM270-290h423.07L561.54-465.38 449.23-319.23l-80-102.31L270-290Zm-70 90v-560 560Z"/></svg>
                                             <p>{{ image.label }}</p>
                                         </div>
+                                        <div class="folder-more-actions">
+                                            <button class="more-actions" @click="openFloatingMenu($event, image as Image)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
+                                            </button>
+                                        </div>
                                     </li>
                                     <div class="create-new-folder-wrapper">
                                         <button class="create-new-folder" @click="createNewFolder()">
@@ -235,7 +240,7 @@
                 <li @click="deleteFolder()">Delete</li>
             </ul>
             <ul v-else-if="selectedMenuItemType === 'image'">
-                <!-- <li @click="renameImage()">Rename</li> -->
+                <li @click="renameImage()">Rename</li>
                 <li @click="deleteImage()">Delete</li>
             </ul>
         </div>
@@ -536,16 +541,6 @@ function setFolderOpen(index: number, value: boolean) {
     openFolders.value[index] = value;
 }
 
-const imageLabel = ref('');
-function setCurrentImageLabel() {
-    if (imageLabel.value === '') {
-        currentImageLabel.value = null;
-    }
-    else {
-        currentImageLabel.value = imageLabel.value;
-    }
-}
-
 function handleFolderSetParentClick(folderIndex: number, folder_id: number, folderName: string) {
     if (folder_id === selectedParentFolderIndex.value) {
         selectedParentFolderName.value = null;
@@ -560,7 +555,7 @@ function handleFolderSetParentClick(folderIndex: number, folder_id: number, fold
 }
 
 function handleReturnToExplorer() {
-    imageLabel.value = '';
+    currentImageLabel.value = '';
     toggleIsUploadImage();
     clearCurrentUploadedImage();
 }
@@ -610,8 +605,6 @@ async function handleImageUpload() {
         if (result.status === 'success') {
             console.log('Image uploaded successfully');
 
-            console.log(result)
-
             if (result.parent_folder_frontend_index == undefined) {
                 rootImages.value.push(result.image as Image);
                 return
@@ -628,6 +621,38 @@ async function handleImageUpload() {
     catch (error) {
         console.error('Unexpected error:', error);
     }
+}
+
+async function renameImage() {
+    const selectedMenuImage = selectedMenuItem.value as Image;
+
+    if (!selectedMenuImage) {
+        window.alert('No image selected');
+        return;
+    }
+
+    const newLabel = window.prompt('Enter new image label:');
+
+    if (!newLabel) {
+        window.alert('No label provided');
+        return;
+    }
+
+    const response = await $fetch('/api/rename/image', {
+        method: 'POST',
+        body: { image_id: selectedMenuImage.image_id, new_label: newLabel }
+    });
+
+    if (response.status !== 200) {
+        window.alert('Error renaming image: ' + response.message);
+        return;
+    }
+
+    const folderIndex = folders.value.findIndex(folder => folder.images.some(image => image.image_id === selectedMenuImage.image_id));
+    const imageIndex = folders.value[folderIndex].images.findIndex(image => image.image_id === selectedMenuImage.image_id);
+
+    folders.value[folderIndex].images[imageIndex].label = newLabel;
+    closeFloatingMenu();
 }
 
 async function deleteImage() {
@@ -652,8 +677,6 @@ async function deleteImage() {
         body: { image_id: image_id, delete_hash: delete_hash }
     });
 
-    console.log(response);
-
     if (response.status !== 200) {
         window.alert('Error deleting image: ' + response.message);
         return;
@@ -664,12 +687,6 @@ async function deleteImage() {
 
     folders.value[folderIndex].images.splice(imageIndex, 1);
     closeFloatingMenu();
-}
-
-function formatFileSize(bytes: number) {
-    if (bytes < 1024) return bytes + ' bytes';
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-    else return (bytes / 1048576).toFixed(1) + ' MB';
 }
 // #endregion
 
@@ -708,9 +725,6 @@ function openTab(name: string, folder_id: number | null, folder_frontend_index: 
     }
 
     const existingTab: Tab = openTabs.value.find(tab => tab.name === name) as Tab;
-    console.log(existingTab);
-
-    console.log(openTabs.value);
 
     if (existingTab) {
         activeTab.value = existingTab.id;
@@ -732,14 +746,10 @@ function openImageTab(image: Image) {
     const existingTab = openTabs.value.find(tab => tab.type === 'image' && tab.image && tab.image.url === image.url);
     const parentFolder = folders.value.find(folder => folder.images.some(img => img.image_id === image.image_id));
 
-
     if (existingTab) {
         activeTab.value = existingTab.id;
     }
     else {
-        console.log(openTabs.value.length);
-
-
         const newTab: Tab = {
             id: Date.now(),
             name: image.label,
@@ -758,8 +768,6 @@ function closeTab(tabId: number) {
 
     if (!tab) return;
 
-    const folder_id = tab.folder_id as number;
-    //find the open tab with the same id in openTabs.value
     const folder_frontend_index = openTabs.value.findIndex(t => t.id === tab.id);
     
     setFolderOpen(folder_frontend_index, false);
@@ -1310,36 +1318,6 @@ defineExpose({
                     overflow: hidden;
                 }
             }
-
-            .folder-more-actions {
-                width: 26px;
-                height: 100%;
-                min-width: 26px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                button.more-actions {
-                    position: relative;
-                    width: 16px;
-                    height: 20px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-color: transparent;
-                    border: none;
-                    cursor: pointer;
-
-                    svg {
-                        height: 18px;
-                        width: 18px;
-                        position: absolute;
-                        pointer-events: none;
-                        user-select: none;
-                        fill: var(--black2);
-                    }
-                }
-            }
         }
 
         .folder-content {
@@ -1552,6 +1530,36 @@ defineExpose({
                 text-decoration: underline;
                 background-color: var(--off-white);
                 color: var(--black2);
+            }
+        }
+    }
+
+    .folder-more-actions {
+        width: 26px;
+        height: 100%;
+        min-width: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button.more-actions {
+            position: relative;
+            width: 16px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+
+            svg {
+                height: 18px;
+                width: 18px;
+                position: absolute;
+                pointer-events: none;
+                user-select: none;
+                fill: var(--black2);
             }
         }
     }

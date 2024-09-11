@@ -12,18 +12,17 @@
             :src="imagePreview" 
             alt="Cover image preview" 
             class="preview-image"
-            :style="{ transform: `translateY(${position}px)` }"
           >
           <button class="remove-button" @click.prevent="removeImage">Remove Image</button>
           <button class="remove-button cross" @click.prevent="removeImage">X</button>
-          <div class="arrow-controls">
+          <!-- <div class="arrow-controls">
             <button class="arrow-button up" @click.prevent="moveImage('up')" >
               ▲
             </button>
             <button class="arrow-button down" @click.prevent="moveImage('down')" >
               ▼
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -31,6 +30,7 @@
   
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, type PropType } from 'vue';
+import { useImageManager } from '~/composables/useImageManager';
 
 const { imageManagerPopupOpen, selectImage } = await useImageManager();
 
@@ -53,13 +53,13 @@ const minPosition = computed(() => {
 });
 
 const selectFromImageManager = async () => {
-    console.log('Open popup manager');
     imageManagerPopupOpen().value = true;
     const image = await selectImage();
     if (image) {
         imagePreview.value = image.url;
         imageHeight.value = image.height;
         resetImagePosition();
+        console.log('Image selected', image.url);
         emit('image-selected', image.url);
     }
 };

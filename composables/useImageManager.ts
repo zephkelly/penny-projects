@@ -13,9 +13,9 @@ export const useImageManager = async () => {
     const selectedParentFolderIndex = ref<number | null>(null);
     const selectedParentFolderId = ref<number | null>(null);
 
-    // Image uploading
     const setCurrentUploadedImage = (image: File) => {
         currentUploadedImage.value = image;
+        currentImageLabel.value = image.name;
 
         const reader = new FileReader();
         reader.onload = (e) => {

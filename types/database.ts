@@ -1,3 +1,5 @@
+import { type ProjectStatus } from "./project";
+
 export interface User {
     user_id: string;
     user_type: number;
@@ -45,3 +47,20 @@ export type FrontendPayload<T> = {
     message: string;
     data?: T;
 };
+
+export interface Project {
+    project_id: number;
+    title: string;
+    subtitle: string;
+    created_date: string;
+    updated_date: string;
+    status: ProjectStatus;
+    published: boolean;
+    author_name: string;
+    author_image_url: string;
+    cover_image_url: string;
+    slug: string;
+    seo_title: string;
+    seo_meta_description: string;
+    content: string;
+}

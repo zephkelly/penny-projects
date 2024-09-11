@@ -2,7 +2,8 @@
     <section class="new-project-hero component" style="justify-content: center;">
         <div class="container">
             <h1 class="header">New Project</h1>
-            <button class="submit">Publish</button>
+            <button class="submit draft" @click.prevent="handleProjectDraftSubmit">Save Draft</button>
+            <button class="submit" @click.prevent="handleProjectSubmit">Publish</button>
         </div>
     </section>
     <section class="metadata component">
@@ -131,8 +132,8 @@
 
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
-import { type ProjectSettingField, ProjectStatuses } from '~/types/project';
-import type { User, Image } from '~/types/database';
+import { type ProjectSettingField, type ProjectStatus, ProjectStatuses } from '~/types/project';
+import type { User, Image, Project } from '~/types/database';
 import { formatDateDDMMYYY } from '~/utils/date';
 import ImageManager from '~/components/popups/manager/image.vue';
 import { useImageManager } from '~/composables/useImageManager';
@@ -144,23 +145,6 @@ definePageMeta({
 
 //Image Manager
 const { imageManagerPopupOpen, selectImage } = await useImageManager();
-
-async function selectCoverImage() {
-    imageManagerPopupOpen().value = true;
-
-    try {
-        const selectedImage = await selectImage()
-        if (selectedImage) {
-            handleCoverImageSelected(selectedImage);
-        }
-        else {
-            console.log('No image selected or selection cancelled')
-        }
-    }
-    catch (error) {
-        console.error('Error selecting image:', error)
-    }
-}
 
 const isCoverExpanded = ref(false);
 const coverImage = computed(() => mainFields.cover_image.value as string | null);
@@ -174,7 +158,7 @@ const createdDateIso = new Date().toISOString();
 const createdDate = formatDateDDMMYYY(createdDateIso);
 
 const pageContent = ref(``);
-
+const projectId = ref<number | null>(null);
 
 // Main Settings
 const mainFields = reactive({
@@ -238,8 +222,9 @@ const handleAuthorImageRemoved = () => {
     mainFields.author_image.error = ValidationError.REQUIRED;
 };
 
-const handleCoverImageSelected = (image: Image) => {
-    mainFields.cover_image.value = image.url;
+const handleCoverImageSelected = (imageUrl: string) => {
+    mainFields.cover_image.value = imageUrl;
+    console.log(imageUrl);
     mainFields.cover_image.error = null;
 };
 
@@ -317,6 +302,7 @@ const saveDraft = () => {
         mainFields,
         seoFields,
         userInfo: userInfo,
+        project_id: projectId.value,
     };
 
     localStorage.setItem('projectDraft', JSON.stringify(draft));
@@ -330,22 +316,71 @@ const loadDraft = () => {
         Object.assign(mainFields, draft.mainFields);
         Object.assign(seoFields, draft.seoFields);
         userInfo.value = draft.userInfo;
+        projectId.value = draft.project_id;
     }
 };
 
 const checkForDraft = () => {
-  const savedDraft = localStorage.getItem('projectDraft');
-  if (savedDraft) {
-    const confirmLoad = window.confirm(`An unsaved draft was found. Would you like to load it?`);
-    if (confirmLoad) {
-      loadDraft();
-    } else {
-      localStorage.removeItem('projectDraft');
+    const savedDraft = localStorage.getItem('projectDraft');
+    if (savedDraft) {
+        loadDraft();
     }
-  }
 };
 
-watch([pageContent, mainFields, seoFields, userInfo], saveDraft, { deep: true });
+const handleProjectDraftSubmit = async () => {
+    //@ts-ignore
+    const newProject = {
+        project_id: projectId.value || null,
+        title: mainFields.title.value,
+        subtitle: mainFields.subtitle.value,
+        created_date: mainFields.created_date.value as string,
+        status: mainFields.status.value as ProjectStatus,
+        author_name: mainFields.author_name.value,
+        author_image_url: mainFields.author_image.value as string,
+        cover_image_url: mainFields.cover_image.value as string,
+        slug: seoFields.slug.value,
+        seo_title: seoFields.seo_title.value,
+        seo_meta_description: seoFields.meta_description.value,
+        published: false,
+        content: pageContent.value,
+    };
+    
+    const response = await $fetch('/api/upload/project', {
+        method: 'POST',
+        body: { project: newProject }
+    });
+
+    //@ts-expect-error
+    const project_id = response.data.project_id;
+    projectId.value = project_id;
+};
+
+const handleProjectSubmit = async () => {
+    //@ts-ignore
+    const newProject: Project = {
+        title: mainFields.title.value,
+        subtitle: mainFields.subtitle.value,
+        created_date: mainFields.created_date.value as string,
+        status: mainFields.status.value as ProjectStatus,
+        author_name: mainFields.author_name.value,
+        author_image_url: mainFields.author_image.value as string,
+        cover_image_url: mainFields.cover_image.value as string,
+        slug: seoFields.slug.value,
+        seo_title: seoFields.seo_title.value,
+        seo_meta_description: seoFields.meta_description.value,
+        published: true,
+        content: pageContent.value,
+    };
+    
+    const response = await $fetch('/api/upload/project', {
+        method: 'POST',
+        body: { project: newProject }
+    });
+
+    console.log(response);
+};
+
+watch([pageContent, mainFields, seoFields, userInfo, projectId], saveDraft, { deep: true });
 
 onMounted(() => {
   checkForDraft();
