@@ -11,8 +11,7 @@
                                     <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
                                     <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H1</button>
                                     <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H2</button>
-                                    <button @click="openImageManager" :class="{ active: editor.isActive('customImage') }">Image New</button>
-                                    <button @click="imageManagerPopupOpen().value = true;" :class="{ active: editor.isActive('customImage') }" >Image</button>
+                                    <button @click="openImageManager" :class="{ active: editor.isActive('customImage') }">Image</button>
                                 </div>
                             </div>
                             <div class="styles">
@@ -164,7 +163,6 @@
                 </div>
             </div>
         </div>
-        <!-- <ImageManager @image-selected="onImageSelected" /> -->
     </section>
 </template>
 
@@ -228,7 +226,7 @@ const editor = useEditor({
 
 onErrorCaptured((err, instance, info) => {
   console.error('Error in TipTapEditor:', err, instance, info);
-  return false; // Prevents the error from propagating further
+  return false;
 });
 
 const imageObjectFit = computed(() => {

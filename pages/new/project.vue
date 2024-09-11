@@ -55,7 +55,6 @@
                                 No status
                             </button>
                         </div>
-                        <!-- <input class="input-text" v-model="mainFields.status.value" id="status" type="text" placeholder="" /> -->
                     </div>
                 </div>
                 <div class="wrapper author">
@@ -80,10 +79,19 @@
                 </div>
                 <div class="wrapper cover-image">
                     <div class="field">
-                        <label for="cover-image">Cover Image</label>
-                        <DragAndDropImageUpload
-                            @image-selected="handleCoverImageSelected"
-                            @image-removed="handleCoverImageRemoved"/>
+                        <div class="label-container" :class="{ 'is-expanded': isCoverExpanded }" @click.prevent="isCoverExpanded = !isCoverExpanded">
+                            <label for="cover-image">Cover Image</label>
+                            <button class="expander-button">
+                                <svg :class="{ 'is-expanded': isCoverExpanded }" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="preview-container" :class="{ 'is-expanded': isCoverExpanded }">
+                            <ImageSelectionPreview :imageUrl="coverImage" @image-selected="handleCoverImageSelected" @image-removed="handleCoverImageRemoved">
+                                Click to select a cover image
+                            </ImageSelectionPreview>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -118,7 +126,7 @@
         v-model:content="pageContent"
         :pageRelatedSettings="pageRelatedSettings"
         style="justify-content: center;"/>
-    <ImageManager ref="imageManagerRef" @image-selected="onImageSelected" />
+    <ImageManager ref="imageManagerRef" />
 </template>
 
 <script setup lang="ts">
@@ -127,6 +135,7 @@ import { type ProjectSettingField, ProjectStatuses } from '~/types/project';
 import type { User, Image } from '~/types/database';
 import { formatDateDDMMYYY } from '~/utils/date';
 import ImageManager from '~/components/popups/manager/image.vue';
+import { useImageManager } from '~/composables/useImageManager';
 
 const { getUserInfo } = useAuth();
 definePageMeta({
@@ -134,13 +143,27 @@ definePageMeta({
 })
 
 //Image Manager
-const imageManagerRef = ref(null);
-provide('imageManagerRef', imageManagerRef);
+const { imageManagerPopupOpen, selectImage } = await useImageManager();
 
-const onImageSelected = (image: Image) => {
-  // Handle image selection for the parent component
-  // ...
-};
+async function selectCoverImage() {
+    imageManagerPopupOpen().value = true;
+
+    try {
+        const selectedImage = await selectImage()
+        if (selectedImage) {
+            handleCoverImageSelected(selectedImage);
+        }
+        else {
+            console.log('No image selected or selection cancelled')
+        }
+    }
+    catch (error) {
+        console.error('Error selecting image:', error)
+    }
+}
+
+const isCoverExpanded = ref(false);
+const coverImage = computed(() => mainFields.cover_image.value as string | null);
 
 // User Info
 const userInfo: Ref<User | null | undefined> = ref(await getUserInfo());
@@ -161,7 +184,12 @@ const mainFields = reactive({
     status: { value: 'draft', error: null } as ProjectSettingField,
     author_name: { value: `${userInfo?.value?.first_name} ${userInfo?.value?.last_name}`, error: null, maxLength: 50 },
     author_image: { value: null as string | null, error: null } as ProjectSettingField,
-    cover_image: { value: false, error: null } as ProjectSettingField,
+    cover_image: { value: '', error: null } as ProjectSettingField,
+});
+
+
+watch(() => mainFields.cover_image, (newValue) => {
+    console.log('Cover image changed:', newValue);
 });
 
 const mainIgnoreFields = ['status'];
@@ -210,13 +238,13 @@ const handleAuthorImageRemoved = () => {
     mainFields.author_image.error = ValidationError.REQUIRED;
 };
 
-const handleCoverImageSelected = () => {
-    mainFields.cover_image.value = true;
+const handleCoverImageSelected = (image: Image) => {
+    mainFields.cover_image.value = image.url;
     mainFields.cover_image.error = null;
 };
 
 const handleCoverImageRemoved = () => {
-    mainFields.cover_image.value = false;
+    mainFields.cover_image.value = '';
     mainFields.cover_image.error = ValidationError.REQUIRED;
 };
 
@@ -259,7 +287,7 @@ function getCompletedFieldsCount(fields: Record<string, ProjectSettingField>, ig
         if (ignore && ignore.includes(key)) {
             return false;
         }
-        
+
         return field.error === null && field.value !== false && field.value !== '';
     }).length;
 }
@@ -470,6 +498,73 @@ input.author-name {
         background-color: var(--background-color-secondary);
         padding: 1rem;
         border-radius: 0.5rem;
+    }
+
+    label {
+        pointer-events: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .label-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;  
+        gap: 1rem;
+        height: 50px;
+        background-color: var(--background-color-secondary);
+        cursor: pointer;
+        padding: 0rem 2rem;
+        border: 1px solid transparent;
+        border-left: none;
+        border-right: none;
+        transition: background-color 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+        will-change: background-color, padding;
+        border-radius: 0.5rem;
+
+
+        &.is-expanded {
+            background-color: transparent;
+            padding: 0rem;
+            width: 100%;
+            border-radius: 0;
+
+            &:hover {
+                border-color: var(--grey5);
+            }
+        }
+
+        .expander-button {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            gap: 0.5rem;
+            padding: 0rem;
+
+            svg {
+                user-select: none;
+                transition: transform 0.3s ease;
+                will-change: transform;
+                transform: rotate(-90deg);
+                cursor: pointer;
+
+                &.is-expanded {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+    }
+
+    .preview-container {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+        border-radius: 0.5rem;
+
+        &.is-expanded {
+            height: 400px;
+        }
     }
 }
 

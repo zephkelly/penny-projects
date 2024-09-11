@@ -27,11 +27,6 @@ export default {
             required: true,
         },
     },
-    // computed: {
-    //     componentHeight() {
-    //         return typeof this.node.attrs.height === 'number' ? `${this.node.attrs.height}px` : this.node.attrs.height;
-    //     }
-    // }
 }
 </script>
 

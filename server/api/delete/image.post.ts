@@ -1,22 +1,34 @@
-import { read } from 'fs';
+import protectAdmin from '~/server/protectAdmin';
+import { PostgresUtil } from '~/utils/postgres';
 import { defineEventHandler } from 'h3'
+import { type Image } from '~/types/database';
 
 type ImgutDeletionResponse = {
     success: boolean;
 }
 
 export default defineEventHandler(async (event) => {
+    await protectAdmin(event);
+    const db = PostgresUtil.getInstance();
+
     try {
         const imgurClient = event.context.imgur;
 
         const body = await readBody(event)
-        const deleteHash = body.deleteHash
+        const image_id = body.image_id;
+        const delete_hash = body.delete_hash;
         
-        if (!deleteHash || typeof deleteHash !== 'string') {
-            throw new Error('No delete hash provided');
+        if (!image_id || !delete_hash) {
+            throw new Error('Must provide both image_id and delete_hash');
         }
 
-        const response = await $fetch<ImgutDeletionResponse>('https://api.imgur.com/3/image/' + deleteHash, {
+
+        await db.query(
+            'DELETE FROM public.images WHERE image_id = $1',
+            [image_id]
+        );
+
+        const response = await $fetch<ImgutDeletionResponse>('https://api.imgur.com/3/image/' + delete_hash, {
             method: 'DELETE',
             headers: imgurClient.getAuthHeader()
         });
@@ -24,18 +36,22 @@ export default defineEventHandler(async (event) => {
 
         if (response.success) {
             return {
-                success: true
+                status: 200,
+                message: 'Image deleted successfully from database and Imgur'
             };
 
         }
         else{
-            throw new Error('Imgur deletion failed');
+            return {
+                status: 500,
+                message: 'Failed to delete image from Imgur'
+            };
         }
     }
     catch (error: any) {
         return {
-            success: false,
-            error: error.message
+            status: 500,
+            message: 'Internal server error, contact site administrator'
         };
     }
 });

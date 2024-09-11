@@ -100,7 +100,6 @@ export default Node.create({
   addCommands() {
     return {
       setCustomImage: options => ({ commands }) => {
-        console.log('options', options)
         return commands.insertContent({
           type: this.name,
           attrs: options,

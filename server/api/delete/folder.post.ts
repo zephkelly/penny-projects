@@ -19,7 +19,7 @@ export default defineEventHandler(async (event): Promise<FrontendPayload<Folder 
         }
 
         await db.query(
-            'UPDATE public.images SET parent_folder_id = NULL WHERE parent_folder_id = $1',
+            'UPDATE public.images SET parent_folder_id = 0 WHERE parent_folder_id = $1',
             [folder_id]
         );
 

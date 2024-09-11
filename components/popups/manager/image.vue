@@ -116,9 +116,9 @@
                                     <li v-for="(folder, index) in folders.filter(f => Number(f.folder_id) !== 0)"
                                         :key="index"
                                         class="folder"
-                                        :class="{ open: openFolders[index], renaming: folder.is_renaming, deleting: folder.is_deleting }">
+                                        :class="{ open: openFolders[folder.folder_id], renaming: folder.is_renaming, deleting: folder.is_deleting }">
                                         <div class="folder-label">
-                                            <div class="folder-label-main" @click="handleFolderClick(index, folder.name)">
+                                            <div class="folder-label-main" @click="handleFolderClick(folder)">
                                                 <svg class="folder-indicator" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m517.85-480-184-184L376-706.15 602.15-480 376-253.85 333.85-296l184-184Z"/></svg>
                                                 <svg class="folder-icon opened" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M170-180q-29.15 0-49.58-20.42Q100-220.85 100-250v-457.69q0-29.15 21.58-50.73T172.31-780h219.61l80 80h315.77q26.85 0 46.31 17.35 19.46 17.34 22.54 42.65H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 4.23 2.12 6.92 2.11 2.7 5.57 4.62L261-552.31h666.31l-96.85 322.62q-6.85 22.53-25.65 36.11Q786-180 763.08-180H170Zm60.54-60h540.23l75.46-252.31H306L230.54-240Zm0 0L306-492.31 230.54-240ZM160-640V-720v80Z"/></svg>
                                                 <svg class="folder-icon closed" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M172.31-180Q142-180 121-201q-21-21-21-51.31v-455.38Q100-738 121-759q21-21 51.31-21h219.61l80 80h315.77Q818-700 839-679q21 21 21 51.31v375.38Q860-222 839-201q-21 21-51.31 21H172.31Zm0-60h615.38q5.39 0 8.85-3.46t3.46-8.85v-375.38q0-5.39-3.46-8.85t-8.85-3.46H447.38l-80-80H172.31q-5.39 0-8.85 3.46t-3.46 8.85v455.38q0 5.39 3.46 8.85t8.85 3.46ZM160-240v-480 480Z"/></svg>
@@ -139,7 +139,7 @@
                                                         <div class="wrapper main">
                                                             <p>{{ image.label }}</p>
                                                             <div class="image-more-actions">
-                                                                <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, folder)">
+                                                                <button class="more-actions" v-if="!folder.is_renaming" @click="openFloatingMenu($event, image as Image)">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M479.79-221.23q-21.54 0-36.66-15.34Q428-251.91 428-273.44q0-21.54 15.34-36.67 15.34-15.12 36.87-15.12 21.54 0 36.66 15.34Q532-294.56 532-273.02t-15.34 36.66q-15.34 15.13-36.87 15.13Zm0-206.77q-21.54 0-36.66-15.34Q428-458.68 428-480.21q0-21.54 15.34-36.66Q458.68-532 480.21-532q21.54 0 36.66 15.34Q532-501.32 532-479.79q0 21.54-15.34 36.66Q501.32-428 479.79-428Zm0-206.77q-21.54 0-36.66-15.34Q428-665.44 428-686.98t15.34-36.66q15.34-15.13 36.87-15.13 21.54 0 36.66 15.34Q532-708.09 532-686.56q0 21.54-15.34 36.67-15.34 15.12-36.87 15.12Z"/></svg>
                                                                 </button>
                                                             </div>
@@ -227,12 +227,16 @@
                 </transition-group>
             </div>
         </div>
-        <div v-if="showFloatingMenu" 
+        <div v-if="showFloatingMenu"
             class="floating-menu" 
             :style="{ top: floatingMenuPosition.top + 'px', left: floatingMenuPosition.left + 'px' }">
-            <ul>
+            <ul v-if="selectedMenuItemType === 'folder'">
                 <li @click="renameFolder()">Rename</li>
                 <li @click="deleteFolder()">Delete</li>
+            </ul>
+            <ul v-else-if="selectedMenuItemType === 'image'">
+                <!-- <li @click="renameImage()">Rename</li> -->
+                <li @click="deleteImage()">Delete</li>
             </ul>
         </div>
     </section>
@@ -269,11 +273,29 @@ function closeImageManager() {
 // #region Floating Menu Functionality ----------------------------------
 const showFloatingMenu = ref(false);
 const floatingMenuPosition = ref({ top: 0, left: 0 });
-const selectedFolder: Ref<Folder | null> = ref<Folder | null>(null);
 
-function openFloatingMenu(event: MouseEvent, folder: any) {
+const selectedMenuItem = ref<FrontendFolder | Image | null>(null);
+const selectedMenuItemType = computed(() => {
+    if (!selectedMenuItem.value) {
+        return null;
+    }
+
+    if ((selectedMenuItem.value as Image).image_id) {
+        return 'image';
+    }
+
+    return 'folder';
+});
+
+function openFloatingMenu(event: MouseEvent, type: FrontendFolder | Image) {
     event.stopPropagation();
-    selectedFolder.value = folder;
+
+    if (selectedMenuItemType.value === 'image') {
+        selectedMenuItem.value = type as Image;
+    }
+    else {
+        selectedMenuItem.value = type as FrontendFolder; 
+    }
     
     const { clientX, clientY } = event;
     const menuWidth = 150;
@@ -301,229 +323,6 @@ function openFloatingMenu(event: MouseEvent, folder: any) {
 function closeFloatingMenu() {
     showFloatingMenu.value = false;
     document.removeEventListener('click', closeFloatingMenu);
-}
-// #endregion
-
-// #region Image Functionality ------------------------------------------
-const uploadingImage = ref(false);
-const selectedImage = ref<Image | null>(null);
-
-const allImages = ref<Image[]>([]);
-const rootImages = computed(() => folders.value.filter(folder => Number(folder.folder_id) === 0)[0].images);
-
-const { data, error: fetchError } = await useFetch<Image[]>('/api/images');
-allImages.value = data.value as Image[];
-
-
-function toggleIsUploadImage() {
-    uploadingImage.value = !uploadingImage.value;
-}
-
-const getAllFolderImages = computed(() => {
-  return folders.value.flatMap(folder => folder.images);
-});
-
-
-function useSelectedImage() {
-  const activeImage = getActiveTabImage()
-  if (activeImage) {
-    setSelectedImage(activeImage)
-  }
-}
-
-function cancelSelection() {
-    cancelImageSelection()
-}
-
-function handleDraggedFolderImage(image: File) {
-    // selectedImage.value = image;
-    uploadingImage.value = true;
-
-    setCurrentUploadedImage(image);
-}
-
-async function handleImageUpload() {
-    try {
-        const result = await uploadImage();
-        if (result.status === 'success') {
-            console.log('Image uploaded successfully');
-
-            if (result.parent_folder_frontend_index == undefined) {
-                rootImages.value.push(result.image as Image);
-                return
-            }
-
-            const newImage = result.image as Image;
-            const folder_frontend_index: number = result.parent_folder_frontend_index;
-            folders.value[folder_frontend_index].images.push(newImage);
-        }
-        else {
-            console.error('Error uploading image:', result.error);
-        }
-    }
-    catch (error) {
-        console.error('Unexpected error:', error);
-    }
-}
-
-async function deleteImageViaHash() {
-    const hash = window.prompt('Insert Image Hash');
-
-    if (!hash) {
-        console.error('No hash provided');
-        return;
-    }
-
-    const response = await useFetch('/api/delete/image', {
-        method: 'POST',
-        body: { deleteHash: hash }
-    });
-}
-
-function formatFileSize(bytes: number) {
-    if (bytes < 1024) return bytes + ' bytes';
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-    else return (bytes / 1048576).toFixed(1) + ' MB';
-}
-// #endregion
-
-// #region Tab Functionality --------------------------------------------
-const allImagesOpen = ref(false);
-const openTabs:Ref<Tab[]> = ref([]);
-
-const newAllImagesTab = {
-    id: -1,
-    name: 'All Images',
-    folderIndex: null,
-    type: 'all' as const
-};
-
-const allOpenTabs = computed(() => {
-    openTabs.value.push(newAllImagesTab);
-    return openTabs.value;
-});
-const activeTab: Ref<null | number> = ref(null);
-activeTab.value = newAllImagesTab.id;
-
-const draggedTabId: Ref<null | number> = ref<number | null>(null);
-
-interface Tab {
-    id: number;
-    name: string;
-    folderIndex: number | null;
-    type: 'folder' | 'image' | 'all';
-    image?: any;
-}
-
-function openTab(name: string, folderIndex: number | null) {
-    if (allImagesOpen.value) {
-        allImagesOpen.value = false;
-    }
-
-    const existingTab: Tab = openTabs.value.find(tab => tab.name === name) as Tab;
-
-    if (existingTab) {
-        activeTab.value = existingTab.id;
-    }
-    else {
-        const newTab = {
-            id: Date.now(),
-            name: name,
-            folderIndex: folderIndex,
-            type: 'folder' as const,            
-        };
-
-        openTabs.value.push(newTab);
-        activeTab.value = newTab.id;
-    }
-}
-
-function openImageTab(image: any) {
-    const existingTab = openTabs.value.find(tab => tab.type === 'image' && tab.image && tab.image.url === image.url);
-    
-    if (existingTab) {
-        activeTab.value = existingTab.id;
-    }
-    else {
-        const newTab: Tab = {
-            id: Date.now(),
-            name: image.label,
-            folderIndex: null,
-            type: 'image',
-            image: image
-        };
-        openTabs.value.push(newTab);
-        activeTab.value = newTab.id;
-    }
-}
-
-function closeTab(tabId: number) {
-    const index = openTabs.value.findIndex(tab => tab.id === tabId);
-    const folderIndex = openTabs.value[index].folderIndex as number;
-
-    setFolderOpen(folderIndex, false);
-
-    if (openTabs.value[index].name === 'All Images') {
-        allImagesOpen.value = false;
-    }
-
-    if (index !== -1) {
-        openTabs.value.splice(index, 1);
-        if (activeTab.value === tabId) {
-            activeTab.value = openTabs.value.length > 0 ? openTabs.value[openTabs.value.length - 1].id : null;
-        }
-    }
-}
-
-function setActiveTab(tabId: number) {
-    activeTab.value = tabId;
-}
-
-function getActiveTabType() {
-    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-    return tab ? tab.type : null;
-}
-
-function getActiveTabImage(): Image | null {
-    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-    return tab && tab.type === 'image' ? tab.image : null;
-}
-
-function getActiveTabName() {
-    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-    return tab ? tab.name : '';
-}
-
-function getActiveTabImages(): Image[] | null {
-    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
-    if (!tab) return [];
-    if (tab.name === 'All Images') {
-        return allImages.value;
-    } else if (tab.folderIndex !== null) {
-        return folders.value[tab.folderIndex].images;
-    }
-    return [];
-}
-
-function dragStart(event: DragEvent, tabId: number) {
-    if (tabId === -1) return;
-    draggedTabId.value = tabId;
-}
-
-function drop(event: DragEvent, targetTabId: number) {
-    event.preventDefault();
-    
-    if (draggedTabId.value !== null && draggedTabId.value !== targetTabId) {
-        const draggedIndex = openTabs.value.findIndex(tab => tab.id === draggedTabId.value);
-        const targetIndex = openTabs.value.findIndex(tab => tab.id === targetTabId);
-        
-        if (draggedIndex !== -1 && targetIndex !== -1) {
-            const [draggedTab] = openTabs.value.splice(draggedIndex, 1);
-            openTabs.value.splice(targetIndex, 0, draggedTab);
-        }
-    }
-
-    draggedTabId.value = null;
 }
 // #endregion
 
@@ -602,7 +401,8 @@ async function createNewFolder() {
 }
 
 async function renameFolder() {
-    const folderDOMIndex = folders.value.findIndex((folder: FrontendFolder) => folder.folder_id === selectedFolder.value?.folder_id);
+    const selectedMenuFolder = selectedMenuItem.value as FrontendFolder;
+    const folderDOMIndex = folders.value.findIndex((folder: FrontendFolder) => folder.folder_id === selectedMenuFolder?.folder_id);
     
     if (folderDOMIndex === -1) {
         console.error('Cannot find folder in DOM');
@@ -621,7 +421,7 @@ async function renameFolder() {
         return;
     }
     
-    if (!selectedFolder.value) {
+    if (!selectedMenuFolder) {
         window.alert('No folder selected');
         return;
     }
@@ -635,7 +435,7 @@ async function renameFolder() {
             method: 'POST',
             body: {
                 name: newName,
-                folder_id: selectedFolder.value.folder_id
+                folder_id: selectedMenuFolder.folder_id
             }
         });
     }
@@ -664,7 +464,8 @@ async function renameFolder() {
 }
 
 async function deleteFolder() {
-    const folder_id = selectedFolder.value?.folder_id;
+    const selectedMenuFolder = selectedMenuItem.value as FrontendFolder;
+    const folder_id = selectedMenuFolder.folder_id;
 
     if (!folder_id) {
         window.alert('No folder selected');
@@ -709,13 +510,13 @@ async function deleteFolder() {
     }
 }
 
-function handleFolderClick(index: number, folderName: string) {
-    if (openFolders.value[index]) {
-        toggleFolderOpen(index);
+function handleFolderClick(folder: FrontendFolder) {
+    if (openFolders.value[folder.folder_id]) {
+        toggleFolderOpen(folder.folder_id);
     }
     else {
-        toggleFolderOpen(index);
-        openTab(folderName, index);
+        toggleFolderOpen(folder.folder_id);
+        openTab(folder.name, folder.folder_id, folders.value.findIndex(f => f.folder_id === folder.folder_id));
     }
 }
 
@@ -723,7 +524,7 @@ function handleAllImagesClick() {
     allImagesOpen.value = !allImagesOpen.value;
 
     if (allImagesOpen.value) {
-        openTab('All Images', null);
+        openTab('All Images', null, null);
     }
 }
 
@@ -764,6 +565,272 @@ function handleReturnToExplorer() {
     clearCurrentUploadedImage();
 }
 //#endregion
+
+// #region Image Functionality ------------------------------------------
+const uploadingImage = ref(false);
+const selectedImage = ref<Image | null>(null);
+
+const allImages = computed(() => {
+    const allImages: Image[] = [];
+
+    folders.value.forEach(folder => {
+        allImages.push(...folder.images);
+    });
+
+    return allImages;
+});
+
+const rootImages = computed(() => folders.value.filter(folder => Number(folder.folder_id) === 0)[0].images);
+
+function toggleIsUploadImage() {
+    uploadingImage.value = !uploadingImage.value;
+}
+
+function useSelectedImage() {
+  const activeImage = getActiveTabImage()
+  if (activeImage) {
+    setSelectedImage(activeImage)
+  }
+}
+
+function cancelSelection() {
+    cancelImageSelection()
+}
+
+function handleDraggedFolderImage(image: File) {
+    // selectedImage.value = image;
+    uploadingImage.value = true;
+
+    setCurrentUploadedImage(image);
+}
+
+async function handleImageUpload() {
+    try {
+        const result = await uploadImage();
+        if (result.status === 'success') {
+            console.log('Image uploaded successfully');
+
+            console.log(result)
+
+            if (result.parent_folder_frontend_index == undefined) {
+                rootImages.value.push(result.image as Image);
+                return
+            }
+
+            const newImage = result.image as Image;
+            const folder_frontend_index: number = result.parent_folder_frontend_index;
+            folders.value[folder_frontend_index].images.push(newImage);
+        }
+        else {
+            console.error('Error uploading image:', result.error);
+        }
+    }
+    catch (error) {
+        console.error('Unexpected error:', error);
+    }
+}
+
+async function deleteImage() {
+    const selectedMenuImage = selectedMenuItem.value as Image;
+
+    if (!selectedMenuImage) {
+        window.alert('No image selected');
+        return;
+    }
+
+    const confirmDelete = window.confirm('Are you sure you want to delete this image?');
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    const image_id = selectedMenuImage.image_id;
+    const delete_hash = selectedMenuImage.delete_hash;
+
+    const response = await $fetch('/api/delete/image', {
+        method: 'POST',
+        body: { image_id: image_id, delete_hash: delete_hash }
+    });
+
+    console.log(response);
+
+    if (response.status !== 200) {
+        window.alert('Error deleting image: ' + response.message);
+        return;
+    }
+
+    const folderIndex = folders.value.findIndex(folder => folder.images.some(image => image.image_id === image_id));
+    const imageIndex = folders.value[folderIndex].images.findIndex(image => image.image_id === image_id);
+
+    folders.value[folderIndex].images.splice(imageIndex, 1);
+    closeFloatingMenu();
+}
+
+function formatFileSize(bytes: number) {
+    if (bytes < 1024) return bytes + ' bytes';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(1) + ' MB';
+}
+// #endregion
+
+// #region Tab Functionality --------------------------------------------
+const allImagesOpen = ref(false);
+const openTabs:Ref<Tab[]> = ref([]);
+
+const newAllImagesTab = {
+    id: -1,
+    name: 'All Images',
+    folder_id: null,
+    folder_frontend_index: null,
+    type: 'all' as const
+};
+
+const allOpenTabs = computed(() => {
+    openTabs.value.push(newAllImagesTab);
+    return openTabs.value;
+});
+const activeTab: Ref<null | number> = ref(null);
+activeTab.value = newAllImagesTab.id;
+
+const draggedTabId: Ref<null | number> = ref<number | null>(null);
+
+interface Tab {
+    id: number;
+    name: string;
+    folder_id: number | null;
+    type: 'folder' | 'image' | 'all';
+    image?: any;
+}
+
+function openTab(name: string, folder_id: number | null, folder_frontend_index: number | null) {
+    if (allImagesOpen.value) {
+        allImagesOpen.value = false;
+    }
+
+    const existingTab: Tab = openTabs.value.find(tab => tab.name === name) as Tab;
+    console.log(existingTab);
+
+    console.log(openTabs.value);
+
+    if (existingTab) {
+        activeTab.value = existingTab.id;
+    }
+    else {
+        const newTab = {
+            id: Date.now(),
+            name: name,
+            folder_id: folder_id,
+            type: 'folder' as const,            
+        };
+
+        openTabs.value.push(newTab);
+        activeTab.value = newTab.id;
+    }
+}
+
+function openImageTab(image: Image) {
+    const existingTab = openTabs.value.find(tab => tab.type === 'image' && tab.image && tab.image.url === image.url);
+    const parentFolder = folders.value.find(folder => folder.images.some(img => img.image_id === image.image_id));
+
+
+    if (existingTab) {
+        activeTab.value = existingTab.id;
+    }
+    else {
+        console.log(openTabs.value.length);
+
+
+        const newTab: Tab = {
+            id: Date.now(),
+            name: image.label,
+            folder_id: parentFolder?.folder_id || null,
+            type: 'image',
+            image: image
+        };
+
+        openTabs.value.push(newTab);
+        activeTab.value = newTab.id;
+    }
+}
+
+function closeTab(tabId: number) {
+    const tab = openTabs.value.find(tab => tab.id === tabId);
+
+    if (!tab) return;
+
+    const folder_id = tab.folder_id as number;
+    //find the open tab with the same id in openTabs.value
+    const folder_frontend_index = openTabs.value.findIndex(t => t.id === tab.id);
+    
+    setFolderOpen(folder_frontend_index, false);
+
+    if (openTabs.value[folder_frontend_index].name === 'All Images') {
+        allImagesOpen.value = false;
+    }
+
+    if (folder_frontend_index !== -1) {
+        openTabs.value.splice(folder_frontend_index, 1);
+        if (activeTab.value === tabId) {
+            activeTab.value = openTabs.value.length > 0 ? openTabs.value[openTabs.value.length - 1].id : null;
+        }
+    }
+}
+
+function setActiveTab(tabId: number) {
+    activeTab.value = tabId;
+}
+
+function getActiveTabType() {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    return tab ? tab.type : null;
+}
+
+function getActiveTabImage(): Image | null {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    return tab && tab.type === 'image' ? tab.image : null;
+}
+
+function getActiveTabName() {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    return tab ? tab.name : '';
+}
+
+function getActiveTabImages(): Image[] | null {
+    const tab = openTabs.value.find(tab => tab.id === activeTab.value);
+    if (!tab) return [];
+    if (tab.name === 'All Images') {
+        return allImages.value;
+    }
+    else if (tab.folder_id !== null) {
+        const folder = folders.value.find(folder => folder.folder_id === tab.folder_id);
+        if (folder) {
+            return folder.images;
+        }
+    }
+    return [];
+}
+
+function dragStart(event: DragEvent, tabId: number) {
+    if (tabId === -1) return;
+    draggedTabId.value = tabId;
+}
+
+function drop(event: DragEvent, targetTabId: number) {
+    event.preventDefault();
+    
+    if (draggedTabId.value !== null && draggedTabId.value !== targetTabId) {
+        const draggedIndex = openTabs.value.findIndex(tab => tab.id === draggedTabId.value);
+        const targetIndex = openTabs.value.findIndex(tab => tab.id === targetTabId);
+        
+        if (draggedIndex !== -1 && targetIndex !== -1) {
+            const [draggedTab] = openTabs.value.splice(draggedIndex, 1);
+            openTabs.value.splice(targetIndex, 0, draggedTab);
+        }
+    }
+
+    draggedTabId.value = null;
+}
+// #endregion
 
 watch(imageManagerPopupOpen(), (newValue, oldValue) => {
     if (newValue) {
