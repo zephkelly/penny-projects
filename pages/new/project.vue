@@ -118,29 +118,40 @@
         v-model:content="pageContent"
         :pageRelatedSettings="pageRelatedSettings"
         style="justify-content: center;"/>
+    <ImageManager ref="imageManagerRef" @image-selected="onImageSelected" />
 </template>
 
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
 import { type ProjectSettingField, ProjectStatuses } from '~/types/project';
-import type { User } from '~/types/database';
-
+import type { User, Image } from '~/types/database';
 import { formatDateDDMMYYY } from '~/utils/date';
+import ImageManager from '~/components/popups/manager/image.vue';
 
 const { getUserInfo } = useAuth();
-
 definePageMeta({
     middleware: ['admin']
 })
 
-const pageContent = ref(``);
+//Image Manager
+const imageManagerRef = ref(null);
+provide('imageManagerRef', imageManagerRef);
 
+const onImageSelected = (image: Image) => {
+  // Handle image selection for the parent component
+  // ...
+};
+
+// User Info
 const userInfo: Ref<User | null | undefined> = ref(await getUserInfo());
-
 const profileImage = userInfo?.value?.profile_image;
-
+    
+// General Settings
 const createdDateIso = new Date().toISOString();
 const createdDate = formatDateDDMMYYY(createdDateIso);
+
+const pageContent = ref(``);
+
 
 // Main Settings
 const mainFields = reactive({
@@ -526,23 +537,21 @@ button.submit {
         color: #68686883;
 
         &.none {
+            background-color: #00000026;
+            border: 1px solid #0b0b0b26;
+            color: #00000049;
+
             &.selected, &:hover {
                 background-color: #cc1f1f42;
                 border: 1px solid #960a0a7d;
                 color: #b71010b9;
             }
 
-            &.selected {
-                &:hover {
-                    background-color: #94131342;
-                    border: 1px solid #5b07077d;
-                    color: #6d0909b9;
-                }
+            &.selected:hover {
+                background-color: #94131342;
+                border: 1px solid #5b07077d;
+                color: #6d0909b9;
             }
-
-            background-color: #00000026;
-            border: 1px solid #0b0b0b26;
-            color: #00000049;
         }
 
         &.completed, &.finished {
@@ -593,20 +602,14 @@ button.submit {
             }
         }
 
-        &.draft{
+        &.draft {
+            margin-right: 1rem;
+
             &:hover, &.selected {
                 background-color: #40404025;
                 border: 1px solid #545454db;
                 color: #3b3b3bca;
             }
-        }
-
-        &.archived {
-            margin-left: 1rem;
-        }
-
-        &.draft {
-            margin-right: 1rem;
         }
 
         &.cancelled, &.archived {
@@ -615,6 +618,10 @@ button.submit {
                 border: 1px solid #8e351fd2;
                 color: #8e351fd0;
             }
+        }
+
+        &.cancelled {
+            margin-right: 1rem;
         }
 
         &.selected {

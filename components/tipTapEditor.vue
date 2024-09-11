@@ -11,7 +11,8 @@
                                     <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
                                     <button @click="editor?.chain().focus().setHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H1</button>
                                     <button @click="editor?.chain().focus().setHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H2</button>
-                                    <button @click="imageManagerPopupOpen().value = true;">Image</button>
+                                    <button @click="openImageManager" :class="{ active: editor.isActive('customImage') }">Image New</button>
+                                    <button @click="imageManagerPopupOpen().value = true;" :class="{ active: editor.isActive('customImage') }" >Image</button>
                                 </div>
                             </div>
                             <div class="styles">
@@ -59,7 +60,7 @@
                         <button @click="editor?.chain().focus().setParagraph().run()" :class="{ active: editor.isActive('paragraph') }">Text</button>
                         <button @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ active: editor.isActive('heading', { level: 3 }) }">H1</button>
                         <button @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()" :class="{ active: editor.isActive('heading', { level: 4 }) }">H2</button>
-                        <button @click="imageManagerPopupOpen().value = true;">Image</button>
+                        <button @click="openImageManager" :class="{ active: editor.isActive('customImage') }">Image</button>
                     </div>
                 </floating-menu>
                 <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
@@ -163,22 +164,25 @@
                 </div>
             </div>
         </div>
-        <ImageManager @image-selected="onImageSelected" />
+        <!-- <ImageManager @image-selected="onImageSelected" /> -->
     </section>
 </template>
 
 <script setup lang="ts">
-import { type Image } from '~/types/database';
-import { useAuth } from '../composables/useAuth';
 import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/vue-3';
 import Link from '@tiptap/extension-link';
 import StarterKit from '@tiptap/starter-kit'
 import CustomImage from '~/tiptap/extensions/CustomImage'
-
 import { formatFromDDMMYYYYToISO } from '~/utils/date';
-import ImageManager from './popups/manager/image.vue';
+
+import { useAuth } from '../composables/useAuth';
+import { useImageManager } from '~/composables/useImageManager';
+
+import { type Image } from '~/types/database';
 
 const { isAdmin } = useAuth();
+
+const { imageManagerPopupOpen, selectImage } = await useImageManager();
 
 const emit = defineEmits(['update:content']);
 const props = defineProps<{
@@ -204,14 +208,11 @@ const hasFacebookLink = computed(() => {
 //@ts-ignore
 const handleEditorUpdate = ({ editor }) => {
   try {
-    console.log("try update content");
     editor.getHTML();
-    console.log("got update content");
 
     emit('update:content', editor.getHTML());
   } catch (error) {
     console.error('Error updating editor content:', error);
-    // Handle the error appropriately (e.g., show an error message to the user)
   }
 };
 
@@ -227,7 +228,6 @@ const editor = useEditor({
 
 onErrorCaptured((err, instance, info) => {
   console.error('Error in TipTapEditor:', err, instance, info);
-  // Optionally, you can handle the error here (e.g., show a user-friendly message)
   return false; // Prevents the error from propagating further
 });
 
@@ -239,32 +239,49 @@ function setImageObjectFit(objectFit: 'cover' | 'contain') {
     editor.value?.chain().focus().updateImageObjectFit(objectFit).run()
 }
 
+async function openImageManager() {
+  try {
+    const selectedImage = await selectImage()
+    if (selectedImage) {
+        onImageSelected(selectedImage);
+    }
+    else {
+      console.log('No image selected or selection cancelled')
+    }
+  }
+  catch (error) {
+    console.error('Error selecting image:', error)
+  }
+}
+
 function onImageSelected(image: Image) {
     if (image && editor.value) {
         const { state } = editor.value;
         const { $anchor } = state.selection;
         const insertPos = $anchor.pos;
 
-        const isAtEnd = insertPos === state.doc.content.size;
+        const isAtEnd = insertPos === state.doc.content.size || insertPos === state.doc.content.size - 1;
         const existingNode = state.doc.nodeAt(insertPos);
         const isExistingImage = existingNode && existingNode.type.name === 'customImage';
 
         if (isExistingImage === true) {
-            // If there's already an image, just replace it
+            console.log('Existing image');
             editor.value.chain().focus().setCustomImage({ src: image.url }).run();
             return;
         }
 
         if (isAtEnd) {
-            editor.value.chain().focus().insertContent({ type: 'paragraph' }).run();
+            editor.value.chain()
+                .focus()
+                .setCustomImage({ src: image.url })
+                .insertContentAt(insertPos, { type: 'paragraph' })
+                .run();
         }
         else {
-            const imageNode = state.doc.nodeAt(insertPos);
-            
-            if (imageNode) {
-                const afterImagePos = insertPos + imageNode.nodeSize;
-                editor.value.chain().focus().insertContentAt(afterImagePos, { type: 'paragraph' }).run();
-            }
+            editor.value.chain()
+                .focus()
+                .setCustomImage({ src: image.url })
+                .run();
         }
     }
     else {
@@ -328,15 +345,15 @@ const formatStatusName = (status: string) => {
 };
 
 watch(() => props.content, (newContent) => {
-  if (editor.value && newContent !== editor.value.getHTML()) {
-    editor.value.commands.setContent(newContent);
-  }
+    if (editor.value && newContent !== editor.value.getHTML()) {
+        editor.value.commands.setContent(newContent);
+    }
 });
 
 onMounted(() => {
-  if (editor.value && props.content) {
-    editor.value.commands.setContent(props.content);
-  }
+    if (editor.value && props.content) {
+        editor.value.commands.setContent(props.content);
+    }
 });
 </script>
 

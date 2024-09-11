@@ -1,6 +1,9 @@
+import { ref, computed, watch } from 'vue';
 import { type Image } from '~/types/database';
 
 export const useImageManager = async () => {
+
+    const imageManagerPopupOpen = () => useState<boolean>('imageManagerPopupOpen', () => false);
     const currentImageLabel = ref<string | null>(null);
 
     const currentUploadedImage = ref<File | null>(null);
@@ -10,6 +13,7 @@ export const useImageManager = async () => {
     const selectedParentFolderIndex = ref<number | null>(null);
     const selectedParentFolderId = ref<number | null>(null);
 
+    // Image uploading
     const setCurrentUploadedImage = (image: File) => {
         currentUploadedImage.value = image;
 
@@ -119,27 +123,51 @@ export const useImageManager = async () => {
         });
     }
 
+    // Image selection
     const isSelectingImage = ref(false);
     const selectedImage = ref<Image | null>(null);
+    const resolvePromise = useState<((value: Image | null) => void) | null>('imageManagerResolvePromise', () => null);
 
     const selectImage = () => {
+        imageManagerPopupOpen().value = true;
+        selectedImage.value = null;
+        isSelectingImage.value = true;
         return new Promise<Image | null>((resolve) => {
-            isSelectingImage.value = true
-            const unwatch = watch(selectedImage, (newValue) => {
-                if (newValue) {
-                    isSelectingImage.value = false
-                    unwatch()
-                    resolve(newValue)
-                }
-            })
-        })
-    }
+            resolvePromise.value = resolve;
+        });
+    };
 
     const setSelectedImage = (image: Image) => {
-        selectedImage.value = image
-    }
+        selectedImage.value = image;
+        if (resolvePromise.value) {
+            resolvePromise.value(image);
+            resolvePromise.value = null;
+        } else {
+            console.warn('No promise to resolve');
+        }
+        imageManagerPopupOpen().value = false;
+        isSelectingImage.value = false;
+    };
+
+    const cancelImageSelection = () => {
+        imageManagerPopupOpen().value = false;
+        selectedImage.value = null;
+        isSelectingImage.value = false;
+        if (resolvePromise.value) {
+            resolvePromise.value(null);
+            resolvePromise.value = null;
+        } else {
+            console.warn('No promise to resolve (cancel)');
+        }
+    };
 
     return {
+        imageManagerPopupOpen,
+        isSelectingImage,
+        selectImage,
+        setSelectedImage,
+        cancelImageSelection,
+
         currentImageLabel,
         currentUploadedImage,
         currentUploadedImageBlogUrl,
@@ -150,8 +178,5 @@ export const useImageManager = async () => {
         clearCurrentUploadedImage,
         canUploadImage,
         uploadImage,
-        isSelectingImage,
-        selectImage,
-        setSelectedImage
     }
 }

@@ -242,20 +242,23 @@
 import DragAndDropImageUpload from '~/components/dragAndDropImageUpload.vue';
 import { type Folder, type FrontendFolder, type FrontendPayload, type Image } from '~/types/database';
 
+import { useImageManager } from '~/composables/useImageManager';
+
 const { isAdmin } = useAuth();
 const { 
+    imageManagerPopupOpen,
+    cancelImageSelection,
     currentImageLabel,
-    setCurrentUploadedImage,
     currentUploadedImageBlogUrl,
     selectedParentFolderName,
     selectedParentFolderId,
     selectedParentFolderIndex,
+    setCurrentUploadedImage,
     clearCurrentUploadedImage,
     canUploadImage,
     uploadImage,
     isSelectingImage,
     setSelectedImage,
-    selectImage,
 } = await useImageManager();
  
 function closeImageManager() {
@@ -320,14 +323,16 @@ const getAllFolderImages = computed(() => {
   return folders.value.flatMap(folder => folder.images);
 });
 
+
 function useSelectedImage() {
-    const activeImage = getActiveTabImage();
-    if (activeImage) {
-        selectedImage.value = activeImage;
-        closeImageManager();
-        emit('image-selected', selectedImage.value);
-        setSelectedImage(selectedImage?.value);
-    }
+  const activeImage = getActiveTabImage()
+  if (activeImage) {
+    setSelectedImage(activeImage)
+  }
+}
+
+function cancelSelection() {
+    cancelImageSelection()
 }
 
 function handleDraggedFolderImage(image: File) {
@@ -775,9 +780,7 @@ const emit = defineEmits<{
 }>();
 
 defineExpose({
-    closeImageManager,
-    selectedImage,
-    selectImage
+    selectedImage
 });
 </script>
 
