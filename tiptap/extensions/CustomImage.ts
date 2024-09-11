@@ -24,29 +24,19 @@ export default Node.create({
   addAttributes() {
     return {
       src: {
-        default: null,
+        default: '',
       },
       alt: {
-        default: null,
+        default: '',
       },
       title: {
-        default: null,
+        default: '',
       },
       subtitle: {
-        default: null,
+        default: '',
       },
       height: {
         default: '300px',
-        parseHTML: element => element.style.height,
-        renderHTML: attributes => {
-          if (!attributes.height) {
-            return {}
-          }
-          const height = typeof attributes.height === 'number' ? `${attributes.height}px` : attributes.height
-          return {
-            style: `height: ${height}`,
-          }
-        },
       },
       objectFit: {
         default: 'contain',
@@ -58,13 +48,36 @@ export default Node.create({
     return [
       {
         tag: 'div[data-type="custom-image"]',
+        getAttrs: element => {
+          const img = element.querySelector('img')
+          return {
+            src: img?.getAttribute('src'),
+            alt: img?.getAttribute('alt') || '',
+            title: img?.getAttribute('title') || '',
+            height: element.style.height || '300px',
+            objectFit: img?.style.objectFit || 'contain',
+            subtitle: element.querySelector('.image-subtitle')?.textContent || '',
+          }
+        },
       },
     ]
   },
 
-  renderHTML({ HTMLAttributes }) {
-    return ['div', { 'data-type': 'custom-image' }, ['img', mergeAttributes(HTMLAttributes)]]
-  },
+    renderHTML({ HTMLAttributes }) {
+        const { src, alt, title, height, objectFit, subtitle } = HTMLAttributes
+
+        const imageElement = ['img', mergeAttributes({src, alt, title, style: `object-fit: ${objectFit || 'contain'}; height: 100%; width: 100%;`})]
+
+        if (subtitle) {
+            return [
+                'div', { 'data-type': 'custom-image', style: `height: ${height}` }, 
+                imageElement,
+                ['p', { class: 'image-subtitle' }, subtitle]
+            ]
+        }
+
+        return ['div', { 'data-type': 'custom-image', style: `height: ${height}` }, imageElement]
+    },
 
   addNodeView() {
     return VueNodeViewRenderer(ImageComponent)
@@ -87,6 +100,7 @@ export default Node.create({
   addCommands() {
     return {
       setCustomImage: options => ({ commands }) => {
+        console.log('options', options)
         return commands.insertContent({
           type: this.name,
           attrs: options,

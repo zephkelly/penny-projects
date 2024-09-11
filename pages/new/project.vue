@@ -35,21 +35,24 @@
                         <label for="status">Status</label>
                         <div class="status-list">
                             <button 
-                                v-for="status in projectStatuses" 
+                                v-for="status in ProjectStatuses" 
                                 :key="status.name"
                                 @click="selectStatus(status.name)"
-                                :class="{ 'selected': mainFields.status.value === status.name }"
+                                class="project-status-label"
+                                :class="[{ 'selected': mainFields.status.value === status.name },
+                                            status.name.replace(' ', '-')
+                                        ]"
                                 type="button"
                             >
                                 {{ formatStatusName(status.name) }}
                             </button>
                             <button 
                                 @click="removeStatus()"
-                                class="remove-status"
+                                class="project-status-label remove-status none"
                                 :class="{ 'selected': mainFields.status.value === '' }"
                                 type="button"
                             >
-                                x
+                                No status
                             </button>
                         </div>
                         <!-- <input class="input-text" v-model="mainFields.status.value" id="status" type="text" placeholder="" /> -->
@@ -112,14 +115,14 @@
         </Expander>
     </section>
     <tipTapEditor
-        :content="pageContent"
+        v-model:content="pageContent"
         :pageRelatedSettings="pageRelatedSettings"
         style="justify-content: center;"/>
 </template>
 
 <script setup lang="ts">
 import { ValidationError } from '~/types/validation';
-import { type ProjectSettingField, projectStatuses } from '~/types/project';
+import { type ProjectSettingField, ProjectStatuses } from '~/types/project';
 import type { User } from '~/types/database';
 
 import { formatDateDDMMYYY } from '~/utils/date';
@@ -130,14 +133,11 @@ definePageMeta({
     middleware: ['admin']
 })
 
-const pageContent = ref(`
-  <p></p>
-`);
+const pageContent = ref(``);
 
+const userInfo: Ref<User | null | undefined> = ref(await getUserInfo());
 
-const userInfo: User | null | undefined = await getUserInfo();
-
-const profileImage = userInfo?.profile_image;
+const profileImage = userInfo?.value?.profile_image;
 
 const createdDateIso = new Date().toISOString();
 const createdDate = formatDateDDMMYYY(createdDateIso);
@@ -148,12 +148,13 @@ const mainFields = reactive({
     subtitle: { value: '', error: null, maxLength: 100 },
     created_date: { value: createdDate, error: null } as ProjectSettingField,
     status: { value: 'draft', error: null } as ProjectSettingField,
-    author_name: { value: `${userInfo?.first_name} ${userInfo?.last_name}`, error: null, maxLength: 50 },
-    author_image: { value: profileImage, error: null } as ProjectSettingField,
+    author_name: { value: `${userInfo?.value?.first_name} ${userInfo?.value?.last_name}`, error: null, maxLength: 50 },
+    author_image: { value: null as string | null, error: null } as ProjectSettingField,
     cover_image: { value: false, error: null } as ProjectSettingField,
 });
 
-const mainFieldCount = computed(() => Object.values(mainFields).length);
+const mainIgnoreFields = ['status'];
+const mainFieldCount = computed(() => Object.keys(mainFields).filter(key => !mainIgnoreFields.includes(key)).length);
 
 const validateMainForm = (field: ProjectSettingField) => {
     if ('maxLength' in field === false) return;
@@ -173,7 +174,7 @@ Object.values(mainFields).forEach(field => {
 });
 
 const completedMainFields = computed(() => {
-    return getCompletedFieldsCount(mainFields);
+    return getCompletedFieldsCount(mainFields, mainIgnoreFields);
 });
 
 const selectStatus = (status: string) => {
@@ -207,7 +208,6 @@ const handleCoverImageRemoved = () => {
     mainFields.cover_image.value = false;
     mainFields.cover_image.error = ValidationError.REQUIRED;
 };
-
 
 // SEO Settings
 const seoFields = reactive({
@@ -243,9 +243,13 @@ const completedSEOFields = computed(() => {
     return getCompletedFieldsCount(seoFields);
 });
 
-function getCompletedFieldsCount(fields: Object): number {
-    return Object.values(fields).filter(field => {
-        return field.error === null && (field.value !== false && field.value !== '');
+function getCompletedFieldsCount(fields: Record<string, ProjectSettingField>, ignore?: string[]): number {
+    return Object.entries(fields).filter(([key, field]) => {
+        if (ignore && ignore.includes(key)) {
+            return false;
+        }
+        
+        return field.error === null && field.value !== false && field.value !== '';
     }).length;
 }
 
@@ -262,9 +266,60 @@ const pageRelatedSettings = computed(() => reactive({
     created_date: mainFields.created_date.value,
     author_name: mainFields.author_name.value,
     author_image: mainFields.author_image.value,
-    social_facebook: userInfo?.social_facebook,
-    social_instagram: userInfo?.social_instagram,
+    social_facebook: userInfo?.value?.social_facebook,
+    social_instagram: userInfo?.value?.social_instagram,
+    status: mainFields.status.value,
 }));
+
+// Draft saving and loading:
+const saveDraft = () => {
+    const draft = {
+        pageContent: pageContent.value,
+        mainFields,
+        seoFields,
+        userInfo: userInfo,
+    };
+
+    localStorage.setItem('projectDraft', JSON.stringify(draft));
+};
+
+const loadDraft = () => {
+    const savedDraft = localStorage.getItem('projectDraft');
+    if (savedDraft) {
+        const draft = JSON.parse(savedDraft);
+        pageContent.value = draft.pageContent;
+        Object.assign(mainFields, draft.mainFields);
+        Object.assign(seoFields, draft.seoFields);
+        userInfo.value = draft.userInfo;
+    }
+};
+
+const checkForDraft = () => {
+  const savedDraft = localStorage.getItem('projectDraft');
+  if (savedDraft) {
+    const confirmLoad = window.confirm(`An unsaved draft was found. Would you like to load it?`);
+    if (confirmLoad) {
+      loadDraft();
+    } else {
+      localStorage.removeItem('projectDraft');
+    }
+  }
+};
+
+watch([pageContent, mainFields, seoFields, userInfo], saveDraft, { deep: true });
+
+onMounted(() => {
+  checkForDraft();
+  getUserInfo().then(info => {
+    userInfo.value = info;
+    if (!mainFields.author_name.value) {
+      mainFields.author_name.value = `${info?.first_name} ${info?.last_name}`;
+    }
+    if (!mainFields.author_image.value) {
+      mainFields.author_image.value = info?.profile_image || null;
+    }
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -346,18 +401,6 @@ form.container {
 
     .date {
         width: auto;
-    }
-}
-
-.wrapper.status {
-    .remove-status {
-        margin-left: 1rem;
-    }
-
-    .selected {
-        border: 1px solid var(--admin);
-        background-color: var(--admin);
-        color: var(--background-color-secondary);
     }
 }
 
@@ -466,12 +509,179 @@ button.submit {
     transition: border-color 0.3s ease;
     will-change: border-color;
 }
+
+.status-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.5rem;
+
+    .project-status-label {
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        will-change: background-color, color;
+        min-height: 32px;
+        background-color: #5c5c5c19;
+        border: 1px solid #5c5c5c5e;
+        color: #68686883;
+
+        &.none {
+            &.selected, &:hover {
+                background-color: #cc1f1f42;
+                border: 1px solid #960a0a7d;
+                color: #b71010b9;
+            }
+
+            &.selected {
+                &:hover {
+                    background-color: #94131342;
+                    border: 1px solid #5b07077d;
+                    color: #6d0909b9;
+                }
+            }
+
+            background-color: #00000026;
+            border: 1px solid #0b0b0b26;
+            color: #00000049;
+        }
+
+        &.completed, &.finished {
+            &:hover, &.selected {
+                background-color: #4987102b;
+                border: 1px solid #456825de;
+                color: #39651fd1;
+            }
+        }
+
+        &.in-progress {
+            &:hover, &.selected {
+                background-color: #388bc735;
+                border: 1px solid #3068a8de;
+                color: #3364a8d1;
+            }
+        }
+
+        &.ongoing {
+            &:hover, &.selected {
+                background-color: #1e9eff26;
+                border: 1px solid #116db4c7;
+                color: #1165a9bc;
+            }
+        }
+
+        &.active {
+            &:hover, &.selected {
+                background-color: #0eadb62a;
+                border: 1px solid #0d8d86ad;
+                color: #0c7684be;
+            }
+        }
+
+        &.pending {
+            &:hover, &.selected {
+                background-color: #c4722125;
+                border: 1px solid #ca7b1adb;
+                color: #be7012ca;
+            }
+        }
+
+        &.proposed {
+            &:hover, &.selected {
+                background-color: #7318b825;
+                border: 1px solid #6b28b8a9;
+                color: #6f1aa19a;
+            }
+        }
+
+        &.draft{
+            &:hover, &.selected {
+                background-color: #40404025;
+                border: 1px solid #545454db;
+                color: #3b3b3bca;
+            }
+        }
+
+        &.archived {
+            margin-left: 1rem;
+        }
+
+        &.draft {
+            margin-right: 1rem;
+        }
+
+        &.cancelled, &.archived {
+            &:hover, &.selected {
+                background-color: #ab351815;
+                border: 1px solid #8e351fd2;
+                color: #8e351fd0;
+            }
+        }
+
+        &.selected {
+            background-color: var(--admin);
+            border: 1px solid var(--admin);
+            color: var(--background-color-secondary);
+        }
+    }
+}
 </style>
 
 <style lang="scss">
-.field .author {
-    .image-preview-container {
-        height: 100%;
+.project-status-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.4rem 0.8rem;
+    width: auto;
+    border-radius: 8px;
+
+    &.completed, &.finished {
+        background-color: #4987102b;
+        border: 1px solid #456825de;
+        color: #39651fd1;
+    }
+
+    &.in-progress {
+        background-color: #388bc735;
+        border: 1px solid #3068a8de;
+        color: #3364a8d1;
+    }
+
+    &.ongoing {
+        background-color: #1e9eff26;
+        border: 1px solid #116db4c7;
+        color: #1165a9bc;
+    }
+
+    &.active {
+        background-color: #0eadb62a;
+        border: 1px solid #0d8d86ad;
+        color: #0c7684be;
+    }
+    
+    &.pending {
+        background-color: #b8681825;
+        border: 1px solid #c2710fdb;
+        color: #a76413ca;
+    }
+
+    &.proposed {
+        background-color: #7318b825;
+        border: 1px solid #6b28b8a9;
+        color: #6f1aa19a;
+    }
+    
+    &.archived, &.draft {
+        background-color: #40404025;
+        border: 1px solid #545454db;
+        color: #3b3b3bca;
+    }
+
+    &.cancelled {
+        background-color: #ab351815;
+        border: 1px solid #8e351fd2;
+        color: #8e351fd0;
     }
 }
 </style>

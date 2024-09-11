@@ -143,6 +143,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="status">
+                                    <button 
+                                        class="project-status-label remove-status none"
+                                        :class="pageRelatedSettings.status.replace(' ', '-')"
+                                        type="button">
+                                        {{ formatStatusName(pageRelatedSettings.status) }}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,6 +201,20 @@ const hasFacebookLink = computed(() => {
     return props.pageRelatedSettings.social_facebook !== undefined || props.pageRelatedSettings.social_instagram !== '';
 });
 
+//@ts-ignore
+const handleEditorUpdate = ({ editor }) => {
+  try {
+    console.log("try update content");
+    editor.getHTML();
+    console.log("got update content");
+
+    emit('update:content', editor.getHTML());
+  } catch (error) {
+    console.error('Error updating editor content:', error);
+    // Handle the error appropriately (e.g., show an error message to the user)
+  }
+};
+
 const editor = useEditor({
     extensions: [
         StarterKit,
@@ -200,6 +222,13 @@ const editor = useEditor({
         CustomImage,
     ],
     content: props.content,
+    onUpdate: handleEditorUpdate,
+});
+
+onErrorCaptured((err, instance, info) => {
+  console.error('Error in TipTapEditor:', err, instance, info);
+  // Optionally, you can handle the error here (e.g., show a user-friendly message)
+  return false; // Prevents the error from propagating further
 });
 
 const imageObjectFit = computed(() => {
@@ -211,19 +240,50 @@ function setImageObjectFit(objectFit: 'cover' | 'contain') {
 }
 
 function onImageSelected(image: Image) {
-    if (image) {
-    editor.value?.chain()
-      .focus()
-      .setCustomImage({ src: image.url })
-      .insertContentAt(editor.value.state.selection.$anchor.after() - 1, { type: 'paragraph' })
-      .run();
-  } else {
-    console.log('No image selected');
-    window.alert('No image selected');
-  }
+    if (image && editor.value) {
+        const { state } = editor.value;
+        const { $anchor } = state.selection;
+        const insertPos = $anchor.pos;
+
+        const isAtEnd = insertPos === state.doc.content.size;
+        const existingNode = state.doc.nodeAt(insertPos);
+        const isExistingImage = existingNode && existingNode.type.name === 'customImage';
+
+        if (isExistingImage === true) {
+            // If there's already an image, just replace it
+            editor.value.chain().focus().setCustomImage({ src: image.url }).run();
+            return;
+        }
+
+        if (isAtEnd) {
+            editor.value.chain().focus().insertContent({ type: 'paragraph' }).run();
+        }
+        else {
+            const imageNode = state.doc.nodeAt(insertPos);
+            
+            if (imageNode) {
+                const afterImagePos = insertPos + imageNode.nodeSize;
+                editor.value.chain().focus().insertContentAt(afterImagePos, { type: 'paragraph' }).run();
+            }
+        }
+    }
+    else {
+        console.log('No image selected');
+        window.alert('No image selected');
+    }
 }
 
-const imageHeight = ref(300);
+const getImageHeight = computed(() => {
+    const getImageHeight = editor.value?.getAttributes('customImage').height;
+
+    if (getImageHeight) {
+        return parseInt(getImageHeight.replace('px', ''));
+    }
+
+    return 300;
+});
+
+const imageHeight = ref(getImageHeight);
 
 function adjustImageHeight(direction: 'up' | 'down') {
   const adjustment = direction === 'up' ? 50 : -50;
@@ -232,16 +292,17 @@ function adjustImageHeight(direction: 'up' | 'down') {
   editor.value?.chain().focus().updateImageHeight(`${newHeight}px`).run();
 }
 
-const imageHasSubtitle = computed(() => {
-  if (editor.value?.isActive('customImage')) {
-    const { state } = editor.value;
-    const { selection } = state;
-    const node = selection.$anchor.node();
-    //@ts-expect-error
-    return node.content.content[0].attrs.subtitle != null && node.content.content[0].attrs.subtitle !== '';
-  }
-  return false;
+const getImageHasSubtitle = computed(() => {
+    const getImageSubtitle = editor.value?.getAttributes('customImage').subtitle;
+
+    if (getImageSubtitle) {
+        return true;
+    }
+
+    return false;
 });
+
+const imageHasSubtitle = ref(getImageHasSubtitle);
 
 function addImageSubtitle() {
   const subtitle = window.prompt('Enter image subtitle:');
@@ -261,6 +322,22 @@ function openLinkPopup() {
         editor.value?.chain().focus().setLink({ href: link }).run();
     }
 }
+
+const formatStatusName = (status: string) => {
+    return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
+
+watch(() => props.content, (newContent) => {
+  if (editor.value && newContent !== editor.value.getHTML()) {
+    editor.value.commands.setContent(newContent);
+  }
+});
+
+onMounted(() => {
+  if (editor.value && props.content) {
+    editor.value.commands.setContent(props.content);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -522,7 +599,7 @@ function openLinkPopup() {
     }
 }
 
-button {
+button:not(.project-status-label) {
     font-family: 'Inter', sans-serif;
     background-color: #f0eeec;
     border: none;
@@ -537,7 +614,7 @@ button {
     transition: color 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     text-wrap: nowrap;
 
-    &:hover {
+    &:hover  {
         background-color: #e0e0e0;
     }
 
@@ -588,9 +665,9 @@ button {
 
     .post-information {
         display: flex;
-        align-items: center;
+        // align-items: center;
         width: 100%;
-        height: 75px;
+        // height: 75px;
         // padding: 0.75rem 0rem;
         // border-bottom: 1px solid var(--grey5);
         // border-top: 1px solid var(--grey5);
@@ -611,6 +688,10 @@ button {
                 height: 53px;
                 object-fit: cover;
             }
+        }
+
+        .status {
+            margin-left: auto;
         }
     }
 
@@ -820,16 +901,18 @@ button {
 
     blockquote {
         position: relative;
-        margin: 0rem 5%;
+        margin: 3rem 5%;
 
         p {
             font-style: oblique 6deg;
             color: var(--grey2);
+            font-size: 22px;
         }
 
         p:nth-child(2n) {
             margin-top: 0rem;
             text-align: right;
+            font-size: 20px;
         }
     }
 
@@ -901,6 +984,12 @@ button {
             height: 100%;
             object-fit: cover;
         }
+    }
+}
+
+.page-heading-content {
+    p {
+        line-height: 24px;
     }
 }
 

@@ -1,6 +1,11 @@
 <template>
-    <NodeViewWrapper class="image-component" :style="{ height: componentHeight }">
-        <img :src="node.attrs.src" :alt="node.attrs.alt" :title="node.attrs.title" :style="{ objectFit: node.attrs.objectFit }" />
+    <NodeViewWrapper class="image-component" :style="{ height: node.attrs.height }">
+        <img 
+            :src="node.attrs.src" 
+            :alt="node.attrs.alt" 
+            :title="node.attrs.title" 
+            :style="{ objectFit: node.attrs.objectFit, height: '100%', width: '100%' }" 
+        />
         <p v-if="node.attrs.subtitle" class="image-subtitle">{{ node.attrs.subtitle }}</p>
     </NodeViewWrapper>
 </template>
@@ -22,11 +27,11 @@ export default {
             required: true,
         },
     },
-    computed: {
-        componentHeight() {
-            return typeof this.node.attrs.height === 'number' ? `${this.node.attrs.height}px` : this.node.attrs.height;
-        }
-    }
+    // computed: {
+    //     componentHeight() {
+    //         return typeof this.node.attrs.height === 'number' ? `${this.node.attrs.height}px` : this.node.attrs.height;
+    //     }
+    // }
 }
 </script>
 
