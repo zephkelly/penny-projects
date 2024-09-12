@@ -2,8 +2,10 @@
     <section class="new-project-hero component" style="justify-content: center;">
         <div class="container">
             <h1 class="header">New Project</h1>
-            <button class="submit draft" @click.prevent="handleProjectDraftSubmit">Save Draft</button>
-            <button class="submit" @click.prevent="handleProjectSubmit">Publish</button>
+            <div class="project-buttons">
+                <button class="submit draft" @click.prevent="handleProjectDraftSubmit">Save Draft</button>
+                <button class="submit" @click.prevent="handleProjectSubmit">Publish</button>
+            </div>
         </div>
     </section>
     <section class="metadata component">
@@ -344,6 +346,8 @@ const handleProjectDraftSubmit = async () => {
         published: false,
         content: pageContent.value,
     };
+
+    console.log('Draft:', newProject);
     
     const response = await $fetch('/api/upload/project', {
         method: 'POST',
@@ -358,6 +362,7 @@ const handleProjectDraftSubmit = async () => {
 const handleProjectSubmit = async () => {
     //@ts-ignore
     const newProject: Project = {
+        project_id: projectId.value || null,
         title: mainFields.title.value,
         subtitle: mainFields.subtitle.value,
         created_date: mainFields.created_date.value as string,
@@ -371,12 +376,14 @@ const handleProjectSubmit = async () => {
         published: true,
         content: pageContent.value,
     };
+
+    console.log('Publishing:', newProject);
     
     const response = await $fetch('/api/upload/project', {
         method: 'POST',
         body: { project: newProject }
     });
-
+    
     console.log(response);
 };
 
@@ -427,6 +434,45 @@ section.new-project-hero {
         @media (max-width: 768px) {
             flex-direction: column;
             gap: 1rem;
+        }
+    }
+
+    .project-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .submit {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--grey5);
+            border: 1px solid var(--admin-dark);
+            border-radius: 8px;
+            cursor: pointer;
+            min-width: 60px;
+            padding: 0rem 1.5rem;
+            font-size: 0.9rem;
+            background-color: var(--admin);
+            color: var(--background-color-secondary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            &:hover {
+                background-color: var(--admin-dark);
+            }
+
+            &.draft {
+                border: 1px solid var(--grey2);
+                background-color: var(--grey4);
+                color: var(--black2);
+
+                &:hover {
+                    background-color: var(--grey3);
+                }
+            }
         }
     }
 }
@@ -613,32 +659,6 @@ input.author-name {
         @media (max-width: 550px) {
             flex-direction: column;
         }
-    }
-}
-
-button.submit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 180px;
-    padding: 0.5rem 1rem;
-    background-color: var(--admin);
-    color: var(--background-color-secondary);
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    will-change: background-color, color;
-
-    &:hover {
-        background-color: var(--admin-dark);
-    }
-
-    @media (max-width: 768px) {
-        height: 3.6rem;
-        width: 100%;
     }
 }
 

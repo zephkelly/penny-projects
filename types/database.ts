@@ -49,18 +49,18 @@ export type FrontendPayload<T> = {
 };
 
 export interface Project {
-    project_id: number;
-    title: string;
-    subtitle: string;
-    created_date: string;
-    updated_date: string;
-    status: ProjectStatus;
-    published: boolean;
-    author_name: string;
-    author_image_url: string;
-    cover_image_url: string;
-    slug: string;
-    seo_title: string;
-    seo_meta_description: string;
-    content: string;
+    project_id: number | null;
+    title: string | null;
+    subtitle: string | null;
+    created_date: string | null;
+    updated_date: string | null;
+    status: ProjectStatus | null;
+    published: boolean | null;
+    author_name: string | null;
+    author_image_url: string | null;
+    cover_image_url: string | null;
+    slug: string | null;
+    seo_title: string | null;
+    seo_meta_description: string | null;
+    content: string | null;
 }

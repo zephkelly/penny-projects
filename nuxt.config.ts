@@ -5,7 +5,9 @@ export default defineNuxtConfig({
     buildModules: ['@nuxtjs/sass'],
     modules: ['nuxt-gtag', "nuxt-tiptap-editor"],
 
-    // plugins: ['~/plugins/checkAuth.ts'],
+    routeRules: {
+        '/new/projects': { redirect: '/new/project' },
+    },
 
     gtag: {
         id: 'G-9X0EKVWFPG',
