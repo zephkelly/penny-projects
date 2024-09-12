@@ -1,70 +1,37 @@
 <template>
-    <div v-if="projects.length > 0" class="carousel">
+    <div v-if="projects.length > 0" class="carousel" :class="{ transitioning: isTransitioning }">
       <div v-if="projects.length === 1" class="single-project carousel-slide">
         <!-- Single project display -->
-        <div class="left-panel" :style="`background-color: ${projects[0].cover_colour_main}`">
-          <h2 :style="`color: ${projects[0].cover_colour_contrast}`">{{ projects[0].title }}</h2>
-          <p>{{ projects[0].subtitle }}</p>
-        </div>
-        <div class="right-image">
-          <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[0].cover_colour_main});`"></div>
-          <img :src="projects[0].cover_image_url" loading="eager">
-        </div>
+        <ProjectsCarouselSlide :project="projects[0]" />
       </div>
       <template v-else>
         <div class="carousel-container" 
-             :style="containerStyle" 
-             @mouseenter="pauseAutoSlide"
-             @mouseleave="resumeAutoSlide"
-             @transitionend="onTransitionEnd">
-          <!-- Clone of last slide -->
-          <div class="carousel-slide">
-            <div class="left-panel" :style="`background-color: ${projects[projects.length - 1].cover_colour_main}`">
-              <h2 :style="`color: ${projects[projects.length - 1].cover_colour_contrast}`">{{ projects[projects.length - 1].title }}</h2>
-              <p>{{ projects[projects.length - 1].subtitle }}</p>
-            </div>
-            <div class="right-image">
-              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[projects.length - 1].cover_colour_main});`"></div>
-              <img :src="projects[projects.length - 1].cover_image_url" loading="eager">
-            </div>
-          </div>
-          <!-- Original slides -->
-          <div v-for="(project, index) in projects" :key="`${project.project_id}-${index}`" class="carousel-slide">
-            <div class="left-panel" :style="`background-color: ${project.cover_colour_main}`">
-              <h2 :style="`color: ${project.cover_colour_contrast}`">{{ project.title }}</h2>
-              <p>{{ project.subtitle }}</p>
-            </div>
-            <div class="right-image">
-              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${project.cover_colour_main});`"></div>
-              <img :src="project.cover_image_url" loading="eager">
-            </div>
-          </div>
-          <!-- Clone of first slide -->
-          <div class="carousel-slide">
-            <div class="left-panel" :style="`background-color: ${projects[0].cover_colour_main}`">
-              <h2 :style="`color: ${projects[0].cover_colour_contrast}`">{{ projects[0].title }}</h2>
-              <p>{{ projects[0].subtitle }}</p>
-            </div>
-            <div class="right-image">
-              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[0].cover_colour_main});`"></div>
-              <img :src="projects[0].cover_image_url" loading="eager">
-            </div>
-          </div>
+            :style="containerStyle" 
+            @mouseenter="pauseAutoSlide"
+            @mouseleave="resumeAutoSlide"
+            @transitionend="onTransitionEnd"
+        >
+            <!-- Clone of last slide -->
+            <ProjectsCarouselSlide :project="projects[projects.length - 1]" />
+            <!-- Original slides -->
+            <ProjectsCarouselSlide v-for="(project, index) in projects" :project="project" :key="`${project.project_id}-${index}`" />
+            <!-- Clone of first slide -->
+            <ProjectsCarouselSlide :project="projects[0]" />
         </div>
         <button @click="navigate(-1)"
                 @mouseenter="pauseControlDisplay"
                 @mouseleave="resumeControlDisplay"
-                class="carousel-control prev"
-                :class="{ active: isControlVisible, hovering: isHovering }"
-                :style="`background-color: ${currentTextColor}`">
+                class="carousel-control prev left"
+                :style="{ 'border-color': currentMainColor, 'color': currentMainColor }"
+                :class="{ active: isControlVisible, hovering: isHovering }">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
         </button>
         <button @click="navigate(1)"
                 @mouseenter="pauseControlDisplay"
                 @mouseleave="resumeControlDisplay"
                 class="carousel-control next"
-                :class="{ active: isControlVisible, hovering: isHovering }"
-                :style="`background-color: ${currentTextColor}`">
+                :class="[{ active: isControlVisible, hovering: isHovering }, currentContrastColor]"
+                :style="{ 'border-color': currentMainColor, 'color': currentMainColor }">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
         </button>
       </template>
@@ -91,10 +58,14 @@
     transform: `translateX(-${(currentIndex.value + 1) * 100}%)`,
     transition: isTransitioning.value ? 'transform 0.6s cubic-bezier(.23,.29,0,1)' : 'none'
   }))
+
+  const currentMainColor = computed(() => {
+    return props.projects[normalizeIndex(currentIndex.value)].cover_colour_main;
+  })
   
-  const currentTextColor = computed(() => 
-    props.projects.length > 1 ? props.projects[normalizeIndex(currentIndex.value)].cover_colour_contrast : ''
-  )
+  const currentContrastColor = computed(() => {
+    return props.projects.length > 1 ? props.projects[normalizeIndex(currentIndex.value)].cover_colour_contrast === 'rgb(22, 22, 22)' ? 'dark' : 'light' : 'dark'
+  })
   
   function normalizeIndex(index: number) {
     return (index + props.projects.length) % props.projects.length
@@ -179,15 +150,54 @@
       startControlDisplay()
     }
   })
-  </script>
+</script>
+
+<style lang="scss">
+.carousel {
+    &.transitioning {
+        .carousel-slide {
+            .left-panel {
+                transition: none;
+            }
+    
+            .right-image {
+                transition: none;
+    
+                img {
+                    transition: none;
+                }
+            }
+        }
+    }
+    
+    &:hover:not(.transitioning) {
+        .carousel-slide {
+            .left-panel {
+                width: 59.5%;
+            }
+    
+            .right-image {
+                width: 40.5%;
+
+                img {
+                    transform: scale(1.02);
+                }
+            }
+        }
+    }
+}
+</style>
   
 <style lang="scss" scoped>
     .carousel {
-        position: relative;
         width: 100%;
         height: 400px;
         overflow: hidden;
         border-radius: 12px;
+
+        * {
+            box-sizing: border-box;
+        }
     }
   
     .carousel-container {
@@ -195,91 +205,45 @@
         height: 100%;
     }
 
-    .carousel-slide {
-        display: flex;
-        height: 100%;
-        flex: 0 0 100%;
-        cursor: pointer;
-    }
-
-    .carousel-slide {
-        
-    }
-  
-    .left-panel {
-        flex: 0 0 40%;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
-    }
-
-    .left-panel h2 {
-        font-family: "Poppins", "Inter", sans-serif;
-        font-weight: 600;
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .right-image {
-        flex: 0 0 60%;
-        overflow: hidden;
-        position: relative;
-    }
-
-
-    .right-image .fade {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-    }
-
-    .right-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: translateX(-40px);
-        border-top-right-radius: 12px;
-        border-bottom-right-radius: 12px;
-    }
-
     .carousel-control {
         position: absolute;
-        bottom: 1rem;
-        color: white;
+        bottom: 0.5rem;
+        
         border: none;
         padding: 10px;
-        margin: 1rem;
-        margin-bottom: 0.8rem;
+        margin: 0.95rem;
+        margin-bottom: 0.75rem;
         cursor: pointer;
         z-index: 10;
         opacity: 0;
         transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+        will-change: opacity;
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        will-change: background-color, color, border-color, opacity;
+        border: 1px solid var(--black2);
+        color: var(--black2);
+        background-color: var(--background-color-main);
     }
 
     .carousel-control svg {
         width: 100%;
         height: 100%;
+        fill: currentColor;
     }
 
     .carousel-control.active {
-        opacity: 0.75;
+        opacity: 1;
 
         &:hover {
-            opacity: 1;
+            opacity: 0.75;
         }
     }
 
     .carousel-control.hovering {
-        opacity: 0.75;
+        opacity: 1;
     }
 
     .prev {

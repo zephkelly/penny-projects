@@ -933,7 +933,6 @@ button:not(.project-status-label) {
 
     p {
         font-size: 18px;
-        line-height: 1.5rem;
         font-weight: 400;
         margin-top: 1.85rem;
         line-height: 32px;

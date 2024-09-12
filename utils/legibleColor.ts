@@ -14,7 +14,7 @@ export default function getLegibleTextColor(colorRGB: string): string {
     const luminance = calculateRelativeLuminance(...rgb);
 
     // Return black for light backgrounds and white for dark backgrounds
-    return luminance > 0.179 ? black2 : white2;
+    return luminance > 0.15 ? black2 : white2;
 }
 
 function parseColor(color: string): RGB | null {
@@ -36,6 +36,6 @@ function calculateRelativeLuminance(r: number, g: number, b: number): number {
         const c = component / 255;
         return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
     });
-    
+
     return 0.2126 * rr + 0.7152 * gg + 0.0722 * bb;
 }
