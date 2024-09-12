@@ -20,6 +20,7 @@ export const ProjectStatuses: ProjectStatus[] = [
 
 export interface ProjectSettingField {
     value: string | boolean | ProjectStatus | null;
+    id?: number;
     error: ValidationError | null;
     maxLength?: number;
 }

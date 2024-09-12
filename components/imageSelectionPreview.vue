@@ -60,7 +60,7 @@ const selectFromImageManager = async () => {
         imageHeight.value = image.height;
         resetImagePosition();
         console.log('Image selected', image.url);
-        emit('image-selected', image.url);
+        emit('image-selected', image);
     }
 };
 

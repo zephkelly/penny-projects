@@ -1,153 +1,184 @@
 <template>
-    <div class="carousel">
-      <div class="carousel-container" 
-           :style="containerStyle" 
-           @mouseenter="{ pauseAutoSlide(); pauseControlDisplay(); }"
-           @mouseleave="{ resumeAutoSlide(); resumeControlDisplay(); }"
-           @transitionend="onTransitionEnd">
-        <div v-for="(slide, index) in displayedSlides" :key="`${slide.id}-${index}`" class="carousel-slide">
-          <div class="left-panel" :style="`background-color: ${slide.dominantColor}`">
-            <h2 :style="`color: ${slide.textColor}`">{{ slide.title }}</h2>
-            <p>{{ slide.description }}</p>
-          </div>
-          <div class="right-image">
-            <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${slide.dominantColor});`"></div>
-            <img :src="slide.image" :alt="slide.alt" loading="eager">
-          </div>
+    <div v-if="projects.length > 0" class="carousel">
+      <div v-if="projects.length === 1" class="single-project carousel-slide">
+        <!-- Single project display -->
+        <div class="left-panel" :style="`background-color: ${projects[0].cover_colour_main}`">
+          <h2 :style="`color: ${projects[0].cover_colour_contrast}`">{{ projects[0].title }}</h2>
+          <p>{{ projects[0].subtitle }}</p>
+        </div>
+        <div class="right-image">
+          <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[0].cover_colour_main});`"></div>
+          <img :src="projects[0].cover_image_url" loading="eager">
         </div>
       </div>
-      <button @click="navigate(-1)"
-              @mouseenter="{ pauseAutoSlide(); pauseControlDisplay(); }"
-              @mouseleave="{ resumeAutoSlide(); resumeControlDisplay(); }"
-              class="carousel-control prev"
-              :class="{ active: isControlVisible }"
-              :style="`background-color: ${currentTextColor}`">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
-      </button>
-      <button @click="navigate(1)"
-              @mouseenter="{ pauseAutoSlide(); pauseControlDisplay(); }"
-              @mouseleave="{ resumeAutoSlide(); resumeControlDisplay(); }"
-              class="carousel-control next"
-              :class="{ active: isControlVisible }"
-              :style="`background-color: ${currentTextColor}`">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
-      </button>
+      <template v-else>
+        <div class="carousel-container" 
+             :style="containerStyle" 
+             @mouseenter="pauseAutoSlide"
+             @mouseleave="resumeAutoSlide"
+             @transitionend="onTransitionEnd">
+          <!-- Clone of last slide -->
+          <div class="carousel-slide">
+            <div class="left-panel" :style="`background-color: ${projects[projects.length - 1].cover_colour_main}`">
+              <h2 :style="`color: ${projects[projects.length - 1].cover_colour_contrast}`">{{ projects[projects.length - 1].title }}</h2>
+              <p>{{ projects[projects.length - 1].subtitle }}</p>
+            </div>
+            <div class="right-image">
+              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[projects.length - 1].cover_colour_main});`"></div>
+              <img :src="projects[projects.length - 1].cover_image_url" loading="eager">
+            </div>
+          </div>
+          <!-- Original slides -->
+          <div v-for="(project, index) in projects" :key="`${project.project_id}-${index}`" class="carousel-slide">
+            <div class="left-panel" :style="`background-color: ${project.cover_colour_main}`">
+              <h2 :style="`color: ${project.cover_colour_contrast}`">{{ project.title }}</h2>
+              <p>{{ project.subtitle }}</p>
+            </div>
+            <div class="right-image">
+              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${project.cover_colour_main});`"></div>
+              <img :src="project.cover_image_url" loading="eager">
+            </div>
+          </div>
+          <!-- Clone of first slide -->
+          <div class="carousel-slide">
+            <div class="left-panel" :style="`background-color: ${projects[0].cover_colour_main}`">
+              <h2 :style="`color: ${projects[0].cover_colour_contrast}`">{{ projects[0].title }}</h2>
+              <p>{{ projects[0].subtitle }}</p>
+            </div>
+            <div class="right-image">
+              <div class="fade" :style="`background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, ${projects[0].cover_colour_main});`"></div>
+              <img :src="projects[0].cover_image_url" loading="eager">
+            </div>
+          </div>
+        </div>
+        <button @click="navigate(-1)"
+                @mouseenter="pauseControlDisplay"
+                @mouseleave="resumeControlDisplay"
+                class="carousel-control prev"
+                :class="{ active: isControlVisible, hovering: isHovering }"
+                :style="`background-color: ${currentTextColor}`">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+        </button>
+        <button @click="navigate(1)"
+                @mouseenter="pauseControlDisplay"
+                @mouseleave="resumeControlDisplay"
+                class="carousel-control next"
+                :class="{ active: isControlVisible, hovering: isHovering }"
+                :style="`background-color: ${currentTextColor}`">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
+        </button>
+      </template>
+    </div>
+    <div v-else class="no-projects">
+      No projects available
     </div>
   </template>
   
-<script setup>
-    import { ref, computed, onMounted, nextTick } from 'vue'
-    
-    const props = defineProps({
-        slides: {
-        type: Array,
-        required: true
-        }
-    })
-    
-    const currentIndex = ref(0)
-    const isTransitioning = ref(false)
-    const isHovering = ref(false)
-    const isControlVisible = ref(false)
-    const wasHovering = ref(false)
-    
-    const displayedSlides = computed(() => {
-        const slidesWithIds = props.slides.map((slide, index) => ({ ...slide, id: index }))
-        return [...slidesWithIds.slice(-1), ...slidesWithIds, ...slidesWithIds.slice(0, 1)]
-    })
-    
-    const containerStyle = computed(() => ({
-        transform: `translateX(-${(currentIndex.value + 1) * 100}%)`,
-        transition: isTransitioning.value ? 'transform 0.6s cubic-bezier(.23,.29,0,1)' : 'none'
-    }))
-    
-    const currentTextColor = computed(() => props.slides[normalizeIndex(currentIndex.value)].textColor)
+  <script setup lang="ts">
+  import { ref, computed, onMounted, nextTick } from 'vue'
+  import { type FrontendProject } from '~/types/database';
   
-    function normalizeIndex(index) {
-        return (index + props.slides.length) % props.slides.length
+  const props = defineProps<{
+    projects: FrontendProject[]
+  }>();
+  
+  const currentIndex = ref(0)
+  const isTransitioning = ref(false)
+  const isHovering = ref(false)
+  const isControlVisible = ref(false)
+  
+  const containerStyle = computed(() => ({
+    transform: `translateX(-${(currentIndex.value + 1) * 100}%)`,
+    transition: isTransitioning.value ? 'transform 0.6s cubic-bezier(.23,.29,0,1)' : 'none'
+  }))
+  
+  const currentTextColor = computed(() => 
+    props.projects.length > 1 ? props.projects[normalizeIndex(currentIndex.value)].cover_colour_contrast : ''
+  )
+  
+  function normalizeIndex(index: number) {
+    return (index + props.projects.length) % props.projects.length
+  }
+  
+  function navigate(direction: number) {
+    if (props.projects.length <= 1) return;
+    move(direction);
+    startAutoSlide();
+  }
+  
+  function move(direction: number) {
+    if (isTransitioning.value || props.projects.length <= 1) return;
+  
+    isTransitioning.value = true;
+    currentIndex.value += direction;
+  }
+  
+  async function onTransitionEnd() {
+    if (currentIndex.value === -1) {
+      await snapToSlide(props.projects.length - 1)
+    } else if (currentIndex.value === props.projects.length) {
+      await snapToSlide(0)
     }
-
-    function navigate(direction) {
-        move(direction);
-        startAutoSlide();
+    
+    isTransitioning.value = false
+  }
+  
+  async function snapToSlide(index: number) {
+    isTransitioning.value = false
+    await nextTick()
+    currentIndex.value = index
+  }
+  
+  let controlsDisplayInterval: any;
+  const startControlDisplay = () => {
+    if (controlsDisplayInterval) {
+      clearInterval(controlsDisplayInterval)
     }
   
-    function move(direction) {
-        if (isTransitioning.value) return
-
-        isTransitioning.value = true;
-
-        wasHovering.value = isHovering.value;
-        isHovering.value = false;
-
-        currentIndex.value += direction
+    controlsDisplayInterval = setInterval(() => {
+      isControlVisible.value = false;
+    }, 2000)
+  }
+  
+  const pauseControlDisplay = () => {
+    clearInterval(controlsDisplayInterval);
+    isControlVisible.value = true;
+  }
+  
+  const resumeControlDisplay = () => {
+    startControlDisplay();
+  }
+  
+  let autoSlideInterval: any;
+  function startAutoSlide() {
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval)
     }
-    
-    async function onTransitionEnd() {
-        if (currentIndex.value === -1) {
-            await snapToSlide(props.slides.length - 1)
-        } else if (currentIndex.value === props.slides.length) {
-            await snapToSlide(0)
-        }
-
-        if (wasHovering.value) {
-            isHovering.value = true;
-        }
-        
-        isTransitioning.value = false
+  
+    if (props.projects.length <= 1) return;
+  
+    autoSlideInterval = setInterval(() => {
+      if (isHovering.value) return;
+      move(1);
+    }, 6000)
+  }
+  
+  function pauseAutoSlide() {
+    clearInterval(autoSlideInterval)
+    isHovering.value = true
+  }
+  
+  function resumeAutoSlide() {
+    isHovering.value = false
+    startAutoSlide()
+  }
+  
+  onMounted(() => {
+    if (props.projects.length > 1) {
+      startAutoSlide()
+      startControlDisplay()
     }
-    
-    async function snapToSlide(index) {
-        isTransitioning.value = false
-        await nextTick()
-        currentIndex.value = index
-    }
-
-    let controlsDisplayInterval;
-    const startControlDisplay = () => {
-        if (controlsDisplayInterval) {
-            clearInterval(controlsDisplayInterval)
-        }
-
-        controlsDisplayInterval = setInterval(() => {
-            isControlVisible.value = false;
-        }, 2000)
-    }
-
-    const pauseControlDisplay = () => {
-        clearInterval(controlsDisplayInterval);
-        isControlVisible.value = true;
-    }
-
-    const resumeControlDisplay = () => {
-        startControlDisplay();
-    }
-
-    let autoSlideInterval
-    function startAutoSlide() {
-        if (autoSlideInterval) {
-            clearInterval(autoSlideInterval)
-        }
-
-        autoSlideInterval = setInterval(() => {
-            if (isHovering.value) return;
-            move(1);
-        }, 6000)
-    }
-    
-    function pauseAutoSlide() {
-        clearInterval(autoSlideInterval)
-        isHovering.value = true
-    }
-    
-    function resumeAutoSlide() {
-        isHovering.value = false
-        startAutoSlide()
-    }
-    
-    onMounted(() => {
-        startAutoSlide()
-    })
+  })
   </script>
   
 <style lang="scss" scoped>
@@ -169,6 +200,10 @@
         height: 100%;
         flex: 0 0 100%;
         cursor: pointer;
+    }
+
+    .carousel-slide {
+        
     }
   
     .left-panel {
@@ -241,6 +276,10 @@
         &:hover {
             opacity: 1;
         }
+    }
+
+    .carousel-control.hovering {
+        opacity: 0.75;
     }
 
     .prev {

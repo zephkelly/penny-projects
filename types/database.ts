@@ -58,9 +58,18 @@ export interface Project {
     published: boolean | null;
     author_name: string | null;
     author_image_url: string | null;
-    cover_image_url: string | null;
+    cover_image_id: number | null;
     slug: string | null;
     seo_title: string | null;
     seo_meta_description: string | null;
     content: string | null;
+}
+
+export interface FrontendProject extends Project {
+    is_new?: boolean;
+    is_renaming?: boolean;
+    is_deleting?: boolean;
+    cover_image_url: string;
+    cover_colour_main: string;
+    cover_colour_contrast: string;
 }

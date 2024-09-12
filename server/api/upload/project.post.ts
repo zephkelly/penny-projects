@@ -7,7 +7,6 @@ const db = PostgresUtil.getInstance();
 export default defineEventHandler(async (event) => {
     await protectAdmin(event);
 
-
     try {
         const body = await readBody(event);
         const project: Project = body.project;
@@ -27,7 +26,6 @@ export default defineEventHandler(async (event) => {
                 };
             }
             else {
-                console.log("Project ID does not exist, creating new project");
                 const project_id: number = await insertProject(project);
 
                 return {
@@ -63,8 +61,8 @@ export default defineEventHandler(async (event) => {
 
 async function insertProject(project: Project): Promise<number> {
     const result = await db.query(
-        'INSERT INTO public.project (title, subtitle, status, published, author_name, author_image_url, cover_image_url, slug, seo_title, seo_meta_description, content) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING project_id',
-        [project.title, project.subtitle, project.status, project.published, project.author_name, project.author_image_url, project.cover_image_url, project.slug, project.seo_title, project.seo_meta_description, project.content]
+        'INSERT INTO public.project (title, subtitle, status, published, author_name, author_image_url, cover_image_id, slug, seo_title, seo_meta_description, content) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING project_id',
+        [project.title, project.subtitle, project.status, project.published, project.author_name, project.author_image_url, project.cover_image_id, project.slug, project.seo_title, project.seo_meta_description, project.content]
     );
 
     return result[0].project_id as number;
@@ -72,8 +70,8 @@ async function insertProject(project: Project): Promise<number> {
 
 async function updateProjectById(project: Project): Promise<number> {
     const result = await db.query(
-        'UPDATE public.project SET title = $1, subtitle = $2, status = $3, published = $4, author_name = $5, author_image_url = $6, cover_image_url = $7, slug = $8, seo_title = $9, seo_meta_description = $10, content = $11 WHERE project_id = $12 RETURNING project_id',
-        [project.title, project.subtitle, project.status, project.published, project.author_name, project.author_image_url, project.cover_image_url, project.slug, project.seo_title, project.seo_meta_description, project.content, project.project_id]
+        'UPDATE public.project SET title = $1, subtitle = $2, status = $3, published = $4, author_name = $5, author_image_url = $6, cover_image_id = $7, slug = $8, seo_title = $9, seo_meta_description = $10, content = $11 WHERE project_id = $12 RETURNING project_id',
+        [project.title, project.subtitle, project.status, project.published, project.author_name, project.author_image_url, project.cover_image_id, project.slug, project.seo_title, project.seo_meta_description, project.content, project.project_id]
     );
 
     return result[0].project_id as number;

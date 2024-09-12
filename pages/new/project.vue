@@ -173,11 +173,6 @@ const mainFields = reactive({
     cover_image: { value: '', error: null } as ProjectSettingField,
 });
 
-
-watch(() => mainFields.cover_image, (newValue) => {
-    console.log('Cover image changed:', newValue);
-});
-
 const mainIgnoreFields = ['status'];
 const mainFieldCount = computed(() => Object.keys(mainFields).filter(key => !mainIgnoreFields.includes(key)).length);
 
@@ -224,9 +219,13 @@ const handleAuthorImageRemoved = () => {
     mainFields.author_image.error = ValidationError.REQUIRED;
 };
 
-const handleCoverImageSelected = (imageUrl: string) => {
-    mainFields.cover_image.value = imageUrl;
-    console.log(imageUrl);
+const handleCoverImageSelected = (image: Image) => {
+    const image_url = image.url;
+    const image_id = image.image_id;
+
+
+    mainFields.cover_image.value = image_url;
+    mainFields.cover_image.id = image_id;
     mainFields.cover_image.error = null;
 };
 
@@ -325,7 +324,14 @@ const loadDraft = () => {
 const checkForDraft = () => {
     const savedDraft = localStorage.getItem('projectDraft');
     if (savedDraft) {
-        loadDraft();
+
+        const confirm = window.confirm('A draft of this project was found. Would you like to load it?');
+
+        if (confirm) {
+            loadDraft();
+        } else {
+            localStorage.removeItem('projectDraft');
+        }
     }
 };
 
@@ -339,7 +345,7 @@ const handleProjectDraftSubmit = async () => {
         status: mainFields.status.value as ProjectStatus,
         author_name: mainFields.author_name.value,
         author_image_url: mainFields.author_image.value as string,
-        cover_image_url: mainFields.cover_image.value as string,
+        cover_image_id: mainFields.cover_image.id as number,
         slug: seoFields.slug.value,
         seo_title: seoFields.seo_title.value,
         seo_meta_description: seoFields.meta_description.value,
@@ -347,8 +353,6 @@ const handleProjectDraftSubmit = async () => {
         content: pageContent.value,
     };
 
-    console.log('Draft:', newProject);
-    
     const response = await $fetch('/api/upload/project', {
         method: 'POST',
         body: { project: newProject }
@@ -369,7 +373,7 @@ const handleProjectSubmit = async () => {
         status: mainFields.status.value as ProjectStatus,
         author_name: mainFields.author_name.value,
         author_image_url: mainFields.author_image.value as string,
-        cover_image_url: mainFields.cover_image.value as string,
+        cover_image_id: mainFields.cover_image.id as number,
         slug: seoFields.slug.value,
         seo_title: seoFields.seo_title.value,
         seo_meta_description: seoFields.meta_description.value,
@@ -377,14 +381,10 @@ const handleProjectSubmit = async () => {
         content: pageContent.value,
     };
 
-    console.log('Publishing:', newProject);
-    
     const response = await $fetch('/api/upload/project', {
         method: 'POST',
         body: { project: newProject }
     });
-    
-    console.log(response);
 };
 
 watch([pageContent, mainFields, seoFields, userInfo, projectId], saveDraft, { deep: true });

@@ -6,12 +6,12 @@
             
             <div class="wrapper featured">
                 <div class="group">
-                    <ProjectsFeaturedCarousel :slides="data"/>
+                    <ProjectsFeaturedCarousel :projects="projects"/>
                 </div>
             </div>
             <div class="wrapper latest">
                 <div class="group feed">
-                    <ProjectsTile :postData="data[i-1]" v-for="i in data.length"/>
+                    <!-- <ProjectsTile :postData="data2[i-1]" v-for="i in data2.length"/> -->
                 </div>
             </div>
             <ClientOnly>
@@ -23,54 +23,18 @@
 </template>
 
 <script setup lang="ts">
-const data = [
-    {
-        title: '1 Building Peggy and her family a new home.',
-        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
-        image: '/images/test_image.jpg',
-        dominantColor: 'rgb(193, 193, 193)',
-        textColor: '#000000',
-        link: '/',
-        status: 'ongoing',
-        authorAvatar: '/images/profile-author.webp',
-        authorName: 'Joel Slade'
-    },
-    {
-        title: '2 This is something different for a change.',
-        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
-        image: '/images/test_image.jpg',
-        dominantColor: 'rgb(193, 193, 193)',
-        textColor: '#000000',
-        link: '/',
-        status: 'ongoing',
-        authorAvatar: '/images/profile-author.webp',
-        authorName: 'Joel Slade'
-    },
-    {
-        title: '3 Yet another different headline for a project.',
-        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
-        image: '/images/test_image.jpg',
-        dominantColor: 'rgb(193, 193, 193)',
-        textColor: '#000000',
-        link: '/',
-        status: 'ongoing',
-        authorAvatar: '/images/profile-author.webp',
-        authorName: 'Joel Slade'
-    },
-    {
-        title: '4 And we finally bring it to a close',
-        description: 'This is a description of project 1 and im going to make it a bit longer so that I can stress test this portion of the UI. I need to understand the wrapping behaviour.',
-        image: '/images/test_image.jpg',
-        dominantColor: 'rgb(193, 193, 193)',
-        textColor: '#000000',
-        link: '/',
-        status: 'ongoing',
-        authorAvatar: '/images/profile-author.webp',
-        authorName: 'Joel Slade'
-    },
-];
+import { type FrontendProject } from '~/types/database';
 
 const { isAdmin } = useAuth();
+
+const { data } = await useFetch('/api/projects', {
+    query: {
+        page: 1,
+        page_size: 10
+    }
+})
+
+const projects = ref<FrontendProject[]>(data.value?.projects || [])
 </script>
 
 <style lang="scss" scoped>
