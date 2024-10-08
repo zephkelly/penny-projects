@@ -62,7 +62,6 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
     },
-
     vite: {
         css: {
             preprocessorOptions: {

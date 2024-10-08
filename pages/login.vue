@@ -54,18 +54,28 @@ const clearErrorMessage = () => {
 const login = async () => {
     isLoading.value = true;
 
-    const response = await $fetch<{data: { statusCode: number, statusMessage: string;}}>('/api/auth/login', {
-        method: 'POST',
-        body: {
-            email: email.value,
-            password: password.value
-        },
-        credentials: 'include'
-    });
+    let loginResponse;
+
+    try {
+        loginResponse = await $fetch<{data: { statusCode: number, statusMessage: string;}}>('/api/auth/login', {
+            method: 'POST',
+            body: {
+                email: email.value,
+                password: password.value
+            },
+            credentials: 'include'
+        });
+    }
+    catch (error) {
+        displayError.value = true;
+        errorMessage.value = 'An authentication error occurred, please try again.';
+        isLoading.value = false;
+        return;
+    }
 
     isLoading.value = false;
 
-    if (response.data.statusCode === 200) {
+    if (loginResponse.data.statusCode === 200) {
         await checkAuthStatus();
 
         if (isLoggedIn.value === false) {
@@ -76,14 +86,14 @@ const login = async () => {
 
         if (redirectPath.value !== '/login' && redirectPath.value !== '') 
         {
-            navigateTo(redirectPath.value + '?' + 'toast=' + response.data.statusMessage);
+            navigateTo(redirectPath.value + '?' + 'toast=' + loginResponse.data.statusMessage);
             return;
         }
 
-        navigateTo('/admin?toast=' + response.data.statusMessage);
+        navigateTo('/admin?toast=' + loginResponse.data.statusMessage);
     } else {
         displayError.value = true;
-        errorMessage.value = response.data.statusMessage;
+        errorMessage.value = loginResponse.data.statusMessage;
     }
 };
 </script>

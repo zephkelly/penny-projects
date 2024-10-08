@@ -234,17 +234,32 @@
         </div>
         <div v-if="showFloatingMenu"
             class="floating-menu" 
-            :style="{ top: floatingMenuPosition.top + 'px', left: floatingMenuPosition.left + 'px' }">
-            <ul v-if="selectedMenuItemType === 'folder'">
-                <li @click="renameFolder()">Rename</li>
-                <li @click="deleteFolder()">Delete</li>
-            </ul>
-            <ul v-else-if="selectedMenuItemType === 'image'">
-                <li @click="renameImage()">Rename</li>
-                <li @click="deleteImage()">Delete</li>
+            :style="{ top: floatingMenuPosition.top + 'px', left: floatingMenuPosition.left + 'px' }"
+        >
+            <ul>
+                <li v-for="option in floatingMenuOptions" :key="option.label" @click="option.action">
+                    {{ option.label }}
+                </li>
             </ul>
         </div>
     </section>
+
+    <!-- Floating modal -->
+    <teleport to="body">
+    <div v-if="showMoveFolderModal" class="move-modal" @click="closeMoveFolderModal">
+      <div class="modal-content" @click.stop>
+        <h2>Select a folder to move the image</h2>
+        <ul>
+          <li v-for="folder in movableFolders" 
+              :key="folder.folder_id" 
+              @click="moveImageToFolder(folder.folder_id)">
+            {{ folder.name }}
+          </li>
+        </ul>
+        <p class="move-status-message">{{ movingToFolderMessage }}</p>
+      </div>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -275,6 +290,73 @@ function closeImageManager() {
     isSelectingImage.value = false;
 }
 
+// #region Move Folder Modal Functionality -----------------------------------------
+const showMoveFolderModal = ref(false);
+
+const movingToFolder = ref(false);
+const movingToFolderMessage = ref('');
+
+const movableFolders = computed(() => {
+    const filteredFolders = folders.value.filter(folder => {
+        return folder.folder_id !== 0 && folder.folder_id as unknown as string !== '0';
+    });
+    return filteredFolders;
+});
+
+function closeMoveFolderModal() {
+    showMoveFolderModal.value = false;
+}
+
+function moveToFolder() {
+    showMoveFolderModal.value = true;
+}
+
+async function moveImageToFolder(newFolderId: number) {
+    if (!(selectedMenuItem.value && 'image_id' in selectedMenuItem.value)) {
+        window.alert('No image selected');
+        return;
+    }
+
+    const selectedImage = selectedMenuItem.value as Image;
+
+    try {
+        movingToFolder.value = true;
+        const response: any = await $fetch('/api/move/image', {
+            method: 'POST',
+            body: { image_id: selectedImage.image_id, new_folder_id: newFolderId }
+        });
+
+        if (response.status === 200) {
+            // Remove image from its current folder
+            const oldFolderIndex = folders.value.findIndex(f => f.images.some(img => img.image_id === selectedImage.image_id));
+            if (oldFolderIndex !== -1) {
+                const imageIndex = folders.value[oldFolderIndex].images.findIndex(img => img.image_id === selectedImage.image_id);
+                
+                if (imageIndex !== -1) {
+                    folders.value[oldFolderIndex].images.splice(imageIndex, 1);
+                }
+            }
+
+            // Add image to new folder
+            const newFolderIndex = folders.value.findIndex(f => f.folder_id === newFolderId);
+            if (newFolderIndex !== -1) {
+                folders.value[newFolderIndex].images.push(selectedImage);
+            }
+
+            closeFloatingMenu();
+            closeMoveFolderModal();
+        }
+        else {
+            movingToFolder.value = false;
+            movingToFolderMessage.value = response.message;
+        }
+    } catch (error) {
+        movingToFolder.value = false;
+        console.error('Error moving image:', error);
+        movingToFolderMessage.value = 'An unexpected error occurred, please try again.';
+    }
+}
+
 // #region Floating Menu Functionality ----------------------------------
 const showFloatingMenu = ref(false);
 const floatingMenuPosition = ref({ top: 0, left: 0 });
@@ -290,6 +372,23 @@ const selectedMenuItemType = computed(() => {
     }
 
     return 'folder';
+});
+
+const floatingMenuOptions = computed(() => {
+    if (selectedMenuItemType.value === 'folder') {
+        return [
+        { label: 'Rename', action: renameFolder },
+        { label: 'Delete', action: deleteFolder },
+        ];
+    } else if (selectedMenuItemType.value === 'image') {
+        return [
+        { label: 'Rename', action: renameImage },
+        { label: 'Delete', action: deleteImage },
+        { label: 'Use', action: useImage },
+        { label: 'Move to Folder', action: moveToFolder },
+        ];
+    }
+    return [];
 });
 
 function openFloatingMenu(event: MouseEvent, type: FrontendFolder | Image) {
@@ -323,6 +422,14 @@ function openFloatingMenu(event: MouseEvent, type: FrontendFolder | Image) {
     setTimeout(() => {
         document.addEventListener('click', closeFloatingMenu);
     }, 0);
+}
+
+
+function useImage() {
+    if (selectedMenuItem.value && 'image_id' in selectedMenuItem.value) {
+        setSelectedImage(selectedMenuItem.value as Image);
+        closeImageManager();
+    }
 }
 
 function closeFloatingMenu() {
@@ -858,6 +965,84 @@ defineExpose({
     selectedImage
 });
 </script>
+
+<style scoped lang="scss">
+.move-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.move-modal {
+    .move-status-message {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        color: var(--error);
+        margin-top: 1rem;
+        width: 200px;
+    }
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.modal-content ul {
+    list-style-type: none;
+    padding: 0;
+    border: 1px solid var(--grey2);
+    border-radius: 5px;
+}
+
+.modal-content h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    width: 200px;
+    text-align: left;
+}
+
+.modal-content li {
+    cursor: pointer;
+    padding: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    border-bottom: 1px solid var(--grey5);
+
+    &:first-child {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    &:last-child {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        border-bottom: none;
+    }
+
+    &:only-child {
+        border-radius: 5px;
+    }
+}
+
+.modal-content li:hover {
+  background-color: #f0f0f0;
+}
+</style>
 
 <style scoped lang="scss">
 .folder-list-enter-active,
@@ -1446,6 +1631,7 @@ defineExpose({
             align-items: center;
             gap: 0.45rem;
             flex: 1;
+            width: calc(100% - 32px);
 
             svg {
                 width: 17px;
@@ -1453,9 +1639,13 @@ defineExpose({
             }
 
             p {
+                width: 100%;
                 font-size: 12px;
                 color: var(--black2);
                 user-select: none;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
