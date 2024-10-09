@@ -573,12 +573,6 @@ onMounted(() => {
     }
 
     .styles {
-        // max-width: 400px;
-
-        .wrapper {
-
-        }
-
         .group {
             display: flex;
             flex-wrap: wrap;

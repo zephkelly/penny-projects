@@ -323,7 +323,7 @@ async function moveImageToFolder(newFolderId: number) {
         movingToFolder.value = true;
         const response: any = await $fetch('/api/move/image', {
             method: 'POST',
-            body: { image_id: selectedImage.image_id, new_folder_id: newFolderId }
+            body: { image_id: selectedImage.image_id, folder_id: newFolderId }
         });
 
         if (response.status === 200) {
@@ -1602,6 +1602,22 @@ defineExpose({
     }
 
     .image-list-element {
+        .image {
+            width: calc(100% - 44px);
+
+            .wrapper.main {
+                width: calc(100% - 100px);
+            }
+        }
+
+        &.root {
+            .image {
+                width: calc(100% - 32px);
+            }
+        }
+    }
+
+    .image-list-element {
         display: flex;
         height: 32px;
         padding-left: 44px;
@@ -1631,7 +1647,6 @@ defineExpose({
             align-items: center;
             gap: 0.45rem;
             flex: 1;
-            width: calc(100% - 32px);
 
             svg {
                 width: 17px;
@@ -1664,6 +1679,7 @@ defineExpose({
                 align-items: center;
                 height: 100%;
                 width: 26px;
+                min-width: 26px;
 
                 button {
                     position: relative;
@@ -2073,6 +2089,8 @@ defineExpose({
                 font-size: 12px;
                 color: var(--grey2);
                 user-select: none;
+                width: 100%;
+                text-align: center;
             }
             
             &:hover {
