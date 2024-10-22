@@ -66,6 +66,10 @@ section {
         display: flex;
         flex-direction: column;
         margin-top: 14rem;
+
+        @media (max-width: 768px) {
+            margin-top: 10rem;
+        }
     }
 }
 

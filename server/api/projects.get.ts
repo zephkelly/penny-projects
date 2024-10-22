@@ -1,5 +1,5 @@
 import protectAdmin from '~/server/protectAdmin';
-import { PostgresUtil } from "~/utils/postgres";
+import { PostgresUtil } from "~/server/utils/postgres";
 import { type FrontendProject } from '~/types/database'
 
 const db = PostgresUtil.getInstance()

@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    devtools: { enabled: false },
     css: ['~/assets/scss/global.scss'],
 
     buildModules: ['@nuxtjs/sass'],
@@ -70,6 +71,9 @@ export default defineNuxtConfig({
                 },
             },
         },
+    },
+    runtimeConfig: {
+        databaseConnectionString: process.env.POSTGRES_CONNECTION_STRING
     },
 
     compatibilityDate: '2024-07-12',

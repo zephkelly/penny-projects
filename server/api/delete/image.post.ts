@@ -1,5 +1,5 @@
 import protectAdmin from '~/server/protectAdmin';
-import { PostgresUtil } from '~/utils/postgres';
+import { PostgresUtil } from '~/server/utils/postgres';
 import { defineEventHandler } from 'h3'
 import { type Image } from '~/types/database';
 

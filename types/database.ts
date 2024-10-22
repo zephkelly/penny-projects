@@ -2,7 +2,7 @@ import { type ProjectStatus } from "./project";
 
 export interface User {
     user_id: string;
-    user_type: number;
+    user_type: number; // Foreign key to UserType -> user_type_id
     email: string;
     password: string;
     first_name: string;
@@ -12,6 +12,12 @@ export interface User {
     updated_date: Date;
     social_facebook: string;
     social_instagram: string;
+}
+
+export interface UserType {
+    user_type_id: number;
+    label: string;
+    description: string;
 }
 
 export interface Image {

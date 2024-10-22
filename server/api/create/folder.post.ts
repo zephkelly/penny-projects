@@ -1,6 +1,6 @@
 
 import protectAdmin from '~/server/protectAdmin';
-import { PostgresUtil } from '~/utils/postgres';
+import { PostgresUtil } from '~/server/utils/postgres';
 import { type Folder } from '~/types/database';
 
 export default defineEventHandler(async (event) => {

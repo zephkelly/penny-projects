@@ -1,6 +1,6 @@
 import formidable from 'formidable'
 import protectAdmin from '~/server/protectAdmin';
-import { PostgresUtil } from '~/utils/postgres';
+import { PostgresUtil } from '~/server/utils/postgres';
 import { type Image } from '~/types/database';
 import type { ImgurUploadMinimalResponse } from '@/types/imgur'
 

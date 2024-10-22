@@ -268,7 +268,7 @@ section.hero {
             width: 1000px;
             height: 1000px;
             z-index: 0;
-            top: -15rem;
+            top: -16rem;
             opacity: 30%;
             transform: scale(1.1);
         }

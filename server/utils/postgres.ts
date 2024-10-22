@@ -6,7 +6,7 @@ export class PostgresUtil {
     private pool: pg.Pool;
 
     private constructor() {
-        const connectionString = process.env.DATABASE_URL;
+        const connectionString = process.env.POSTGRES_CONNECTION_STRING;
         if (!connectionString) {
             throw new Error('DATABASE_URL is not defined in environment variables');
         }
@@ -36,7 +36,7 @@ export class PostgresUtil {
         const client = await this.getClient();
 
         try {
-            await client.query('Begin');
+            await client.query('BEGIN');
             const result = await client.query(text, params);
             await client.query('COMMIT');
             return result.rows as T[];

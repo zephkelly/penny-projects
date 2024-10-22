@@ -1,6 +1,6 @@
 //@ts-ignore
 import jwt from 'jsonwebtoken';
-import { PostgresUtil } from "~/utils/postgres";
+import { PostgresUtil } from "~/server/utils/postgres";
 
 import { type JWTPayload } from '~/types/auth';
 import { type User } from '~/types/database';

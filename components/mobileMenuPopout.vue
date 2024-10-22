@@ -10,8 +10,11 @@
                             <li class="highlight" v-if="isAdmin === false">
                                 <NuxtLink @click="clickDonateButton()">Donate</NuxtLink>
                             </li>
-                            <li class="highlight" v-if="isAdmin === true">
+                            <li class="highlight admin" v-if="isAdmin === true">
                                 <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/admin">Admin Panel</NuxtLink>
+                            </li>
+                            <li class="highlight admin" v-if="isAdmin === true">
+                                <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/admin/projects/manage">Manage Projects</NuxtLink>
                             </li>
                             <li>
                                 <NuxtLink @click="mobileMenuPopupOpen().value = false;" to="/">Home</NuxtLink>
@@ -141,23 +144,7 @@ watch(mobileMenuPopupOpen(), (newValue) => {
                 font-family: 'Poppins', sans-serif;
                 background-color: var(--background-color-main);
                 border-radius: 16px;
-                transition: background-color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
-
-                &.highlight {
-                    background-color: var(--text-color-main);
-
-                    a {
-                        color: var(--background-color-main);
-                    }
-
-                    &:hover {
-                        background-color: var(--text-color-main-light);
-
-                        a {
-                            color: var(--text-color-main);
-                        }
-                    }
-                }
+                transition: background-color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);   
 
                 &:hover {
                     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
@@ -177,7 +164,33 @@ watch(mobileMenuPopupOpen(), (newValue) => {
                     cursor: pointer;
                     border-radius: 16px;
                     border: 2px solid var(--text-color-main);
-                    transition: color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+                    transition: color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+                }
+
+                &.admin {
+                    color: var(--admin);
+                    background-color: var(--admin);
+
+                    a {
+                        color: var(--text-color-main-light);
+                        border-color: var(--admin);
+                    }
+
+                    &:hover {
+                        background-color: var(--admin-dark);
+
+                        a {
+                            border-color: var(--admin-dark);
+                        }
+                    }
+
+                    &:active {
+                        background-color: var(--admin);
+
+                        a {
+                            border-color: var(--admin);
+                        }
+                    }
                 }
             }
         }

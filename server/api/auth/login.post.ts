@@ -4,10 +4,8 @@ import bcrypt from 'bcrypt';
 //@ts-expect-error
 import jwt from 'jsonwebtoken';
 
-import { PostgresUtil } from "~/utils/postgres";
+import { PostgresUtil } from "~/server/utils/postgres";
 import { type JWTPayload } from '~/types/auth';
-
-// import { connectSupabase } from '~/utils/supabase';
 
 export default defineEventHandler(async (event) => {
     const { email, password } = await readBody(event);

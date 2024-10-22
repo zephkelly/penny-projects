@@ -24,13 +24,13 @@
                                 </button>
                             </Transition>
                             <Transition name="fade" v-if="isAdmin">
-                                <NuxtLink to="/projects/edit"  ref="editProjectsButton" class="edit-projects-anchor admin" v-show="enableHeaderButtons">
-                                    <h5>Edit Projects</h5>
+                                <NuxtLink to="/admin/projects/manage"  ref="editProjectsButton" class="edit-projects-anchor admin" v-show="enableHeaderButtons">
+                                    <h5>Manage Projects</h5>
                                 </NuxtLink>
                             </Transition>
                             <Transition name="fade" v-if="isAdmin">
                                 <NuxtLink to="/admin" ref="adminPanelButton" class="view-admin-button admin" v-show="enableHeaderButtons">
-                                    <h5 >Admin Panel</h5>
+                                    <h5>Admin Panel</h5>
                                 </NuxtLink>
                             </Transition>
                         </ul>
@@ -156,7 +156,7 @@ function mobileNavbar() {
         if (route.path !== '/') return;
         hideMobileNavbar(true);
     } 
-    else if (window.scrollY > 1 && window.scrollY < 320) {
+    else if (window.scrollY > 1 && window.scrollY < (route.path !== '/' ? 100 : 420)) {
         hideMobileNavbar(false);
     }
 
