@@ -20,7 +20,7 @@
             </div>
             <div class="manager-main">
                 <transition-group name="fade">
-                    <div class="wrapper absolute image-upload-window" v-if="uploadingImage">
+                    <div class="wrapper absolute image-upload-window" v-if="startingImageUpload">
                         <div class="upload-form">
                             <div class="upload-header">
                                 <div class="button-container">
@@ -71,7 +71,10 @@
                                     </div>
                                 </div>
                                 <div class="input-group submit">
-                                    <button type="submit" class="upload-btn" :class="{ enabled: canUploadImage }" @click="handleImageUpload">Upload</button>
+                                    <button type="submit" class="upload-btn" :class="{ enabled: canUploadImage && !uploadingImage }" @click="handleImageUpload">
+                                        <p v-if="!uploadingImage">Upload</p>
+                                        <svg v-else class="spin" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8"/></svg>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -669,8 +672,9 @@ function handleReturnToExplorer() {
 //#endregion
 
 // #region Image Functionality ------------------------------------------
-const uploadingImage = ref(false);
 const selectedImage = ref<Image | null>(null);
+const startingImageUpload: Ref<boolean> = ref(false);
+const uploadingImage: Ref<boolean> = ref(false);
 
 const allImages = computed(() => {
     const allImages: Image[] = [];
@@ -685,7 +689,7 @@ const allImages = computed(() => {
 const rootImages = computed(() => folders.value.filter(folder => Number(folder.folder_id) === 0)[0].images);
 
 function toggleIsUploadImage() {
-    uploadingImage.value = !uploadingImage.value;
+    startingImageUpload.value = !startingImageUpload.value;
 }
 
 function useSelectedImage() {
@@ -701,17 +705,23 @@ function cancelSelection() {
 
 function handleDraggedFolderImage(image: File) {
     // selectedImage.value = image;
-    uploadingImage.value = true;
+    startingImageUpload.value = true;
 
     setCurrentUploadedImage(image);
 }
 
 async function handleImageUpload() {
+    if (uploadingImage.value) return;
+
+    uploadingImage.value = true;
+
     try {
         const result = await uploadImage();
         if (result.status === 'success') {
             console.log('Image uploaded successfully');
-
+            uploadingImage.value = false;
+            handleReturnToExplorer();
+            
             if (result.parent_folder_frontend_index == undefined) {
                 rootImages.value.push(result.image as Image);
                 return
@@ -720,6 +730,7 @@ async function handleImageUpload() {
             const newImage = result.image as Image;
             const folder_frontend_index: number = result.parent_folder_frontend_index;
             folders.value[folder_frontend_index].images.push(newImage);
+
         }
         else {
             console.error('Error uploading image:', result.error);
@@ -727,6 +738,9 @@ async function handleImageUpload() {
     }
     catch (error) {
         console.error('Unexpected error:', error);
+    }
+    finally {
+        uploadingImage.value = false;
     }
 }
 
@@ -1661,6 +1675,7 @@ defineExpose({
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                line-height: 22px;
             }
         }
 
@@ -2385,6 +2400,11 @@ defineExpose({
                     &:hover {
                         background-color: var(--admin-dark);
                     }
+                }
+
+                svg.spin {
+                    padding: 0.5rem;
+                    animation: spin 1.5s linear infinite;
                 }
             }
         }

@@ -1,5 +1,5 @@
 <template>
-    <div class="carousel-slide">
+    <div class="carousel-slide" v-is="project">
         <div class="left-panel" :style="`border: 1px solid ${project.cover_colour_main};`">
             <div class="title-section">
                 <h2>{{ project.title }}</h2>
@@ -24,7 +24,7 @@
   
 <script setup lang="ts">
     import { type FrontendProject } from '~/types/database';
-    
+
     const props = defineProps<{
         project: FrontendProject
     }>();

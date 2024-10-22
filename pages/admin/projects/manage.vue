@@ -16,6 +16,13 @@
 
 <script setup lang="ts">
 const projects = ref([]);
+
+//$fetch all projects from /api/project
+const response = await useFetch('/api/project?unpublished=true', {
+    method: 'GET'
+});
+
+console.log(response);
 </script>
 
 <style lang="scss" scoped>

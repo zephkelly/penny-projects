@@ -1,7 +1,6 @@
 // import { type User } from '~/models/user';
 //@ts-expect-error
 import bcrypt from 'bcrypt';
-//@ts-expect-error
 import jwt from 'jsonwebtoken';
 
 import { PostgresUtil } from "~/server/utils/postgres";

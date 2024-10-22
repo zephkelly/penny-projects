@@ -61,7 +61,9 @@ const mobileMenuOpenStyle = computed(() => mobileMenuPopupOpen().value ? 'open' 
 
 //Change to admin header on admin routes
 const isAdminRoute = computed(() => {
-  return isAdmin.value && ['/admin', '/new/projects', '/projects/edit'].includes(route.path);
+    if (!isAdmin) return false;
+
+    return route.path.includes('/admin') || route.path.includes('/admin/') || route.path.includes('/new/project') || route.path.includes('/edit/project');
 });
 
 const logoSrc = computed(() => {
