@@ -83,7 +83,7 @@ section.toast {
     display: block;
     height: auto;
     width: auto;
-    max-width: 14rem;
+    max-width: 18rem;
     padding: 1rem;
     background-color: var(--background-color-secondary);
     border-radius: 1rem;

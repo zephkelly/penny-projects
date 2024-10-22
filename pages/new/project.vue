@@ -19,7 +19,8 @@
                     :disabled="!hasCompletedAllFields"
                     title="All settings must be completed to publish."
                     >
-                        Publish
+                        <svg v-if="uploadingPublishedProject" class="spinner" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8"/></svg>
+                        <p v-else>Publish</p>
                 </button>
             </div>
         </div>
@@ -319,7 +320,7 @@ const hasCompletedAllFields = computed(() => {
 });
 
 // Draft saving and loading:
-const saveDraft = () => {
+const saveLocalDraft = () => {
     const draft = {
         pageContent: pageContent.value,
         mainFields,
@@ -331,7 +332,7 @@ const saveDraft = () => {
     localStorage.setItem('projectDraft', JSON.stringify(draft));
 };
 
-const loadDraft = () => {
+const loadLocalDraft = () => {
     const savedDraft = localStorage.getItem('projectDraft');
     if (savedDraft) {
         const draft = JSON.parse(savedDraft);
@@ -343,14 +344,14 @@ const loadDraft = () => {
     }
 };
 
-const checkForDraft = () => {
+const checkForLocalDraft = () => {
     const savedDraft = localStorage.getItem('projectDraft');
     if (savedDraft) {
 
         const confirm = window.confirm('A draft was found. Would you like to load it?');
 
         if (confirm) {
-            loadDraft();
+            loadLocalDraft();
         } else {
             localStorage.removeItem('projectDraft');
         }
@@ -405,7 +406,7 @@ const handleProjectDraftSubmit = async () => {
 
 const uploadingPublishedProject = ref(false);
 const handleProjectSubmit = async () => {
-    uploadingDraftProject.value = true;
+    uploadingPublishedProject.value = true;
 
     const newProject = {
         project_id: projectId.value || null,
@@ -423,25 +424,44 @@ const handleProjectSubmit = async () => {
         content: pageContent.value,
     };
 
-    const response = await $fetch('/api/upload/project', {
-        method: 'POST',
-        body: { project: newProject }
-    });
+    try {
+        const response = await $fetch('/api/upload/project', {
+            method: 'POST',
+            body: { project: newProject }
+        });
+
+        if (response.status !== 200) {
+            uploadingPublishedProject.value = false;
+            window.alert('There was an error saving the project. Please try again.');
+            return;
+        }
+
+        const project_id = response.data.project_id;
+        projectId.value = project_id;
+
+        uploadingPublishedProject.value = false;
+
+        showToast('Project published successfully!');
+    }
+    catch (error) {
+        uploadingPublishedProject.value = false;
+        window.alert('There was an error saving the project. Please try again.');
+    }
 };
 
-watch([pageContent, mainFields, seoFields, userInfo, projectId], saveDraft, { deep: true });
+watch([pageContent, mainFields, seoFields, userInfo, projectId], saveLocalDraft, { deep: true });
 
 onMounted(() => {
-  checkForDraft();
-  getUserInfo().then(info => {
-    userInfo.value = info;
-    if (!mainFields.author_name.value) {
-      mainFields.author_name.value = `${info?.first_name} ${info?.last_name}`;
-    }
-    if (!mainFields.author_image.value) {
-      mainFields.author_image.value = info?.profile_image || null;
-    }
-  });
+    checkForLocalDraft();
+    getUserInfo().then(info => {
+        userInfo.value = info;
+        if (!mainFields.author_name.value) {
+            mainFields.author_name.value = `${info?.first_name} ${info?.last_name}`;
+        }
+        if (!mainFields.author_image.value) {
+            mainFields.author_image.value = info?.profile_image || null;
+        }
+    });
 });
 </script>
 
@@ -508,6 +528,7 @@ section.new-project-hero {
             &.publish {
                 cursor: not-allowed;
                 opacity: 0.5;
+                min-width: 100px;
 
                 &.enabled {
                     cursor: pointer;
@@ -528,7 +549,7 @@ section.new-project-hero {
                 color: var(--black2);
                 cursor: not-allowed;
                 opacity: 0.5;
-                width: 122px;
+                min-width: 122px;
 
                 &.enabled {
                     background-color: var(--admin-highlight);
@@ -539,10 +560,10 @@ section.new-project-hero {
                         background-color: var(--admin-highlight-hover);
                     }
                 }
+            }
 
-                .spinner {
-                    animation: spin 1s linear infinite;
-                }
+            .spinner {
+                animation: spin 1s linear infinite;
             }
         }
     }
