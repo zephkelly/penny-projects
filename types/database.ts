@@ -2,16 +2,16 @@ import { type ProjectStatus } from "./project";
 
 export interface User {
     user_id: string;
-    user_type: number; // Foreign key to UserType -> user_type_id
+    user_type_id: number; // Foreign key to UserType -> user_type_id
     email: string;
     password: string;
     first_name: string;
     last_name: string;
     profile_image: string;
-    created_date: Date;
-    updated_date: Date;
     social_facebook: string;
     social_instagram: string;
+    created_date: Date;
+    updated_date: Date;
 }
 
 export interface UserType {
@@ -69,6 +69,7 @@ export interface Project {
     seo_title: string | null;
     seo_meta_description: string | null;
     content: string | null;
+    featured: boolean;
 }
 
 export interface FrontendProject extends Project {

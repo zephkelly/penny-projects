@@ -3,7 +3,7 @@
         <div class="container">
             <h1 class="header admin">Manage Projects</h1>
             <div class="featured-projects">
-                <h2 class="sub-header admin">Featured Projects</h2>
+                <h2 class="sub-header">Featured Projects</h2>
                 <div class="projects">
                     <div v-for="project in projects">
                         <!-- <ProjectCard :project="project" /> -->
@@ -41,9 +41,9 @@ section {
 .sub-header {
     font-family: 'Nunito', sans-serif;
     font-size: 1.2rem;
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.15rem;
     font-weight: 700;
-    color: var(--text-color-main);
+    color: var(--admin-dark);
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 1rem;

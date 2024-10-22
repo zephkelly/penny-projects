@@ -1,6 +1,6 @@
-import protectAdmin from '~/server/protectAdmin';
-import { PostgresUtil } from '~/utils/postgres';
-import { type Image, type Folder } from '~/types/database';
+import protectAdmin from '@/server/protectAdmin';
+import { PostgresUtil } from '@/server/utils/postgres';
+import { type Image, type Folder } from '@/types/database';
 
 export default defineEventHandler(async (event) => {
     await protectAdmin(event);
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
         // Check if the folder exists
         const folderResult = await db.query<Folder>(
-            'SELECT folder_id FROM public.folders WHERE folder_id = $1',
+            'SELECT folder_id FROM private.folders WHERE folder_id = $1',
             [folder_id]
         );
 
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
         // Update the image's parent folder
         const result = await db.query<Image>(
-            'UPDATE public.images SET parent_folder_id = $1 WHERE image_id = $2 RETURNING *',
+            'UPDATE private.images SET parent_folder_id = $1 WHERE image_id = $2 RETURNING *',
             [folder_id, image_id]
         );
 

@@ -19,13 +19,13 @@ export default defineEventHandler(async (event): Promise<FrontendPayload<Folder 
         }
 
         await db.query(
-            'UPDATE public.images SET parent_folder_id = 0 WHERE parent_folder_id = $1',
+            'UPDATE private.images SET parent_folder_id = 0 WHERE parent_folder_id = $1',
             [folder_id]
         );
 
         // Delete the folder
         const result = await db.query<Folder>(
-            'DELETE FROM public.folders WHERE folder_id = $1 RETURNING *',
+            'DELETE FROM private.folders WHERE folder_id = $1 RETURNING *',
             [folder_id]
         );
 

@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     }
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
-        const isAdmin = await isUserAdmin(decodedToken.sub);
+        const isAdmin = await isUserAdmin(decodedToken.id);
 
         return {
             data: {
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
 });
 
 interface IAdminUserPayload {
-    user_type: User['user_type'];
+    user_type_id: User['user_type_id'];
 }
 
 export async function isUserAdmin(userId: string): Promise<boolean> { 
@@ -46,10 +46,10 @@ export async function isUserAdmin(userId: string): Promise<boolean> {
     const db = PostgresUtil.getInstance();
     
     try {
-        const data = await db.query('SELECT user_type FROM public.users WHERE "user_id" = $1', [userId]);
+        const data = await db.query('SELECT user_type_id FROM private.users WHERE "user_id" = $1', [userId]);
         const user: IAdminUserPayload = data[0];
 
-        return user.user_type === 1 || user.user_type === 2;
+        return user.user_type_id === 1 || user.user_type_id === 2;
     }
     catch (error) {
         console.error('Error checking if user is admin:', error);

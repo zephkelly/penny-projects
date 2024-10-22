@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
             console.log('Parent folder ID:', parent_folder_id);
 
             const result = await db.query<Image>(
-                'INSERT INTO public.images (url, label, parent_folder_id, delete_hash, colour_main, colour_contrast, width, height, file_size) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+                'INSERT INTO private.images (url, label, parent_folder_id, delete_hash, colour_main, colour_contrast, width, height, file_size) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
                 [response.data.link, label, parent_folder_id, response.data.deletehash, colorResponse.success ? colorResponse.color : null, colorResponse.success ? colorResponse.textColor : null, width, height, file_size]
             );
 

@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 async function getAllImages(): Promise<Image[]> {
     const db = PostgresUtil.getInstance();
   
-    const imagesResult: Image[] = await db.query<Image>('SELECT * FROM public.images ORDER BY label');
+    const imagesResult: Image[] = await db.query<Image>('SELECT * FROM private.images ORDER BY label');
   
     return imagesResult;
 }

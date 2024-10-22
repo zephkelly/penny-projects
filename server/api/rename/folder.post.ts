@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
         }
 
         const result = await db.query<Folder>(
-            'UPDATE public.folders SET name = $1, updated_date = CURRENT_TIMESTAMP WHERE folder_id = $2 RETURNING name, updated_date',
+            'UPDATE private.folders SET name = $1, updated_date = CURRENT_TIMESTAMP WHERE folder_id = $2 RETURNING name, updated_date',
             [name, folder_id]
         );
 

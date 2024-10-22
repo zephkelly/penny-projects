@@ -40,7 +40,7 @@ export default defineNitroPlugin(async (nitroApp: NitroApp) => {
                     updated_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                     social_facebook VARCHAR(255),
                     social_instagram VARCHAR(255),
-                    CONSTRAINT fk_user_type
+                    CONSTRAINT fk_user_type_id
                         FOREIGN KEY(user_type_id) 
                         REFERENCES private.user_types(user_type_id)
                         ON DELETE RESTRICT
@@ -89,6 +89,7 @@ export default defineNitroPlugin(async (nitroApp: NitroApp) => {
                     seo_title VARCHAR(255),
                     seo_meta_description TEXT,
                     content TEXT,
+                    featured BOOLEAN DEFAULT false,
                     CONSTRAINT fk_cover_image
                         FOREIGN KEY(cover_image_id) 
                         REFERENCES private.images(image_id)

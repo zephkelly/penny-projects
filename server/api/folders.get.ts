@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) => {
 async function getFoldersWithImages(): Promise<FrontendFolder[]> {
     const db = PostgresUtil.getInstance();
   
-    const foldersResult: Folder[] = await db.query<Folder>('SELECT * FROM public.folders ORDER BY name');
+    const foldersResult: Folder[] = await db.query<Folder>('SELECT * FROM private.folders ORDER BY name');
     
     const populatedFolders: FrontendFolder[] = await Promise.all(
         foldersResult.map(async (folder): Promise<FrontendFolder> => {
             const imagesResult = await db.query<Image>(
-                'SELECT * FROM public.images WHERE parent_folder_id = $1 ORDER BY label',
+                'SELECT * FROM private.images WHERE parent_folder_id = $1 ORDER BY label',
                 [folder.folder_id]
             );
     

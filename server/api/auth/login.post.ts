@@ -12,32 +12,31 @@ export default defineEventHandler(async (event) => {
     const db = PostgresUtil.getInstance();
 
     try {
-        const data = await db.query('SELECT * FROM public.users WHERE "email" = $1', [email]);
+        const data = await db.query('SELECT * FROM private.users WHERE "email" = $1', [email]);
         const user = data[0];
 
         if (!user) {
-            return {
-            data: {
+            throw createError({
                 statusCode: 401,
                 statusMessage: 'Invalid email or password. Please try again.',
-            }};
+            });
         }
     
         // Compare passwords
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-            return {
-            data: {
+            throw createError({
                 statusCode: 401,
                 statusMessage: 'Invalid email or password. Please try again.',
-            }};
+            });
         }
     
         // Generate JWT token
         const jwtPayload: JWTPayload = {
-            sub: user.user_id,
+            id: user.user_id,
             profile_image: user.profile_image,
         };
+
         const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: '24h' });
     
         // Set cookie
@@ -50,11 +49,12 @@ export default defineEventHandler(async (event) => {
     
         return {
             data: {
-            statusCode: 200,
-            statusMessage: 'Logged in successfully!',
+                statusCode: 200,
+                statusMessage: 'Logged in successfully!',
             }
         };
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Login error:', error);
       throw createError({
         statusCode: 500,

@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
                     i.url as cover_image_url, 
                     i.colour_main as cover_colour_main, 
                     i.colour_contrast as cover_colour_contrast
-             FROM public.project p
+             FROM private.project p
              LEFT JOIN public.images i ON p.cover_image_id = i.image_id
              ORDER BY p.updated_date DESC
              LIMIT $1 OFFSET $2`,
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
         );
 
         const totalCountQuery = await db.query<{ count: string }>(
-            'SELECT COUNT(*) FROM public.project'
+            'SELECT COUNT(*) FROM private.project'
         );
 
         const totalCount = parseInt(totalCountQuery[0].count)

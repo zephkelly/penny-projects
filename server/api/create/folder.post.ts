@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         }
 
         const result = await db.query<Folder>(
-            'INSERT INTO public.folders (name) VALUES ($1) RETURNING *',
+            'INSERT INTO private.folders (name) VALUES ($1) RETURNING *',
             [name]
         );
 

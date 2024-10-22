@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
         }
 
         const result = await db.query<Image>(
-            'UPDATE public.images SET label = $1 WHERE image_id = $2 RETURNING label',
+            'UPDATE private.images SET label = $1 WHERE image_id = $2 RETURNING label',
             [new_label, image_id]
         );
 

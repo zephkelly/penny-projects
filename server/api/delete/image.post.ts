@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
 
         await db.query(
-            'DELETE FROM public.images WHERE image_id = $1',
+            'DELETE FROM private.images WHERE image_id = $1',
             [image_id]
         );
 
