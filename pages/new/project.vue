@@ -3,8 +3,24 @@
         <div class="container">
             <h1 class="header">New Project</h1>
             <div class="project-buttons">
-                <button class="submit draft" @click.prevent="handleProjectDraftSubmit">Save Draft</button>
-                <button class="submit" @click.prevent="handleProjectSubmit">Publish</button>
+                <button 
+                    class="submit draft"
+                    :class="{ enabled: true }"
+                    @click.prevent="handleProjectDraftSubmit"
+                    :disabled="draftSubmitEnabled"
+                    >
+                        <svg v-if="uploadingDraftProject" class="spinner" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8"/></svg>
+                        <p v-else>Save Draft</p>
+                </button>
+                <button
+                    class="submit publish"
+                    :class="{ enabled: hasCompletedAllFields }"
+                    @click.prevent="handleProjectSubmit"
+                    :disabled="!hasCompletedAllFields"
+                    title="All settings must be completed to publish."
+                    >
+                        Publish
+                </button>
             </div>
         </div>
     </section>
@@ -41,7 +57,7 @@
                                 v-for="status in ProjectStatuses" 
                                 :key="status.name"
                                 @click="selectStatus(status.name)"
-                                class="project-status-label"
+                                class="project-status-label empty"
                                 :class="[{ 'selected': mainFields.status.value === status.name },
                                             status.name.replace(' ', '-')
                                         ]"
@@ -68,7 +84,7 @@
                                 <DragAndDropImageUpload 
                                     flexToParent
                                     previewFlexToParent
-                                    :imageUrl="profileImage"
+                                    :imageUrl="authorImage"
                                     @image-selected="handleAuthorImageSelected"
                                     @image-removed="handleAuthorImageRemoved"
                                 />
@@ -145,15 +161,17 @@ definePageMeta({
     middleware: ['admin']
 })
 
+const { showToast } = useToast()
+
 //Image Manager
 const { imageManagerPopupOpen, selectImage } = await useImageManager();
 
-const isCoverExpanded = ref(false);
+const isCoverExpanded = ref(true);
 const coverImage = computed(() => mainFields.cover_image.value as string | null);
 
 // User Info
 const userInfo: Ref<User | null | undefined> = ref(await getUserInfo());
-const profileImage = userInfo?.value?.profile_image;
+const authorImage = ref(userInfo?.value?.profile_image);
     
 // General Settings
 const createdDateIso = new Date().toISOString();
@@ -296,6 +314,10 @@ const pageRelatedSettings = computed(() => reactive({
     status: mainFields.status.value,
 }));
 
+const hasCompletedAllFields = computed(() => {
+    return completedMainFields.value === mainFieldCount.value && completedSEOFields.value === seoFieldCount.value;
+});
+
 // Draft saving and loading:
 const saveDraft = () => {
     const draft = {
@@ -325,7 +347,7 @@ const checkForDraft = () => {
     const savedDraft = localStorage.getItem('projectDraft');
     if (savedDraft) {
 
-        const confirm = window.confirm('A draft of this project was found. Would you like to load it?');
+        const confirm = window.confirm('A draft was found. Would you like to load it?');
 
         if (confirm) {
             loadDraft();
@@ -335,8 +357,11 @@ const checkForDraft = () => {
     }
 };
 
+const draftSubmitEnabled = ref(false);
+const uploadingDraftProject = ref(false);
 const handleProjectDraftSubmit = async () => {
-    //@ts-ignore
+    uploadingDraftProject.value = true;
+
     const newProject = {
         project_id: projectId.value || null,
         title: mainFields.title.value,
@@ -353,19 +378,36 @@ const handleProjectDraftSubmit = async () => {
         content: pageContent.value,
     };
 
-    const response = await $fetch('/api/upload/project', {
-        method: 'POST',
-        body: { project: newProject }
-    });
+    try {
+        const response = await $fetch('/api/upload/project', {
+            method: 'POST',
+            body: { project: newProject }
+        });
 
-    //@ts-expect-error
-    const project_id = response.data.project_id;
-    projectId.value = project_id;
+        if (response.status !== 200) {
+            uploadingDraftProject.value = false;
+            window.alert('There was an error saving the draft. Please try again.');
+            return;
+        }
+
+        const project_id = response.data.project_id;
+        projectId.value = project_id;
+
+        uploadingDraftProject.value = false;
+
+        showToast('Draft saved successfully!');
+    }
+    catch (error) {
+        uploadingDraftProject.value = false;
+        window.alert('There was an error saving the draft. Please try again.');
+    }
 };
 
+const uploadingPublishedProject = ref(false);
 const handleProjectSubmit = async () => {
-    //@ts-ignore
-    const newProject: Project = {
+    uploadingDraftProject.value = true;
+
+    const newProject = {
         project_id: projectId.value || null,
         title: mainFields.title.value,
         subtitle: mainFields.subtitle.value,
@@ -411,6 +453,7 @@ onMounted(() => {
     font-weight: 700;
     color: var(--text-color-main);
     text-transform: uppercase;
+    margin-top: 14rem;
 
     @media (max-width: 768px) {
         font-size: clamp(3rem, 8vw, 4rem);
@@ -418,7 +461,6 @@ onMounted(() => {
 }
 
 section.new-project-hero {
-    margin-top: 14rem;
     margin-bottom: 4rem;
     background-color: var(--background-color-main);
     padding: 0rem 1rem 0rem 1rem;
@@ -430,6 +472,7 @@ section.new-project-hero {
     .container {
         flex-direction: row;
         justify-content: space-between;
+        align-items: flex-end;
 
         @media (max-width: 768px) {
             flex-direction: column;
@@ -441,6 +484,7 @@ section.new-project-hero {
         display: flex;
         flex-direction: row;
         gap: 1rem;
+        height: 50px;
 
         @media (max-width: 768px) {
             flex-direction: column;
@@ -456,21 +500,48 @@ section.new-project-hero {
             min-width: 60px;
             padding: 0rem 1.5rem;
             font-size: 0.9rem;
-            background-color: var(--admin);
+            background-color: var(--grey2);
             color: var(--background-color-secondary);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
 
-            &:hover {
-                background-color: var(--admin-dark);
+
+            &.publish {
+                cursor: not-allowed;
+                opacity: 0.5;
+
+                &.enabled {
+                    cursor: pointer;
+                    pointer-events: all;
+                    background-color: var(--admin);
+                    color: var(--background-color-secondary);
+                    opacity: 1;
+
+                    &:hover {
+                        background-color: var(--admin-dark);
+                    }
+                }
             }
 
             &.draft {
-                border: 1px solid var(--grey2);
-                background-color: var(--grey4);
+                border: 1px solid var(--admin);
+                background-color: var(--grey5);
                 color: var(--black2);
+                cursor: not-allowed;
+                opacity: 0.5;
+                width: 122px;
 
-                &:hover {
-                    background-color: var(--grey3);
+                &.enabled {
+                    background-color: var(--admin-highlight);
+                    opacity: 1;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: var(--admin-highlight-hover);
+                    }
+                }
+
+                .spinner {
+                    animation: spin 1s linear infinite;
                 }
             }
         }
@@ -688,18 +759,21 @@ input.author-name {
     transition: background-color 0.3s ease, color 0.3s ease;
     will-change: background-color, color;
     min-height: 32px;
-    background-color: #5c5c5c19;
-    border: 1px solid #5c5c5c5e;
-    color: #68686883;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    &.selected {
-        background-color: var(--admin);
-        border: 1px solid var(--admin);
-        color: var(--background-color-secondary);
+    &.empty {
+        background-color: #5c5c5c19;
+        border: 1px solid #5c5c5c5e;
+        color: #68686883;
     }
+
+    // &.selected {
+    //     background-color: var(--admin);
+    //     border: 1px solid var(--admin);
+    //     color: var(--background-color-secondary);
+    // }
 
     &.none {
         background-color: #00000026;
@@ -787,6 +861,15 @@ input.author-name {
 
     &.cancelled {
         margin-right: 1rem;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>

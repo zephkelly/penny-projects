@@ -1,6 +1,6 @@
 <template>
     <ClientOnly>
-        <section class="toast component" ref="toast" >
+        <section class="toast component" ref="toast">
             <Transition name="fade">
                 <div class="container" :class="mobileNavOpenStyle" v-show="toastPopupOpen">
                     <div class="toast-content">
@@ -9,67 +9,43 @@
                 </div>
             </Transition>
         </section>
-    </ClientOnly>   
+    </ClientOnly>  
 </template>
 
 <script lang="ts" setup>
-import { isNavbarOpen } from '@/composables/useNavbarStates';
+import { isNavbarOpen } from '@/composables/useNavbarStates'
+import { useToast } from '@/composables/useToast'
 
-const route = useRoute();
+const route = useRoute()
+const toast = ref(null)
+const { toastPopupOpen, toastMessageRef, showToast, clearToast } = useToast()
 
-const toast = ref(null);
-const toastPopupOpen = ref(false);
-const toastMessageRef = ref('');
-
-const mobileNavOpenStyle = computed(() => isNavbarOpen().value ? '' : 'nav-collapsed');
-
-let toastTimer: number | null = null;
-
-const showToast = (message: string) => {
-  if (toastTimer !== null) {
-    clearTimeout(toastTimer);
-  }
-
-  toastPopupOpen.value = true;
-  toastMessageRef.value = message;
-
-  toastTimer = window.setTimeout(() => {
-    toastPopupOpen.value = false;
-    toastTimer = null;
-
-    setTimeout(() => {
-        toastMessageRef.value = '';
-    }, 300);
-  }, 6000);
-};
+const mobileNavOpenStyle = computed(() => isNavbarOpen().value ? '' : 'nav-collapsed')
 
 const checkQueryParams = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const toastMessage = urlParams.get('toast');
-
+    const urlParams = new URLSearchParams(window.location.search)
+    const toastMessage = urlParams.get('toast')
+    console.log(toastMessage)
     if (toastMessage) {
-        showToast(toastMessage);
-
-        urlParams.delete('toast');
-        const newUrl = new URL(window.location.href);
-        newUrl.search = urlParams.toString();
-        window.history.replaceState({}, '', newUrl.toString());
+        showToast(toastMessage)
+        urlParams.delete('toast')
+        const newUrl = new URL(window.location.href)
+        newUrl.search = urlParams.toString()
+        window.history.replaceState({}, '', newUrl.toString())
     }
 }
 
 onMounted(() => {
-    checkQueryParams();
-});
+    checkQueryParams()
+})
 
 watch(() => route.query, () => {
-    checkQueryParams();
-});
+    checkQueryParams()
+})
 
 onBeforeUnmount(() => {
-    if (toastTimer !== null) {
-        clearTimeout(toastTimer);
-    }
-});
+    clearToast()
+})
 </script>
 
 <style scoped lang="scss">

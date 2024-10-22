@@ -36,6 +36,8 @@ export default defineEventHandler(async (event) => {
             profile_image: user.profile_image,
         };
 
+        console.log('JWT Payload:', jwtPayload);
+
         const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: '24h' });
     
         // Set cookie
