@@ -144,12 +144,13 @@
                                     </div>
                                 </div>
                                 <div class="status">
-                                    <button 
-                                        class="project-status-label remove-status none"
+                                    <span 
+                                        class="project-status-label selected"
                                         :class="pageRelatedSettings.status.replace(' ', '-')"
-                                        type="button">
+                                        style="cursor: default;"
+                                    >
                                         {{ formatStatusName(pageRelatedSettings.status) }}
-                                    </button>
+                                </span>
                                 </div>
                             </div>
                         </div>
@@ -572,12 +573,6 @@ onMounted(() => {
     }
 
     .styles {
-        // max-width: 400px;
-
-        .wrapper {
-
-        }
-
         .group {
             display: flex;
             flex-wrap: wrap;

@@ -36,8 +36,8 @@
                 <div class="wrapper status">
                     <div class="field status">
                         <label for="status">Status</label>
-                        <div class="status-list">
-                            <button 
+                        <div class="project-status-list">
+                            <span 
                                 v-for="status in ProjectStatuses" 
                                 :key="status.name"
                                 @click="selectStatus(status.name)"
@@ -48,15 +48,15 @@
                                 type="button"
                             >
                                 {{ formatStatusName(status.name) }}
-                            </button>
-                            <button 
+                            </span>
+                            <span 
                                 @click="removeStatus()"
                                 class="project-status-label remove-status none"
                                 :class="{ 'selected': mainFields.status.value === '' }"
                                 type="button"
                             >
                                 No status
-                            </button>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -671,114 +671,122 @@ input.author-name {
     will-change: border-color;
 }
 
-.status-list {
+.project-status-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.5rem 0.5rem;
+}
+</style>
 
-    .project-status-label {
-        cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        will-change: background-color, color;
-        min-height: 32px;
-        background-color: #5c5c5c19;
-        border: 1px solid #5c5c5c5e;
-        color: #68686883;
+<style lang="scss">
+.project-status-label {
+    font-family: 'Nunito', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    will-change: background-color, color;
+    min-height: 32px;
+    background-color: #5c5c5c19;
+    border: 1px solid #5c5c5c5e;
+    color: #68686883;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        &.none {
-            background-color: #00000026;
-            border: 1px solid #0b0b0b26;
-            color: #00000049;
+    &.selected {
+        background-color: var(--admin);
+        border: 1px solid var(--admin);
+        color: var(--background-color-secondary);
+    }
 
-            &.selected, &:hover {
-                background-color: #cc1f1f42;
-                border: 1px solid #960a0a7d;
-                color: #b71010b9;
-            }
+    &.none {
+        background-color: #00000026;
+        border: 1px solid #0b0b0b26;
+        color: #00000049;
 
-            &.selected:hover {
-                background-color: #94131342;
-                border: 1px solid #5b07077d;
-                color: #6d0909b9;
-            }
+        &.selected, &:hover {
+            background-color: #cc1f1f42;
+            border: 1px solid #960a0a7d;
+            color: #b71010b9;
         }
 
-        &.completed, &.finished {
-            &:hover, &.selected {
-                background-color: #4987102b;
-                border: 1px solid #456825de;
-                color: #39651fd1;
-            }
+        &.selected:hover {
+            background-color: #94131342;
+            border: 1px solid #5b07077d;
+            color: #6d0909b9;
         }
+    }
 
-        &.in-progress {
-            &:hover, &.selected {
-                background-color: #388bc735;
-                border: 1px solid #3068a8de;
-                color: #3364a8d1;
-            }
+    &.completed, &.finished {
+        &:hover, &.selected {
+            background-color: #4987102b;
+            border: 1px solid #456825de;
+            color: #39651fd1;
         }
+    }
 
-        &.ongoing {
-            &:hover, &.selected {
-                background-color: #1e9eff26;
-                border: 1px solid #116db4c7;
-                color: #1165a9bc;
-            }
+    &.in-progress {
+        &:hover, &.selected {
+            background-color: #388bc735;
+            border: 1px solid #3068a8de;
+            color: #3364a8d1;
         }
+    }
 
-        &.active {
-            &:hover, &.selected {
-                background-color: #0eadb62a;
-                border: 1px solid #0d8d86ad;
-                color: #0c7684be;
-            }
+    &.ongoing {
+        &:hover, &.selected {
+            background-color: #1e9eff26;
+            border: 1px solid #116db4c7;
+            color: #1165a9bc;
         }
+    }
 
-        &.pending {
-            &:hover, &.selected {
-                background-color: #c4722125;
-                border: 1px solid #ca7b1adb;
-                color: #be7012ca;
-            }
+    &.active {
+        &:hover, &.selected {
+            background-color: #0eadb62a;
+            border: 1px solid #0d8d86ad;
+            color: #0c7684be;
         }
+    }
 
-        &.proposed {
-            &:hover, &.selected {
-                background-color: #7318b825;
-                border: 1px solid #6b28b8a9;
-                color: #6f1aa19a;
-            }
+    &.pending {
+        &:hover, &.selected {
+            background-color: #c4722125;
+            border: 1px solid #ca7b1adb;
+            color: #be7012ca;
         }
+    }
 
-        &.draft {
-            margin-right: 1rem;
-
-            &:hover, &.selected {
-                background-color: #40404025;
-                border: 1px solid #545454db;
-                color: #3b3b3bca;
-            }
+    &.proposed {
+        &:hover, &.selected {
+            background-color: #7318b825;
+            border: 1px solid #6b28b8a9;
+            color: #6f1aa19a;
         }
+    }
 
-        &.cancelled, &.archived {
-            &:hover, &.selected {
-                background-color: #ab351815;
-                border: 1px solid #8e351fd2;
-                color: #8e351fd0;
-            }
-        }
+    &.draft {
+        margin-right: 1rem;
 
-        &.cancelled {
-            margin-right: 1rem;
+        &:hover, &.selected {
+            background-color: #40404025;
+            border: 1px solid #545454db;
+            color: #3b3b3bca;
         }
+    }
 
-        &.selected {
-            background-color: var(--admin);
-            border: 1px solid var(--admin);
-            color: var(--background-color-secondary);
+    &.cancelled, &.archived {
+        &:hover, &.selected {
+            background-color: #ab351815;
+            border: 1px solid #8e351fd2;
+            color: #8e351fd0;
         }
+    }
+
+    &.cancelled {
+        margin-right: 1rem;
     }
 }
 </style>
