@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="status">
                                     <span 
-                                        class="project-status-label selected"
+                                        class="project-status-label selected small"
                                         :class="pageRelatedSettings.status.replace(' ', '-')"
                                         style="cursor: default;"
                                     >

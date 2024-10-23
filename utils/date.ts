@@ -1,12 +1,18 @@
 import { monthNames, type DeconstructedDate } from '../types/date';
 
-export function formatDateDDMMYYY(isoString: string): string {
-    const date = new Date(isoString);
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const year = date.getUTCFullYear();
+export function formatDateDDMMYYY(isoString: string): string | null {
+    try {
+        const date = new Date(isoString);
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const year = date.getUTCFullYear();
 
-    return `${day}/${month}/${year}`;
+        return `${day}/${month}/${year}`;
+    }
+    catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
 export function formatFromDDMMYYYYToISO(date: string): string {

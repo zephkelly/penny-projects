@@ -139,6 +139,10 @@
                 border: transparent;
                 border-bottom: 1px dashed var(--complete);
             }
+
+            .expander-header h3 {
+                font-size: 1.6rem;
+            }
         }
 
         &.completed {
@@ -154,12 +158,9 @@
     }
     
     .expander-header h3 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         margin: 0;
-
-        // &.is-expanded {
-
-        // }
+        transition: fontSize 0.3s ease;
     }
 
     .expander-toggle {

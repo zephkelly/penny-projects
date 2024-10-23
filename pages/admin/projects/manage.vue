@@ -3,7 +3,10 @@
         <div class="container">
             <h1 class="header admin">Manage Projects</h1>
             <div class="featured-projects">
-                <h2 class="sub-header">Featured Projects</h2>
+                <div class="title-header">
+                    <h2 class="sub-header">Featured Projects</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+                </div>
                 <div class="projects">
                     <div v-for="project in projects">
                         <!-- <ProjectCard :project="project" /> -->
@@ -53,8 +56,6 @@ section {
     color: var(--admin-dark);
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 1rem;
-
 }
 
 .header {
@@ -64,5 +65,19 @@ section {
 
 .admin {
     color: var(--admin);
+}
+
+.title-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    svg {
+        fill: var(--admin-dark);
+        margin-left: 1rem;
+        cursor: pointer;
+    }
 }
 </style>

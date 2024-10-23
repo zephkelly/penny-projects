@@ -353,9 +353,13 @@ const checkForLocalDraft = () => {
         if (confirm) {
             loadLocalDraft();
         } else {
-            localStorage.removeItem('projectDraft');
+            clearLocalDraft();
         }
     }
+};
+
+const clearLocalDraft = () => {
+    localStorage.removeItem('projectDraft');
 };
 
 const draftSubmitEnabled = ref(false);
@@ -396,6 +400,7 @@ const handleProjectDraftSubmit = async () => {
 
         uploadingDraftProject.value = false;
 
+        clearLocalDraft();
         showToast('Draft saved successfully!');
     }
     catch (error) {
@@ -441,6 +446,7 @@ const handleProjectSubmit = async () => {
 
         uploadingPublishedProject.value = false;
 
+        clearLocalDraft();
         showToast('Project published successfully!');
     }
     catch (error) {
@@ -496,6 +502,8 @@ section.new-project-hero {
 
         @media (max-width: 768px) {
             flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
             gap: 1rem;
         }
     }
@@ -509,6 +517,11 @@ section.new-project-hero {
         @media (max-width: 768px) {
             flex-direction: column;
             gap: 1rem;
+            width: 100%;
+
+            .submit {
+                height: 44px;
+            }
         }
 
         .submit {
@@ -565,6 +578,8 @@ section.new-project-hero {
             .spinner {
                 animation: spin 1s linear infinite;
             }
+
+            
         }
     }
 }
@@ -780,6 +795,7 @@ input.author-name {
     transition: background-color 0.3s ease, color 0.3s ease;
     will-change: background-color, color;
     min-height: 32px;
+    min-width: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -854,11 +870,15 @@ input.author-name {
         }
     }
 
-    &.proposed {
+    &.proposed, &.needs-funding {
         &:hover, &.selected {
             background-color: #7318b825;
             border: 1px solid #6b28b8a9;
             color: #6f1aa19a;
+        }
+
+        &.small {
+            background-color: #7318b812;
         }
     }
 
@@ -882,6 +902,12 @@ input.author-name {
 
     &.cancelled {
         margin-right: 1rem;
+    }
+
+    &.small {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        min-height: auto;
     }
 }
 

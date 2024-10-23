@@ -72,6 +72,13 @@ export interface Project {
     featured: boolean;
 }
 
+
+export interface ProjectWithImage extends Project {
+    cover_image_url: string | null;
+    cover_colour_main: string | null;
+    cover_colour_contrast: string | null;
+}
+
 export interface FrontendProject extends Project {
     is_new?: boolean;
     is_renaming?: boolean;
